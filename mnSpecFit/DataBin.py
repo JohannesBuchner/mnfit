@@ -25,6 +25,11 @@ class DataBin:
         self.activeHiChan = len(self.chanMax)-1
 
 
+        #Remove the negative counts and replace with zeros || EXPERIMENTNAL
+
+        self._RemoveNegativeCounts(self.source)
+        self._RemoveNegativeCounts(self.bkg)
+        
 
 
     def _GetChannel(self,energy):
@@ -51,3 +56,11 @@ class DataBin:
     def SetHiChan(self,hi):
 
         self.activeHiChan = self._GetChannel(hi)
+
+    def _RemoveNegativeCounts(self, spectrum):
+
+
+        tt = spectrum < 0.
+
+        spectrum[tt] = 0.
+
