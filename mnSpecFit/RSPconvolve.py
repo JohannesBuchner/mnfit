@@ -36,13 +36,16 @@ class RSPconvolve:
         be convolved with the DRM.
 
         '''
-
+        #print "DIE"
+        
         vec=[]
         for lim in self.photonE:
             vec.append(self.model.integrate(lim))
 
+        
         self.vec = vec
 
+        
         self._ConvolveMatrix()
 
 

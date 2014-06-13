@@ -27,8 +27,8 @@ class DataBin:
 
         #Remove the negative counts and replace with zeros || EXPERIMENTNAL
 
-        self._RemoveNegativeCounts(self.source)
-        self._RemoveNegativeCounts(self.bkg)
+  #      self._RemoveNegativeCounts(self.source)
+  #      self._RemoveNegativeCounts(self.bkg)
         
 
 

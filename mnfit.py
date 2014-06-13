@@ -19,9 +19,9 @@ class mnfit:
         '''
 
         self.silent = silent
-        self.n_live_points = 1000
+        self.n_live_points = 100
         self.importance_nested_sampling = False
-        self.resume = True
+        self.resume = False
         self.verbose = True
         self.sampling_efficiency = 'model'
         
@@ -47,7 +47,7 @@ class mnfit:
 
 
         # run MultiNest
-        pymultinest.run(self.likelihood, self.prior, self.n_params, importance_nested_sampling = self.importance_nested_sampling, resume = self.resume, verbose = self.verbose, sampling_efficiency = self.sampling_efficiency, n_live_points = self.n_live_points)
+        pymultinest.run(self.likelihood, self.prior, self.n_params, importance_nested_sampling = self.importance_nested_sampling, resume = self.resume, verbose = self.verbose, sampling_efficiency = self.sampling_efficiency, n_live_points = self.n_live_points, init_MPI=False)
 
 
         # ok, done. Stop our progress watcher

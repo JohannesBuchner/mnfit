@@ -1,4 +1,4 @@
-
+cimport cython
 #cimport numpy as np
 from scipy.integrate import quad, quadrature
 from mnfit.Likelihood import Likelihood
@@ -33,13 +33,20 @@ class Model:
 
     def integrate(self, lims):
 
-        lowE = lims[0]
-        highE = lims[1]
+        cdef double lowE = lims[0]
+        cdef double highE = lims[1]
 
+        cdef double result
+
+        tmp = []
+
+        for i in range(self.n_params):
+
+            tmp.append(self.params[i])
+            
+        tmp = tuple(tmp)
         
-
-
-        result = quad(self.model,lowE,highE,args=tuple(self.params))[0]
+        result = quad(self.model,lowE,highE,args=tmp)[0]
 
         return result
 
