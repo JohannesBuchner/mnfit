@@ -31,6 +31,8 @@ class FitView(object):
         self.bestFit = self.anal.get_best_fit()["parameters"]
         self.loglike = self.anal.get_best_fit()["log_likelihood"]
 
+        self._StatResults()
+
         
 
 
@@ -43,11 +45,14 @@ class FitView(object):
 
         '''
 
+        s = self.anal.get_stats() 
+
         print
         print "-"*30+" ANALYIS "+"-"*30
         print
 
         self._CustomInfo()
+        print
         
         print "Global Evidence:\n\t%.3e +- %.3e" % ( s['nested sampling global log-evidence'],\
                                                      s['nested sampling global log-evidence error'] )
@@ -82,7 +87,7 @@ class FitView(object):
         fig = plt.figure(figsize=(5*self.n_params,5*self.n_params))
 
         for i in range(self.n_params):
-            ax = fig.add_subplot(self.n_params,self.n_params, i+1)
+            ax = fig.add_subplot(self.n_params,self.n_params, i+1, axisbg="#FCF4F4")
 
             p.plot_marginal(i, with_ellipses=False , with_points = False, grid_points=50)
 
