@@ -10,7 +10,7 @@ class Model:
 
 
     def __init__(self):
-
+        
 
         self.prior = 0
         self.n_params = 0
@@ -20,12 +20,31 @@ class Model:
 
 
     def SetParams(self, params):
+        '''
+        Set the parameters of the model
+
+        ____________________________________________
+        arguments:
+        params: numpy array of paramerters
+
+        '''
+
+
         self.params = params
 
 
         
 
     def integrate(self, lims):
+        '''
+        Intergrate the model via scipy.intergrate.quad
+        over the limits. Note model must braodcasting aware
+
+        ____________________________________________
+        arguments:
+        lims: [lo/hi]
+
+        '''
 
         cdef double lowE = lims[0]
         cdef double highE = lims[1]
@@ -50,7 +69,16 @@ class Model:
 
 
     def SetRSP(self,rsp):
+        '''
+        Set the instrument response matrix for the model.
 
+        ________________________________________________
+        arguments:
+        rsp: path to a fits rsp file
+        
+        sets self.rsp
+
+        '''
 
         rsp = RSPconvolve(rsp)
         rsp.SetModel(self)
@@ -59,7 +87,12 @@ class Model:
 
     def GetModelCnts(self):
         '''
+        Convolves the set model with the RSP and creates the 
+        model counts
 
+        ____________________________________________
+        returns:
+        modelCnts: numpy array of Convolved model counts.
 
         '''
 
