@@ -34,6 +34,36 @@ class FitView(object):
         
 
 
+
+    def _StatResults(self):
+        '''
+        Prints the statistical results of the fit
+        as well as other information via the self._CustomInfo()
+        set in inherited classes
+
+        '''
+
+        print
+        print "-"*30+" ANALYIS "+"-"*30
+        print
+
+        self._CustomInfo()
+        
+        print "Global Evidence:\n\t%.3e +- %.3e" % ( s['nested sampling global log-evidence'],\
+                                                     s['nested sampling global log-evidence error'] )
+
+        
+        print "LogLikelihood of Best Fit:\n\t %.2f"%self.loglike
+        print
+        print "-"*69
+        
+
+    def _CustomInfo(self):
+
+        pass
+
+
+
     def _LoadData(self,data):
 
         pass
@@ -132,3 +162,6 @@ class FitView(object):
 
         
         pass
+
+
+  
