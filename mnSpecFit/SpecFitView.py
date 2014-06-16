@@ -1,7 +1,8 @@
 from mnfit.FitView import FitView
 from astropy.table import Table
 from DataBin import DataBin
-
+from models import models
+import json
 
 
 class SpecFitView(FitView):
@@ -11,23 +12,28 @@ class SpecFitView(FitView):
 
 
 
-        tab = Table.read(data,format="fits")
+        f = open(data)
+
+        fit = json.load(f)
 
 
-        self.parameters = tab["paramters"]
+        self.parameters = fit["params"]
         self.n_params = len(self.parameters)
 
-        self.detectors = tab["detectors"]
-        self.dataBinExt = tab.meta["databin"]
-        self.duration = tab.meta["duration"]
+        self.detectors = fit["detectors"]
+        self.dataBinExt = fit["dataBinExt"]
+        self.duration = fit["duration"]
         self.sourceCounts = []
-        self.rsps = tab["rsps"]
-        self.basename = tab.meta["basename"]
+        self.rsps = fit["rsps"]
+        self.basename = fit["basename"]
 
+        model = (models[fit["model"]])()
+        self.model = model.model
+        
         #load counts and model counts
         for det in self.detectors:
 
-            db = DataBin(self.dataBinExt+"/"+det+".fits")
+            db = DataBin(self.dataBinExt+det+".fits")
             self.sourceCounts.append(db.source)
             
         

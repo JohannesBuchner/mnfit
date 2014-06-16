@@ -21,12 +21,6 @@ class Model:
 
     def SetParams(self, params):
         self.params = params
-    
-
-
-   # def SetEval(self, model):
-
-   #     self.model = model
 
 
         

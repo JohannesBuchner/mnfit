@@ -14,13 +14,15 @@ class DataBin:
         self.totBkg = self.bkg.sum()
         self.totSource =self.source.sum()
         self.totTot = self.total.sum()
-        self.duration = self.data.meta["TBIN"][1]-self.data.meta["TBIN"][0]
+        self.duration = self.data.meta["DURATION"]
         self.det = self.data.meta["DET"]
         self.rsp = self.data.meta["RSP"]
         self.instrument = self.data.meta["INST"]
         self.chanMin = self.data["emin"]
         self.chanMax = self.data["emax"]
-
+        self.binN = self.data.meta["BINN"]
+        self.fileLoc = self.data.meta["FILELOC"]
+        
         self.activeLoChan = 0
         self.activeHiChan = len(self.chanMax)-1
 
@@ -64,3 +66,37 @@ class DataBin:
 
         spectrum[tt] = 0.
 
+
+    def GetTotalCounts(self):
+
+        return (self.total[self.activeLoChan:self.activeHiChan+1])*self.duration
+
+    def GetTotalRate(self):
+
+        return (self.total[self.activeLoChan:self.activeHiChan+1])
+
+    def GetSourceCounts(self):
+
+        return (self.source[self.activeLoChan:self.activeHiChan+1])*self.duration
+
+    def GetSourceRate(self):
+
+        return (self.source[self.activeLoChan:self.activeHiChan+1])
+
+
+    def GetBkgCounts(self):
+
+        return (self.bkg[self.activeLoChan:self.activeHiChan+1])*self.duration
+
+    def GetBkgRate(self):
+
+        return (self.bkg[self.activeLoChan:self.activeHiChan+1])
+
+
+    def GetBkgErr(self):
+
+        return (self.berr[self.activeLoChan:self.activeHiChan+1])*self.duration
+
+    def GetBkgErrRate(self):
+
+        return (self.berr[self.activeLoChan:self.activeHiChan+1])

@@ -15,11 +15,11 @@ class Band(Model):
 
 
 
-
+      
 
       def band(x,logA,Ep,alpha,beta):
 
-#         print "HERE"
+
 
          cond = (alpha-beta)*Ep/(2+alpha)
        
@@ -42,7 +42,8 @@ class Band(Model):
 
        
 
-
+      self.modName = "Band"
       self.model=band
       self.prior=BandPrior
       self.n_params = 4
+      self.parameters = ["logNorm",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"]

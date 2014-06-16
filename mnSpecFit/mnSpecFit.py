@@ -1,8 +1,9 @@
 from mnfit.mnfit import mnfit
 from Model import Model
-from ctypes import *
-
-
+from models import models
+from numpy import array
+from astropy.table import Table
+import json
 
 class mnSpecFit(mnfit):
 
@@ -60,6 +61,9 @@ class mnSpecFit(mnfit):
             
 
 
+    def SetSaveFile(self,savefile):
+        self.savefile = savefile
+
 
     def SetModel(self, model):
         '''
@@ -90,9 +94,11 @@ class mnSpecFit(mnfit):
         '''
 
         # The Likelihood function for MULTINEST
-        def likelihood(params, ndim, nparams):
+        def likelihood(cube, ndim, nparams):
 
-            
+
+            params = array([cube[i] for i in range(ndim)])
+#            print params
             logL = 0. # This will be -2. * log(L)
             for det,mod,lh in zip(self.detList,self.models,self.lhs):
                 
@@ -103,15 +109,15 @@ class mnSpecFit(mnfit):
                 
                 mod.SetParams(params) #set params for the models
                 
-                modCnts = mod.GetModelCnts() # convolve the matrix and ret counts
+                modCnts = mod.GetModelCnts() # convolve the matrix and return counts
                 
                 lh.SetModelCounts(modCnts[det.activeLoChan:det.activeHiChan+1]) #pass model counts to lh
 
                 # Here the DataBin objects' source and background
                 # counts are sent to the likelihood object
 
-                lh.SetBackGround(det.bkg[det.activeLoChan:det.activeHiChan+1]*det.duration,det.berr[det.activeLoChan:det.activeHiChan+1]*det.duration)
-                lh.SetCounts(det.total[det.activeLoChan:det.activeHiChan+1]*det.duration)
+                lh.SetBackGround(det.GetBkgCounts(),det.GetBkgErr()) # The Get functions automatically make channel
+                lh.SetCounts(det.GetTotalCounts())   # selection. Selection is performed before!
 
                 #This is log(L) so the joint stat is an addition
     
@@ -119,20 +125,47 @@ class mnSpecFit(mnfit):
                 logL+=lh.ComputeLikelihood()
             #print "logL = %f"%logL
             
-            #jointLH = exp(-0.5*(logL))
-            jointLH = logL    
+            jointLH = -0.5*(logL)
+            #jointLH = logL    
             return jointLH
         
         # Becuase this is inside a class we want to create a
         # likelihood function that does not have an object ref
-        # as an argument, so it is created here as a functor
+        # as an argument, so it is created here as a callback
 
 
 
-        #prior_type = CFUNCTYPE(c_void_p, POINTER(c_double), c_int, c_int)
-        #loglike_type = CFUNCTYPE(c_double, POINTER(c_double), c_int, c_int)
-        #c_likelihood = loglike_type(likelihood)
-        #c_prior = prior_type(self.models[0].prior)
+       
         
         self.likelihood = likelihood
         self.prior = self.models[0].prior
+
+
+
+    def _WriteFit(self):
+
+
+
+        detectors = []
+        rsps = []
+        for det in self.detList:
+
+            detectors.append(det.instrument+"_"+det.det)
+            rsps.append(det.rsp)
+
+
+        
+        out = {"outfiles":self.outfilesDir,\
+               "basename":self.basename,\
+               "duration":self.detList[0].duration,\
+               "params":self.models[0].parameters,\
+               "detectors":detectors,\
+               "rsps":rsps,\
+               "dataBinExt":self.detList[0].fileLoc,\
+               "model":self.models[0].modName\
+               }
+
+        f = open(self.outfilesDir+self.savefile,'w')
+
+        json.dump(out,f)
+        f.close()
