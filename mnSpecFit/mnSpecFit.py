@@ -15,7 +15,9 @@ class mnSpecFit(mnfit):
         that are created by separate objects which ultimately 
         make a uniform interface for reading here.
 
-        args: DataBin or list of DataBins
+        ___________________________________________________
+        arguments: 
+        databin:  DataBin or list of DataBins
 
         '''
 
@@ -36,42 +38,70 @@ class mnSpecFit(mnfit):
         Pass a likelihood class. This is important because the method
         instantiates a likelihood object for each detector
 
-        '''
+        ____________________________________________________________
+        arguments:
+        lhType: a likelihood class
 
-        
+        '''
         
         self.lhs = []
         for x in self.detList:
 
-            lh = lhType()
-            lh.tb = x.duration
-            lh.ts = x.duration
+            lh = lhType()  #Instantiate the likelihood
+            lh.tb = x.duration  #Set the background duration
+            lh.ts = x.duration  #Set the source duration
             self.lhs.append(lh)
        
-    def SetEnergyBounds(self,detector,lo,hi):
 
+
+    def SetEnergyBounds(self,detector,lo,hi):
+        '''
+        Set the energy bounds of a detector
+
+        ____________________________________________________________
+        arguments:
+        detector: str() ex "n6"
+        lo: lo channel in keV
+        hi: hi channel in keV
+
+        '''
+
+
+        
         for db in self.detList:
 
             if db.det == detector:
 
-                db.SetHiChan(hi)
-                db.SetLoChan(lo)
+                db.SetHiChan(hi)   # Call DataBin method for channel 
+                db.SetLoChan(lo)   # selection
                 return
         print "\n Detector: %s has not been loaded!  \n"
             
 
 
     def SetSaveFile(self,savefile):
+        '''
+        Set the name of the json file to be created
+        after the fit is made
+
+        ____________________________________________________________
+        arguments:
+        savefile: str() file name
+
+
+        '''
         self.savefile = savefile
 
 
     def SetModel(self, model):
         '''
-        
         Pass a model class which will be instantiated
         and the rsp loaded for each DataBin
 
-        
+        _____________________________________________________________
+        arguments:
+        model: a derived Model class
+
         '''
 
 
@@ -133,17 +163,17 @@ class mnSpecFit(mnfit):
         # likelihood function that does not have an object ref
         # as an argument, so it is created here as a callback
 
-
-
-       
-        
-        self.likelihood = likelihood
-        self.prior = self.models[0].prior
+        self.likelihood = likelihood  #likelihood callback
+        self.prior = self.models[0].prior  #prior callback
 
 
 
     def _WriteFit(self):
+        '''
+        Private function that is called after running MULTINEST.
+        It saves relevant information from the fits
 
+        '''
 
 
         detectors = []
@@ -156,7 +186,8 @@ class mnSpecFit(mnfit):
             dof += len(det.GetTotalCounts())
 
 
-        
+       # Construct the dictionary that will be read by
+       # SpecFitView.
         out = {"outfiles":self.outfilesDir,\
                "basename":self.basename,\
                "duration":self.detList[0].duration,\
@@ -170,6 +201,11 @@ class mnSpecFit(mnfit):
                }
 
         f = open(self.outfilesDir+self.savefile,'w')
-
-        json.dump(out,f)
+        
+        json.dump(out,f) # Write to a JSON file
+        print
+        print "Wrote "+self.outfilesDir+self.savefile
+        print
+        print
+        
         f.close()
