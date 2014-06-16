@@ -14,6 +14,9 @@ class FitView(object):
 
     def __init__(self,data):
 
+
+
+        self.xlabel = "x"
         
         self._LoadData(data)
 
@@ -27,6 +30,8 @@ class FitView(object):
 
         self.bestFit = self.anal.get_best_fit()["parameters"]
         self.loglike = self.anal.get_best_fit()["log_likelihood"]
+
+        
 
 
     def _LoadData(self,data):
@@ -101,20 +106,24 @@ class FitView(object):
 
 
         
-        #yData = map(lambda params: self.model(self.dataRange,*params) ,self.anal.get_equal_weighted_posterior()[::100,:-1])
-
-
+        #Plot the spread in data
+            
         for y in yData:
 
-            ax.plot(self.dataRange,y,"b") ## modify later
+            ax.plot(self.dataRange,y,"#2EFE64") ## modify later
 
         bfModel = []
+
+
+        # Plot the best fit
         for x in self.dataRange:
 
             bfModel.append(self.model(x, *self.bestFit))
         
             
-        ax.plot(self.dataRange,bfModel,"r") #modify later
+        ax.plot(self.dataRange,bfModel,"#642EFE") #modify later
+
+        ax.set_xlabel(self.xlabel)
 
 
         return ax
