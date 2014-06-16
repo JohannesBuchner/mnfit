@@ -27,9 +27,15 @@ def findall(L, test):
         except IndexError:
             return indices
 
-    
+
+
+
 class cstat(Likelihood):
 
+
+
+    def _SetName(self):
+        self.statName = "cstat"
 
     def SetBackGround(self,bg, bgErr):
 

@@ -187,7 +187,7 @@ class SpecFitView(FitView):
 
 
         
-            
+        return ax
 
         
 

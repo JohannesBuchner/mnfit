@@ -73,6 +73,8 @@ class PHAReader(DataRead):
         self.directory = directory
 
         tab = Table(array(zip(totalCounts,sourceCounts,self.bkg,self.berr,emin,emax,meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
+
+
         tab.meta={"duration":duration,"INST":self.instrument,"DET":self.det,"RSP":self.rsp}
 
         directory = "bin0"

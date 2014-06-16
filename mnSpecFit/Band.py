@@ -1,6 +1,6 @@
 from Model import Model
 from numpy import exp, power
-from ctypes import *
+
 
 
 

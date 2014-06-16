@@ -20,11 +20,21 @@ cdef extern from "math.h":
 class pgstat(Likelihood):
 
 
+
+ 
+
+    def _SetName(self):
+        self.statName = "pgstat"
+
+
     def SetBackGround(self,bg,bgErr):
 
         self.bg = bg
-        self.berr = bgErr
+        #self.berr = bgErr #THIS IS TEMPORARY!!!!!
+        self.berr = np.sqrt(bg)
 
+
+        
     def SetCounts(self,counts):
 
         self.counts = counts
