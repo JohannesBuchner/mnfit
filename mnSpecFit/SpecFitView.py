@@ -35,6 +35,61 @@ class SpecFitView(FitView):
 
             db = DataBin(self.dataBinExt+det+".fits")
             self.sourceCounts.append(db.source)
+
+
+        self.xlabel = "Energy [keV]"
+
+
+    def PlotvFv(self):
+        '''
+        Plots the best fit and the surrounding likelihood space
+        but in vFv space instead of the standard photon space.
+
+        self.dataRange must be set!
+
+        '''
+
+
+
+        fig = plt.figure(13v0)
+        ax = fig.add_subplot(111)
+
+        yData = []
+
+
+        for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
+
+            tmp = []
+            
+            for x in self.dataRange:
+
+                tmp.append(x*x*self.model(x, *params)) #Computes vFv
+            yData.append(tmp)
+
+
+
+        
+       
+
+
+        for y in yData:
+
+            ax.plot(self.dataRange,y,"b") ## modify later
+
+        bfModel = []
+        for x in self.dataRange:
+
+            bfModel.append(x*x*self.model(x, *self.bestFit))
+        
+            
+        ax.plot(self.dataRange,bfModel,"r") #modify later
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+
+        x.set_xlabel(self.xlabel)
+
+        return ax
+        
             
         
             
