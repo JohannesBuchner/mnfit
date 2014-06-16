@@ -118,7 +118,7 @@ class FitView(object):
                     ax.set_ylabel(self.parameters[j])
 
 
-        self.margAx = ax
+        return ax
 
 
     def ViewFit(self):
@@ -137,6 +137,8 @@ class FitView(object):
 
                 tmp.append(self.model(x, *params))
             yData.append(tmp)
+
+        
 
 
 
