@@ -2,6 +2,8 @@ from mnfit.FitView import FitView
 from astropy.table import Table
 from DataBin import DataBin
 from models import models
+import matplotlib.pyplot as plt
+
 import json
 
 
@@ -51,7 +53,7 @@ class SpecFitView(FitView):
 
 
 
-        fig = plt.figure(13v0)
+        fig = plt.figure(130)
         ax = fig.add_subplot(111)
 
         yData = []
@@ -74,7 +76,7 @@ class SpecFitView(FitView):
 
         for y in yData:
 
-            ax.plot(self.dataRange,y,"b") ## modify later
+            ax.plot(self.dataRange,y,"#2EFE64") ## modify later
 
         bfModel = []
         for x in self.dataRange:
@@ -82,11 +84,14 @@ class SpecFitView(FitView):
             bfModel.append(x*x*self.model(x, *self.bestFit))
         
             
-        ax.plot(self.dataRange,bfModel,"r") #modify later
+        ax.plot(self.dataRange,bfModel,"#642EFE",linewidth=1.2) #modify later
         ax.set_xscale('log')
         ax.set_yscale('log')
 
-        x.set_xlabel(self.xlabel)
+        ax.set_xlabel(self.xlabel)
+        ax.set_ylabel(r"$\nu F_{\nu}$ [keV$^2$ s$^{-s}$ cm$^{-2}$ keV$^{-1}$]")
+        ax.grid(False)
+        ax.set_xlim(min(self.dataRange),max(self.dataRange))
 
         return ax
         
