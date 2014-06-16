@@ -28,14 +28,28 @@ class SpecFitView(FitView):
         self.sourceCounts = []
         self.rsps = fit["rsps"]
         self.basename = fit["basename"]
-
+        self.meanChan = []
+        self.chanWidths = []
         model = (models[fit["model"]])()
         self.model = model.model
+
+        self.cntMods = []
         
         #load counts and model counts
         for det in self.detectors:
 
             db = DataBin(self.dataBinExt+det+".fits")
+
+            mod = (models[fit["model"]])()
+            mod.SetRSP(db.rsp)
+
+            chanWidth = db.chanMax - db.chanMin
+            self.chanWidths.append(chanWidth)
+
+            self.cntMods.append(mod)
+
+            self.meanChan.append(db.meanChan)
+            
             self.sourceCounts.append(db.source)
 
 
@@ -100,3 +114,65 @@ class SpecFitView(FitView):
             
 
 
+    def PlotCounts(self):
+        '''
+        Plots the data counts along with the deconvolved models
+        for each detector used in the fit. 
+
+        '''
+
+        
+        
+        fig = plt.figure(140)
+
+        ax = fig.add_subplot(111)
+
+        colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF"]
+
+
+        for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
+
+            ax.loglog(chan,c/cw,"+", color=color)
+
+        ax.legend(self.detectors,loc="lower left")
+
+
+        # Here the model's params are set and the
+        # and the matrix is convolved to get
+        # model counts
+
+        for mod,chan,cw in zip(self.cntMods,self.meanChan,self.chanWidths):
+
+            yData = []
+
+
+            for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
+
+                mod.SetParams(params)
+                    
+                yData.append(mod.GetModelCnts()/cw)
+
+            for y  in yData:
+
+
+                ax.loglog(chan,y,"k",alpha=.05)
+
+
+        ax.set_xlabel(self.xlabel)
+        ax.set_ylabel(r"cnts s$^{-1}$ keV$^{-1}$")
+
+
+        
+            
+
+        
+
+
+        
+
+             
+
+
+
+
+        
