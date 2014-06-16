@@ -18,7 +18,7 @@ class SpecFitView(FitView):
 
         fit = json.load(f)
 
-
+        self.modName = fit["model"]
         self.parameters = fit["params"]
         self.n_params = len(self.parameters)
 
@@ -32,6 +32,10 @@ class SpecFitView(FitView):
         self.chanWidths = []
         model = (models[fit["model"]])()
         self.model = model.model
+
+
+        self.stat = fit["stat"]
+        self.dof = fit["dof"]
 
         self.cntMods = []
         
@@ -54,6 +58,26 @@ class SpecFitView(FitView):
 
 
         self.xlabel = "Energy [keV]"
+
+
+
+    def _CustomInfo(self):
+
+        print
+
+        print "Model:\n\t%s"%self.modName
+        print "\nBest Fit Parameters (1-sigma err):"
+
+        marg = self.anal.get_stats()["marginals"]
+
+        for params,val,err in zip(self.parameters,self.bestFit,marg):
+
+            err = err["1sigma"]
+            
+            print "\t%s:\t%.2f\t+%.2f -%.2f"%(params,val,err[1]-val,val-err[0])
+
+        print
+        print "%s per d.o.f.:\n\t %.2f/%d"%(self.stat,-2.*self.loglike,self.dof)
 
 
     def PlotvFv(self):
@@ -155,7 +179,7 @@ class SpecFitView(FitView):
             for y  in yData:
 
 
-                ax.loglog(chan,y,"k",alpha=.05)
+                ax.loglog(chan,y,"#585858",alpha=.09)
 
 
         ax.set_xlabel(self.xlabel)
