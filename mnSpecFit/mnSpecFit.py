@@ -148,10 +148,12 @@ class mnSpecFit(mnfit):
 
         detectors = []
         rsps = []
+        dof = self.n_params
         for det in self.detList:
 
             detectors.append(det.instrument+"_"+det.det)
             rsps.append(det.rsp)
+            dof += len(det.GetTotalCounts())
 
 
         
@@ -162,7 +164,9 @@ class mnSpecFit(mnfit):
                "detectors":detectors,\
                "rsps":rsps,\
                "dataBinExt":self.detList[0].fileLoc,\
-               "model":self.models[0].modName\
+               "model":self.models[0].modName,\
+               "stat":self.lhs[0].statName,\
+               "dof":dof\
                }
 
         f = open(self.outfilesDir+self.savefile,'w')
