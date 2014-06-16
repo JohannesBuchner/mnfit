@@ -14,7 +14,16 @@ class mnfit:
         '''
         This is a Bayesian MC utilizing the package
         multinest to explore the posterior space of the 
-        parameter
+        parameters.
+
+        __________________________________________________________
+        keyword args:
+        silent: [False/True]   turns off/on live tracking via pdf
+        live_points: number of active points 
+        ins: [True/False]  turn on/off information sampling
+        resume: [True/False] turn on/off resuming chain from last run
+        verbose: [True/False] turn on/off verbose output
+        sampling_efficiency: blah blah blah
 
         '''
 
@@ -29,11 +38,17 @@ class mnfit:
         
 
     def SetBasename(self,basename):
+        '''
+        Set the basename for writing the mcmc chains
+        '''
 
         self.basename = basename
         
 
     def LoadData(self):
+        '''
+        Functionality set in subclass
+        '''
 
         print "Generic Loader. This must be inherited"
 

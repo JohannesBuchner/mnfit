@@ -8,23 +8,28 @@ import matplotlib.pyplot as plt
 
 class FitView(object):
     '''
-    PUT INFO HERE
+    FitView examines the output of mnfit and produces plots
 
     '''
 
     def __init__(self,data):
+        '''
+        The type of data depends on the subclass.
+        The generic _LoadData function is called and should set
+        the xlabel
 
+        ______________________________________________________
+        arguments:
+        data: a file
+
+        '''
 
 
         self.xlabel = "x"
-        
+
+        # This will be called to format the data
         self._LoadData(data)
 
-
-
-        #self.n_params = n_params
-        #self.basename = basename
-        
         self.anal  = Analyzer(n_params=self.n_params,outputfiles_basename=self.basename)
 
 
@@ -80,7 +85,14 @@ class FitView(object):
         pass
 
     def ViewMarginals(self):
+        '''
+        Plot the marginal distributions of the parameters
+        along with the best-fit and 1-sigma errors
 
+        returns:
+        ax: matplotlib ax instance
+
+        '''
         marg = self.anal.get_stats()["marginals"]
 
         p = probPlot.PlotMarginalModes(self.anal)
@@ -122,7 +134,14 @@ class FitView(object):
 
 
     def ViewFit(self):
+        '''
+        Plot the best fit and contours 
 
+        ______________________________________________________
+        returns:
+        ax: matplotlib ax instance
+
+        '''
         fig = plt.figure(120)
         ax = fig.add_subplot(111)
 
