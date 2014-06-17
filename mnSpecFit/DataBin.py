@@ -1,9 +1,15 @@
 from astropy.table import Table
 class DataBin:
-    
+    '''
+
+    '''
     
     def __init__(self,databin):
-        
+        '''
+        ____________________________________________________________
+        arguments:
+        databin: path to a databin that has been saved
+        '''    
         self.data = Table.read(databin,format="fits")
         self.berr = self.data['berr']
         self.bkg = self.data["bkg"]
@@ -35,6 +41,14 @@ class DataBin:
 
 
     def _GetChannel(self,energy):
+        '''
+        Private function that finds the channel for a given energy
+
+        ____________________________________________________________
+        arguments:
+        energy: selection energy in keV
+
+        '''
 
         if energy < self.chanMin[0]:
             return 0
@@ -52,10 +66,28 @@ class DataBin:
                 ch+=1
 
     def SetLoChan(self,lo):
+        '''
+        Set Lo energy channel that is used when getting rates
+        and counts via the Get() functions.
+
+        ____________________________________________________________
+        arguments:
+        lo: energy in keV
+
+        '''
 
         self.activeLoChan = self._GetChannel(lo)
 
     def SetHiChan(self,hi):
+        '''
+        Set HI  energy channel that is used when getting rates
+        and counts via the Get() functions.
+
+        ____________________________________________________________
+        arguments:
+        hi: energy in keV
+
+        '''
 
         self.activeHiChan = self._GetChannel(hi)
 

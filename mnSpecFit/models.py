@@ -1,4 +1,4 @@
 from Band import Band
 from BandBB import BandBB
 
-models = {"Band":Band, "BandBB": BandBB}
+models = {"Band":Band, "Band+BB": BandBB}
