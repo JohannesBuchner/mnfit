@@ -3,7 +3,7 @@ from astropy.table import Table
 from DataBin import DataBin
 from models import models
 import matplotlib.pyplot as plt
-from numpy import array, cumsum, linspace
+from numpy import array, cumsum, linspace, sqrt
 import json
 
 
@@ -158,11 +158,8 @@ class SpecFitView(FitView):
         colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF"]
 
 
-        for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
-
-            ax.loglog(chan,c/cw,"+", color=color)
-
-        ax.legend(self.detectors,loc="lower left")
+        
+        #ax.legend(self.detectors,loc="lower left")
 
 
         # Here the model's params are set and the
@@ -184,6 +181,12 @@ class SpecFitView(FitView):
 
 
                 ax.loglog(chan,y,"#585858",alpha=.09)
+
+
+
+        for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
+
+            ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt="o", color=color)
 
 
         ax.set_xlabel(self.xlabel)
