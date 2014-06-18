@@ -10,8 +10,8 @@ class rsp(object):
         rspFile = pf.open(rspFileName)
     
         angle = rspFile[2].header["DET_ANG"]
-        print "Opening "+rspFileName
-        print "Read RSP file with angle: %lf"%angle
+#        print "Opening "+rspFileName
+#        print "Read RSP file with angle: %lf"%angle
         
         
 
