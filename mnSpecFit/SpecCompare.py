@@ -1,5 +1,5 @@
 from mnfit.FitCompare import FitCompare
-
+import json
 
 
 class SpecCompare(FitCompare):
