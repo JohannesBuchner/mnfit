@@ -3,7 +3,7 @@ from astropy.table import Table
 from DataBin import DataBin
 from models import models
 import matplotlib.pyplot as plt
-
+from numpy import array, cumsum, linspace
 import json
 
 
@@ -22,7 +22,7 @@ class SpecFitView(FitView):
         self.parameters = fit["params"]
         self.n_params = len(self.parameters)
 
-        self.detectors = fit["detectors"]
+        self.detectors = array(fit["detectors"])
         self.dataBinExt = fit["dataBinExt"]
         self.duration = fit["duration"]
         self.sourceCounts = []
@@ -56,6 +56,10 @@ class SpecFitView(FitView):
             
             self.sourceCounts.append(db.source)
 
+        #Move all of these to arrays
+        self.sourceCounts = array(self.sourceCounts)
+        self.meanChan = array(self.meanChan)
+        self.cntMods = array(self.cntMods)
 
         self.xlabel = "Energy [keV]"
 
@@ -191,7 +195,68 @@ class SpecFitView(FitView):
 
         
 
+    def QQ(self,numberOfEnergyPoints,detector):
+        '''
+        Plot data counts against model counts for each detector
+        '''
 
+        
+        fig  = plt.figure(180,(5,5))
+        ax = fig.add_subplot(111)
+
+        #det = array(self.detectors)
+
+        i = self.detectors == detector
+       
+        counts = self.sourceCounts[i][0]
+
+        
+        mod = self.cntMods[i][0]
+
+        mod.SetParams(self.bestFit)
+
+        modelCounts = mod.GetModelCnts()
+
+        cumCounts = cumsum(counts)
+        cumModel = cumsum(modelCounts)
+
+        # Plot the center line
+        dataMax = max(max(cumModel),max(cumCounts))
+        line = linspace(0,dataMax,1000)
+        ax.plot(line,line,"--",color="grey")
+
+        # Plot QQ
+        ax.plot(cumModel,cumCounts,"r-", linewidth = 1.2)
+
+        ax.set_xlabel("Integrated Model")
+        ax.set_ylabel("Integrated Counts")
+
+        #Plot energies
+
+        minE = min(self.meanChan[i][0])
+        maxE = max(self.meanChan[i][0])
+        
+        enePoints = linspace(minE,maxE,numberOfEnergyPoints)
+
+        for i,ep in zip(linspace(0.,1.,numberOfEnergyPoints),enePoints):
+
+            ax.text(i,i,"%.1f keV"%ep,color='k',transform=ax.transAxes)
+
+            
+
+        ax.text(0.55,0.5,"Model Excess",fontsize=8,color="grey",verticalalignment="center",horizontalalignment='center',transform=ax.transAxes,rotation=45)
+        ax.text(0.5,0.55,"Data Excess",fontsize=8 ,color="grey",verticalalignment="center",horizontalalignment='center',transform=ax.transAxes,rotation=45)
+
+
+        
+
+        ax.set_ylim(0,dataMax)
+        ax.set_xlim(0,dataMax)
+
+        ax.grid(False)
+
+        return ax
+        
         
 
              
