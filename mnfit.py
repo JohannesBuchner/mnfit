@@ -2,7 +2,7 @@
 import pymultinest
 import threading, subprocess
 import os
-#if not os.path.exists("chains"): os.mkdir("chains")
+import time
 
 
 
@@ -75,17 +75,19 @@ class mnfit:
             print "SILENT"
             progress = pymultinest.ProgressPlotter(n_params = self.n_params); progress.start()
             threading.Timer(2, show, [self.basename+"phys_live.points.pdf"]).start() # delayed opening
-
+        startTime = time.time()
 
         # run MultiNest
-        pymultinest.run(self.likelihood, self.prior, self.n_params, importance_nested_sampling = self.importance_nested_sampling, resume = self.resume, verbose = self.verbose, sampling_efficiency = self.sampling_efficiency, n_live_points = self.n_live_points, init_MPI=True,outputfiles_basename=self.basename)
+        pymultinest.run(self.likelihood, self.prior, self.n_params, importance_nested_sampling = self.importance_nested_sampling, resume = self.resume, verbose = self.verbose, sampling_efficiency = self.sampling_efficiency, n_live_points = self.n_live_points,outputfiles_basename=self.basename, init_MPI=False)
 
 
         # ok, done. Stop our progress watcher
         if not self.silent:
             progress.stop()
 
-        
+        print 
+        print "Finished sampling in %.2f seconds"%(time.time()-startTime)
+        print
         self._WriteFit()
 
     def _WriteFit(self):

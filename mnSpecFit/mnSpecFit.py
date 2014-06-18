@@ -128,7 +128,7 @@ class mnSpecFit(mnfit):
 
 
             params = array([cube[i] for i in range(ndim)])
-#            print params
+
             logL = 0. # This will be -2. * log(L)
             for det,mod,lh in zip(self.detList,self.models,self.lhs):
                 
