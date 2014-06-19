@@ -4,6 +4,7 @@ from DataBin import DataBin
 from models import models
 import matplotlib.pyplot as plt
 from numpy import array, cumsum, linspace, sqrt
+from scipy.stats import ks_2samp
 import json
 
 
@@ -118,7 +119,7 @@ class SpecFitView(FitView):
 
         for y in yData:
 
-            ax.plot(self.dataRange,y,"#2EFE64") ## modify later
+            ax.plot(self.dataRange,y,"#04B404",alpha=.2) ## modify later
 
         bfModel = []
         for x in self.dataRange:
@@ -157,6 +158,9 @@ class SpecFitView(FitView):
 
         colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF"]
 
+        for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
+
+            ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt=".", color=color, elinewidth=.5,capsize=.2)
 
         
         #ax.legend(self.detectors,loc="lower left")
@@ -180,18 +184,15 @@ class SpecFitView(FitView):
             for y  in yData:
 
 
-                ax.loglog(chan,y,"#585858",alpha=.09)
+                ax.loglog(chan,y,"k",alpha=.09)
 
 
 
-        for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
-
-            ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt="o", color=color)
-
+        
 
         ax.set_xlabel(self.xlabel)
         ax.set_ylabel(r"cnts s$^{-1}$ keV$^{-1}$")
-
+        ax.set_yscale("log", nonposy= "clip")
 
         
         return ax
@@ -226,6 +227,9 @@ class SpecFitView(FitView):
         # Plot the center line
         dataMax = max(max(cumModel),max(cumCounts))
         line = linspace(0,dataMax,1000)
+
+        ks, pvalue = ks_2samp(cumModel,cumCounts)
+
         ax.plot(line,line,"--",color="grey")
 
         # Plot QQ
@@ -243,15 +247,18 @@ class SpecFitView(FitView):
 
         for i,ep in zip(linspace(0.,1.,numberOfEnergyPoints),enePoints):
 
-            ax.text(i,i,"%.1f keV"%ep,color='k',transform=ax.transAxes)
+            if i<.5:
 
+                ax.text(i,i+.05,"%.1f keV"%ep,color='k',transform=ax.transAxes,horizontalalignment="right",fontsize=7)
+            else:
+                 ax.text(i,i-.05,"%.1f keV"%ep,color='k',transform=ax.transAxes,fontsize=7)
             
 
         ax.text(0.55,0.5,"Model Excess",fontsize=8,color="grey",verticalalignment="center",horizontalalignment='center',transform=ax.transAxes,rotation=45)
         ax.text(0.5,0.55,"Data Excess",fontsize=8 ,color="grey",verticalalignment="center",horizontalalignment='center',transform=ax.transAxes,rotation=45)
 
-
         
+        ax.text(.9,.1,"K-S=%.3f"%ks,transform=ax.transAxes,horizontalalignment="right",color="grey")
 
         ax.set_ylim(0,dataMax)
         ax.set_xlim(0,dataMax)
