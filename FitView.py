@@ -166,7 +166,7 @@ class FitView(object):
             
         for y in yData:
 
-            ax.plot(self.dataRange,y,"#2EFE64") ## modify later
+            ax.plot(self.dataRange,y,"#04B404",alpha=.2) ## modify later
 
         bfModel = []
 
