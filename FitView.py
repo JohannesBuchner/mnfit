@@ -1,7 +1,7 @@
 from pymultinest import Analyzer
 import probPlot
 import matplotlib.pyplot as plt
-
+from numpy import logical_or, array
 
 
 
@@ -190,4 +190,36 @@ class FitView(object):
         pass
 
 
-  
+    def Propagate(self,function,params):
+        '''
+        Propagates the chain into a derived function
+
+        arguments:
+         *function: function head to be calculated
+         *params:   list of params that are need
+
+        returns:
+         *f  evaluated function
+        
+        '''
+
+        ewp = self.anal.get_equal_weighted_posterior()
+
+        tmp = map(lambda test: array(self.parameters) == test, params)
+
+        tt = tmp[0]
+        if len(tmp)>1:
+            for test in tmp[1:]:
+
+                tt = logical_or(tt,test)
+
+
+
+        selectedParams = ewp[:,tt]
+
+        f = []
+        for p in selectedParams:
+
+            f.append(function(*p))
+
+        return array(f)
