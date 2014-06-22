@@ -101,12 +101,18 @@ class FitCompare(object):
         print "_"*73
         print "_"*30 + "Model Rankings"+"_"*30
         print
-        print "Model:\tlogZ:"
-        print "------\t-----"
+        print "Model:\tlogZ:\tEvidence"
+        print "------\t-----\t--------"
         for i in range(len(self.results) -1):
-            print "%s\t%.2f"%(self.results[i][0],self.results[i][3])
-        print "%s\t%.2f\t<---- BEST MODEL"%(self.results[-1][0],self.results[-1][3])
+            if i>0:
+                print "%s\t%.2f\t%s"%(self.results[i][0],self.results[i][3]-self.results[0][3],self.JefferyScale(self.results[i][3]-self.results[0][3]))
+            else:
+                print "%s\t%.2f"%(self.results[i][0],self.results[i][3]-self.results[0][3])
+        print "%s\t%.2f\t%s\t<---- BEST MODEL"%(self.results[-1][0],self.results[-1][3]-self.results[0][3],self.JefferyScale(self.results[-1][3]-self.results[0][3]))
 
+        print
+
+        print "(Normalized to best model)"
         print
 
         print "_"*30 + "Bayes Factors"+"_"*30
@@ -135,3 +141,36 @@ class FitCompare(object):
             print r
         print
         print "_"*73
+
+
+
+    def JefferyScale(self,logZ):
+
+
+
+        if logZ< 0.:
+
+            return "Negative"
+
+        if (logZ>=0) and (logZ<0.47):
+
+            return "Barely worth mentioning"
+
+        if (logZ>=0.47) and (logZ<1.):
+
+            return "Substantial"
+
+        if (logZ>=1.) and (logZ<1.47):
+
+            return "Strong"
+
+        if (logZ>=1.47) and (logZ<2.):
+
+            return "Very strong"
+
+        if (logZ>=2.):
+
+            return "Decisive"
+            
+                        
+            
