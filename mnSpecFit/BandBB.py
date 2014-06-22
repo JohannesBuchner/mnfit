@@ -43,7 +43,7 @@ class BandBB(Model):
          
          params[0] = -2.5*params[0]
          params[1] = 9.9E3*params[1]+1E2 #keV
-         params[2] = 2.*params[2]-2.
+         params[2] = 3.*params[2]-2.
          params[3] = 4.*params[3]-5.
          params[4] = -8.*params[4]
          params[5] = 397.*params[5]+3 #keV

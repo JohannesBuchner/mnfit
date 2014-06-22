@@ -36,7 +36,7 @@ class Band(Model):
          
          params[0] = -2.5*params[0]
          params[1] = 9.9E3*params[1]+1E2
-         params[2] = 2.*params[2]-2.
+         params[2] = 3.*params[2]-2.
          params[3] = 4.*params[3]-5.
          pass
 
