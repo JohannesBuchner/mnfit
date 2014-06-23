@@ -10,7 +10,9 @@ if __name__=="__main__":
     import cython_gsl
 
 
-    ext_modules = [Extension("Model",["Model.pyx"]),Extension("cstat",["cstat.pyx"]),Extension("pgstat",["pgstat.pyx"])]
+    ext_modules = [Extension("Model",["Model.pyx"]),Extension("cstat",["cstat.pyx"]),Extension("pgstat",["pgstat.pyx"]),Extension("synchrotron_glue",["synchrotron_glue.pyx"],
+        library_dirs=['/Users/jburgess/Research/mnfit/mnSpecFit/'],
+        libraries=["synchrotron"])]
 
 
 
@@ -18,6 +20,6 @@ if __name__=="__main__":
 
     setup(
         name = "rsptools",
-        include_dirs = [numpy.get_include()],
+        include_dirs = [numpy.get_include(),"."],
         cmdclass = {'build_ext': build_ext},
         ext_modules = cythonize(ext_modules))

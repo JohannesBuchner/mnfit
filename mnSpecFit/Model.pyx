@@ -59,7 +59,7 @@ class Model:
             
         tmp = tuple(tmp)
         
-        result = quad(self.model,lowE,highE,args=tmp)[0]
+        result = quad(self.model,lowE,highE,args=tmp,full_output=0,limit=100)[0]
 
         return result
 
