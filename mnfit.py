@@ -35,7 +35,9 @@ class mnfit:
         self.sampling_efficiency = sampling_efficiency
         self.basename = "chains/1-"
         self.savefile="fit"
-        
+
+        self._dataLoaded = False
+        self._saveFileSet = False
 
     def SetBasename(self,basename):
         '''
@@ -67,6 +69,11 @@ class mnfit:
             print
             return
 
+        if not self._saveFileSet: #Warn that no savefile is set
+            print
+            print "Save file not set!!! Fit params not saved!"
+            print
+
         outfilesDir = ""
         tmp = self.basename.split('/')
         for s in tmp[:-1]:
@@ -95,7 +102,8 @@ class mnfit:
         print 
         print "Finished sampling in %.2f seconds"%(time.time()-startTime)
         print
-        self._WriteFit()
+        if self._saveFileSet:
+            self._WriteFit()
 
     def _WriteFit(self):
 
