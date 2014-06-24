@@ -60,6 +60,13 @@ class mnfit:
         The data must be loaded and the likihood set
 
         '''
+
+        if not self.dataLoaded: #Make sure to have loaded data
+            print
+            print "YOU HAVE NOT LOADED ANY DATA!!"
+            print
+            return
+
         outfilesDir = ""
         tmp = self.basename.split('/')
         for s in tmp[:-1]:
