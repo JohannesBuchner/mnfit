@@ -31,7 +31,7 @@ class mnSpecFit(mnfit):
         else:
             self.detList = [dataBins]
 
-
+        self._dataLoaded = True #Mark that data are loaded
             
     def SetLikelihood(self,lhType):
         '''
@@ -91,7 +91,7 @@ class mnSpecFit(mnfit):
 
         '''
         self.savefile = savefile
-
+        self._saveFileSet = True
 
     def SetModel(self, model):
         '''
