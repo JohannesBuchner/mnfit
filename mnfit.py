@@ -63,7 +63,7 @@ class mnfit:
 
         '''
 
-        if not self.dataLoaded: #Make sure to have loaded data
+        if not self._dataLoaded: #Make sure to have loaded data
             print
             print "YOU HAVE NOT LOADED ANY DATA!!"
             print
