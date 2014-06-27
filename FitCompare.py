@@ -16,7 +16,7 @@ class FitCompare(object):
         analyzers = []
         modelnames = []
         parameters = []
-
+        
         # Loop over the loaded chains and fit files
         for f in fits:
 
@@ -26,12 +26,13 @@ class FitCompare(object):
             analyzers.append(anal)  #Gather the analyzers
             modelnames.append(self.modName)  #Gather the model names
             parameters.append(self.parameters)  #Gather the parameter names of the models
-
+            
+            
 
         self.analyzers = analyzers
         self.modelnames = modelnames
         self.parameters = parameters
-
+        
         #Call the private functions
         self._Evidence() #Compute logZ for each model
         self._SortModels()  # Sort the models based on logZ
