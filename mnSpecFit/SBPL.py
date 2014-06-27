@@ -53,6 +53,12 @@ class SBPL(Model):
 
         def SBPLPrior(params, ndim, nparams):
 
+            params[0]=-6.*params[0]+1.
+            params[1] = 3.*params[1]-2.
+            params[2] = 9.9E3*params[2]+1E2
+            params[3] = 3*params[3]
+            params[4] = 4.*params[4]-5.
+            
             pass
 
 
