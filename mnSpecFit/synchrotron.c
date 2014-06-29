@@ -70,10 +70,11 @@ double synchrotron(double energy, double norm, double estar, double index)
   F.params=&p;
 
   gsl_integration_qagiu(&F, 1., epsabs, epsrel,limit, w, &result, &abserr);
-
-
+  
+  
   gsl_integration_workspace_free(w);
   
+  result/=energy;
   return result;
 
 
