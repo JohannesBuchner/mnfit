@@ -3,7 +3,7 @@ cimport cython
 from scipy.integrate import quad, quadrature
 from mnfit.Likelihood import Likelihood
 from RSPconvolve import RSPconvolve
-from numpy import array
+from numpy import array, zeros
 
 class Model:
 
@@ -32,6 +32,8 @@ class Model:
 
         self.params = params
 
+        ####New code for faster convolution
+        self._EvalModel()
 
         
 
@@ -64,10 +66,26 @@ class Model:
         return result
 
 
+    def _EvalModel(self):
 
+        tmpCounts = zeros(len(self.rsp.photonE))
 
+        #Low res bins
 
+        lowRes = array( map(lambda e: self.model(e,*self.params),self.rsp.lowEne)) 
 
+        medRes = array(map(lambda x: sum(map(lambda e: self.model(e,*self.params), x    ))/3.,self.rsp.medEne         ))
+
+        hiRes = array(map(lambda x: sum(map(lambda e: self.model(e,*self.params), x    ))/7.,self.rsp.highEne         ))
+
+        tmpCounts[self.rsp.lowEval]=lowRes
+        tmpCounts[self.rsp.medEval]=medRes
+        tmpCounts[self.rsp.highEval]=hiRes
+
+        self.rsp.SetModelVec(tmpCounts)
+        
+
+        
     def SetRSP(self,rsp):
         '''
         Set the instrument response matrix for the model.
@@ -78,13 +96,22 @@ class Model:
         
         sets self.rsp
 
+        ##############
+        29/6/2014
+
+        Improving for a faster convolution process
+
         '''
 
         rsp = RSPconvolve(rsp)
+
         rsp.SetModel(self)
+
         self.rsp=rsp
     
 
+
+        
     def GetModelCnts(self):
         '''
         Convolves the set model with the RSP and creates the 
