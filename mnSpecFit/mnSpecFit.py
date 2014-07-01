@@ -178,9 +178,13 @@ class mnSpecFit(mnfit):
 
         detectors = []
         rsps = []
+        loChans = []
+        hiChans = []
         dof = self.n_params
         for det in self.detList:
 
+            loChans.append(det.emin)
+            hiChans.append(det.emax)
             detectors.append(det.instrument+"_"+det.det)
             rsps.append(det.rsp)
             dof += len(det.GetTotalCounts())
@@ -197,7 +201,9 @@ class mnSpecFit(mnfit):
                "dataBinExt":self.detList[0].fileLoc,\
                "model":self.models[0].modName,\
                "stat":self.lhs[0].statName,\
-               "dof":dof\
+               "dof":dof,\
+               "loEne":loChans,\
+               "hiEne":hiChans\               
                }
 
         f = open(self.outfilesDir+self.savefile,'w')
@@ -209,3 +215,10 @@ class mnSpecFit(mnfit):
         print
         
         f.close()
+
+
+    def _PreFitInfo(self):
+
+        print "Starting fit of model:"
+        print "\t%s"%self.models[0].modName
+        print
