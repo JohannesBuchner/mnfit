@@ -1,4 +1,8 @@
 from astropy.table import Table
+from spectralTools.step import Step
+from numpy import array
+import matplotlib.pyplot as plt
+
 class DataBin:
     '''
 
@@ -132,3 +136,16 @@ class DataBin:
     def GetBkgErrRate(self):
 
         return (self.berr[self.activeLoChan:self.activeHiChan+1])
+
+    def ViewCountSpectrum(self):
+
+
+        chans = array(zip(self.chanMin,self.chanMax))
+        width = self.chanMax-self.chanMin
+        fig = plt.figure(181)
+        ax = fig.add_subplot(111)
+        Step(ax,chans,self.total/width,"k",lw=1.)
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.vlines(self.chanMin[self.activeLoChan],max(self.total/width),min(self.total/width),color="r")
+        ax.vlines(self.chanMax[self.activeHiChan],max(self.total/width),min(self.total/width),color="b")
