@@ -91,6 +91,8 @@ class mnfit:
             threading.Timer(2, show, [self.basename+"phys_live.points.pdf"]).start() # delayed opening
         startTime = time.time()
 
+        self._PreFitInfo()
+
         # run MultiNest
         pymultinest.run(self.likelihood, self.prior, self.n_params, importance_nested_sampling = self.importance_nested_sampling, resume = self.resume, verbose = self.verbose, sampling_efficiency = self.sampling_efficiency, n_live_points = self.n_live_points,outputfiles_basename=self.basename, init_MPI=False)
 
@@ -108,3 +110,7 @@ class mnfit:
     def _WriteFit(self):
 
         print "Generic Writer. This must be inherited"
+
+    def _PreFitInfo(self):
+
+        pass
