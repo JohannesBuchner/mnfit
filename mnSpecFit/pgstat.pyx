@@ -30,7 +30,9 @@ class pgstat(Likelihood):
     def SetBackGround(self,bg,bgErr):
 
         self.bg = bg
+
         #self.berr = bgErr #THIS IS TEMPORARY!!!!!
+        
         self.berr = np.sqrt(bg)
 
 
