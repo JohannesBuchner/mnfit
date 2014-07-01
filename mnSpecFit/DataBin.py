@@ -79,7 +79,7 @@ class DataBin:
         lo: energy in keV
 
         '''
-
+        self.emin = lo
         self.activeLoChan = self._GetChannel(lo)
 
     def SetHiChan(self,hi):
@@ -92,7 +92,7 @@ class DataBin:
         hi: energy in keV
 
         '''
-
+        self.emax = hi
         self.activeHiChan = self._GetChannel(hi)
 
     def _RemoveNegativeCounts(self, spectrum):
