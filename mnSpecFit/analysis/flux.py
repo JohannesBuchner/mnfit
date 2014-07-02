@@ -1,6 +1,6 @@
 from mnfit.mnSpecFit.SpecFitView import SpecFitView as sfv
 from scipy.integrate import quad
-from models import models
+from mnfit.mnSpecFit.models import models
 
 
 class flux(object):
@@ -8,13 +8,13 @@ class flux(object):
 
     def __init__(self, databin):
 
-        self.fit = sfv(databin,silent=False)
+        self.fit = sfv(databin,silent=True)
         self.model = models[self.fit.modName]() #This is the class not the function!
         
     def CalculatateTotalFlux(self,emin=10.,emax=40000.):
         pass
 
-    def CalculatateComponentFlux(comp,emin=10.,emax=40000.):
+    def CalculatateComponentFlux(self,comp,emin=10.,emax=40000.):
 
         #Get the component
         comp = self.model.SelectComponent(comp)
@@ -22,7 +22,9 @@ class flux(object):
         #First the best fit flux
         tt = self.fit.GetParamIndex(comp["params"])
         bfParams = self.fit.bestFit[tt]
-
+        print comp["params"]
+        print tt
+        print bfParams
         # Construct a callback that is only a
         # function of energy for the bestFit params
         
@@ -47,7 +49,7 @@ class flux(object):
         self.bestFitFlux = bfFlux
         self.fluxDistribution = fluxDist
         
-    def _fluxIntergral(model,emin, emax):
+    def _fluxIntergral(self,model,emin, emax):
 
 
         
