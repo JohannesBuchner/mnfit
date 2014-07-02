@@ -127,7 +127,7 @@ class GBMReader(DataRead):
                 
                         
                 tab = Table(array(zip(totalCounts,sourceCounts,bkgCounts,bkgError,self.emin,self.emax,self.meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
-                tab.meta={"duration":hib-lob,"INST":self.instrument,"DET":self.det,"RSP":self.rsp}
+                tab.meta={"duration":hib-lob,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":lob,"TMAX":hib}
                 
                 
                 

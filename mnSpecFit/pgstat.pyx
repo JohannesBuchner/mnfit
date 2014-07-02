@@ -29,11 +29,18 @@ class pgstat(Likelihood):
 
     def SetBackGround(self,bg,bgErr):
 
-        self.bg = bg
+        self.bg = np.array(bg)
 
         #self.berr = bgErr #THIS IS TEMPORARY!!!!!
-        
-        self.berr = np.sqrt(bg)
+
+        self.berr = np.zeros(len(bg))
+        i = self.bg>0.
+        self.berr[i] = np.sqrt(self.bg[i])
+        i = self.bg<=0.
+
+        self.bg[i]=0.
+        self.berr[i]=0
+        #self.berr = np.sqrt(bg)
 
 
         
@@ -131,12 +138,14 @@ class pgstat(Likelihood):
 
             i = self.berr==0.
 
-            yb = np.array(map(max,self.modc[i]+self.bg[i],FLOOR/self.ts))
+                      
+            yb = np.array(map(lambda x: max(FLOOR/self.ts,x), self.modc[i]+self.bg[i]))
 
             stat[i] = self.ts*yb
 
-            if self.counts[i]>0.:
-                stat[i] += self.counts[i]*(np.log(self.counts[i])-np.log(self.ts*yb)-1)
+            i = np.logical_and(self.counts >0.,i)
+            
+            stat[i] += self.counts[i]*(np.log(self.counts[i])-np.log(self.ts*yb)-1)
 
 
             i = self.counts[i] == 0
