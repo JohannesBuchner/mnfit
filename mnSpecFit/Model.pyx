@@ -131,6 +131,15 @@ class Model:
 
         
 
+    def SelectComponent(self,comp):
+        '''
+        Grabs the component parameters from the component
+        dictionary that must be created in subclasses
 
+        '''
+
+        comp = self.componentLU[comp]
+
+        return comp
         
         
