@@ -207,6 +207,18 @@ class FitView(object):
 
         ewp = self.anal.get_equal_weighted_posterior()
 
+        
+        selectedParams = ewp[:,self.GetParamIndex(params)]
+
+        f = []
+        for p in selectedParams:
+
+            f.append(function(*p))
+
+        return array(f)
+
+    def GetParamIndex (self, params):
+
         tmp = map(lambda test: array(self.parameters) == test, params)
 
         tt = tmp[0]
@@ -215,13 +227,4 @@ class FitView(object):
 
                 tt = logical_or(tt,test)
 
-
-
-        selectedParams = ewp[:,tt]
-
-        f = []
-        for p in selectedParams:
-
-            f.append(function(*p))
-
-        return array(f)
+        return tt
