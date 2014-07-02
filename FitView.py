@@ -12,7 +12,7 @@ class FitView(object):
 
     '''
 
-    def __init__(self,data):
+    def __init__(self,data,silent=False):
         '''
         The type of data depends on the subclass.
         The generic _LoadData function is called and should set
@@ -24,7 +24,7 @@ class FitView(object):
 
         '''
 
-
+        
         self.xlabel = "x"
 
         # This will be called to format the data
@@ -36,6 +36,8 @@ class FitView(object):
         self.bestFit = self.anal.get_best_fit()["parameters"]
         self.loglike = self.anal.get_best_fit()["log_likelihood"]
 
+        if silent: #Don't print anything out
+            return
         self._StatResults()
 
         
