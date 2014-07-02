@@ -49,10 +49,42 @@ class BandBB(Model):
          params[5] = 397.*params[5]+3 #keV
          pass
 
-       
 
+      #Component definitions
+
+      def band(x,logA,Ep,alpha,beta):
+
+          cond = (alpha-beta)*Ep/(2+alpha)
+
+          if (x < cond):
+              val =   10**(logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
+              return val
+          else:
+              val =  10**(logA)* ( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
+              return val
+
+      def bb(x,logA,kT):
+         
+         val = power(10,logA)*power(x,2)*power( exp(x/float(kT)) -1.,-1.)
+         return val
+
+
+      bandDict={"params":\
+                [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
+                "model":band\
+      }
+      bbDict = {"params":\
+                [r"logN$_{\rm BB}","kT"],\
+                "model":bb\
+      }
+
+      self.componentLU={"Band":bandDict,\
+                        "Blackbody":bbDict\
+      }
+
+      
       self.modName = "Band+BB"
       self.model=bandBB
       self.prior=BandBBPrior
       self.n_params = 6
-      self.parameters = [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm Band}","kT"]
+      self.parameters = [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm BB}","kT"]
