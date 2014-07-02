@@ -132,10 +132,11 @@ class pgstat(Likelihood):
                 - self.counts*(1-np.log(self.counts))
 
         
-
+        
         sb = self.berr*self.counts
+        
         if len(sb[sb==0]) >= 1:
-
+            
             i = self.berr==0.
 
                       
@@ -143,12 +144,13 @@ class pgstat(Likelihood):
 
             stat[i] = self.ts*yb
 
+            j=i
             i = np.logical_and(self.counts >0.,i)
             
             stat[i] += self.counts[i]*(np.log(self.counts[i])-np.log(self.ts*yb)-1)
 
-
-            i = self.counts[i] == 0
+            
+            i = self.counts == 0
              
             stat[i] = self.ts*self.modc[i] + self.bg[i]*tr - 0.5*self.berr[i]*tr*tr
 
