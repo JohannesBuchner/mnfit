@@ -95,9 +95,11 @@ class FitCompare(object):
 
     def _PrintResults(self):
 
+        
+        print
+        self._CustomInfo()
+        print
         #First print best models
-        print
-        print
         print
         print "_"*73
         print "_"*30 + "Model Rankings"+"_"*30
@@ -143,6 +145,10 @@ class FitCompare(object):
         print
         print "_"*73
 
+
+    def _CustomInfo(self):
+
+        print
 
 
     def JefferyScale(self,logZ):
