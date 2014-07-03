@@ -25,8 +25,10 @@ class PL2BB(Model):
           #BB1
           val = power(10.,logA1)*power(x,2)*power( exp(x/float(kT1)) -1.,-1.)
 
+          #BB2
           val += power(10.,logA2)*power(x,2)*power( exp(x/float(kT2)) -1.,-1.)
 
+          #PL
           val += power(10.,logA3)*power(x/300.,index)
           
           return val
@@ -47,6 +49,35 @@ class PL2BB(Model):
 
        
 
+
+      #Component Definitions
+
+      def bb(x,logA,kT):
+         return power(10.,logA)*power(x,2.)*power( exp(x/float(kT)) -1., -1.)
+         
+
+      def pl(x, logA, index):
+         return power(10.,logA)*power(x/300.,index)
+
+
+      bb1Dict={"params":\
+               [r"logN$_{\rm BB1}",r"kT1"],\
+               "model":bb\
+            }
+      bb2Dict={"params":\
+               [r"logN$_{\rm BB2}",r"kT2"],\
+               "model":bb\
+            }
+      plDict={"params":\
+              [r"logN$_{\rm PL}","index"],\
+              "model":pl\
+           }
+         
+      self.componentLU={"Blackbody1":bb1Dict,\
+                        "Blackbody2":bb2Dict,\
+                        "PowerLaw":plDict\
+                     }
+      
       self.modName = "PL2BB"
       self.model=pl2bb
       self.prior=PL2BBPrior
