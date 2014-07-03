@@ -18,7 +18,8 @@ class SpecCompare(FitCompare):
         self.modName = fit["model"]
         self.parameters = fit["params"]
         self.n_params = len(self.parameters)
-        
+        self.tmin = fit["tmin"]
+        self.tmax = fit["tmax"]
         
         self.rsps = fit["rsps"]
         self.basename = fit["basename"]
@@ -80,4 +81,8 @@ class SpecCompare(FitCompare):
         ax.set_xlim(min(self.dataRange),max(self.dataRange))
 
         return ax
-        
+
+    def _CustomInfo(self):
+
+        print "-----> mnSpecFit "
+        print "Duration:\n\t%.2f :: %.2f"%(self.tmin,self.tmax)
