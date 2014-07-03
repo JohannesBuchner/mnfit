@@ -17,7 +17,7 @@ class BB2(Model):
 
       
 
-      def bb3(x,logA1,kT1,logA2,kT2):
+      def bb2(x,logA1,kT1,logA2,kT2):
 
 
 
