@@ -32,7 +32,8 @@ class DataBin:
         self.chanMax = self.data["emax"]
         self.binN = self.data.meta["BINN"]
         self.fileLoc = self.data.meta["FILELOC"]
-        
+        self.tmin = self.data.meta["TMIN"]
+        self.tmax = self.data.meta["TMAX"]
         self.activeLoChan = 0
         self.activeHiChan = len(self.chanMax)-1
 
