@@ -203,7 +203,9 @@ class mnSpecFit(mnfit):
                "stat":self.lhs[0].statName,\
                "dof":dof,\
                "loEne":loChans,\
-               "hiEne":hiChans\
+               "hiEne":hiChans,\
+               "tmin":self.detList[0].tmin,\
+               "tmax":self.detList[0].tmax\
         }
 
         f = open(self.outfilesDir+self.savefile,'w')
