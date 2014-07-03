@@ -57,15 +57,15 @@ class BandBB(Model):
           cond = (alpha-beta)*Ep/(2+alpha)
 
           if (x < cond):
-              val =   10**(logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
+              val =   power(10.,logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
               return val
           else:
-              val =  10**(logA)* ( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
+              val =  power(10.,logA)*( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
               return val
 
       def bb(x,logA,kT):
          
-         val = power(10,logA)*power(x,2)*power( exp(x/float(kT)) -1.,-1.)
+         val = power(10.,logA)*power(x,2.)*power( exp(x/float(kT)) -1., -1.)
          return val
 
 

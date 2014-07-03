@@ -33,7 +33,7 @@ class FitView(object):
         self.anal  = Analyzer(n_params=self.n_params,outputfiles_basename=self.basename)
 
 
-        self.bestFit = self.anal.get_best_fit()["parameters"]
+        self.bestFit = array(self.anal.get_best_fit()["parameters"])
         self.loglike = self.anal.get_best_fit()["log_likelihood"]
 
         if silent: #Don't print anything out
@@ -192,13 +192,13 @@ class FitView(object):
         pass
 
 
-    def Propagate(self,function,params):
+    def Propagate(self,function,params,direct=True):
         '''
         Propagates the chain into a derived function
 
         arguments:
          *function: function head to be calculated
-         *params:   list of params that are need
+         *params:   list of params that are needed
 
         returns:
          *f  evaluated function
@@ -211,11 +211,22 @@ class FitView(object):
         selectedParams = ewp[:,self.GetParamIndex(params)]
 
         f = []
-        for p in selectedParams:
+        if direct:
+            for p in selectedParams:
 
-            f.append(function(*p))
+                f.append(function(*p))
+        else:
+            for p in selectedParams:
 
+                f.append(function(p))
+
+                
         return array(f)
+
+    
+
+
+
 
     def GetParamIndex (self, params):
 
