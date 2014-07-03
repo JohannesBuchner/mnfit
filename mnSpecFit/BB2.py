@@ -12,9 +12,9 @@ from numpy import exp, power
 class BB2(Model):
 
    def __init__(self):
-
-
-
+      '''
+      Spectral Model containing two blackbodies
+      '''
       
 
       def bb2(x,logA1,kT1,logA2,kT2):
@@ -23,10 +23,10 @@ class BB2(Model):
 
 
           #BB1
-          val = power(10.,logA1)*power(x,2)*power( exp(x/float(kT1)) -1.,-1.)
+          val = power(10.,logA1)*power(x,2.)*power( exp(x/float(kT1)) -1.,-1.)
 
           #BB2
-          val += power(10.,logA2)*power(x,2)*power( exp(x/float(kT2)) -1.,-1.)
+          val += power(10.,logA2)*power(x,2.)*power( exp(x/float(kT2)) -1.,-1.)
           return val
         
         
@@ -68,6 +68,6 @@ class BB2(Model):
       
       self.modName = "Two BBs"
       self.model=bb2
-      self.prior=BB2
+      self.prior=BB2Prior
       self.n_params = 4
       self.parameters = [r"logN$_{\rm BB1}",r"kT1",r"logN$_{\rm BB2}",r"kT"]
