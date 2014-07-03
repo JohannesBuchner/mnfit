@@ -180,4 +180,18 @@ class FitCompare(object):
             return "Decisive"
             
                         
-            
+    def GetBestModel(self, logK=2.):
+        '''
+        Return the best model taking into account the fact that the best
+        model exceeds the an input bayes factor over other models. Default
+        is a Decisive change in logZ (logK = 2)
+        '''
+
+
+        best2worst  = self.results[-1][3]-self.results[0][3]
+        bestModel = self.results[-1]
+
+        
+        
+        
+        
