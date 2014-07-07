@@ -2,7 +2,7 @@ from DataRead import DataRead
 import astropy.io.fits as fits
 from astropy.table import Table
 import pyqt_fit.kernel_smoothing as smooth
-from numpy import logical_and, array, mean, histogram
+from numpy import logical_and, array, mean, histogram, arange
 
 import matplotlib.pyplot as plt
 from spectralTools.step import Step
@@ -84,8 +84,6 @@ class GBMReader(DataRead):
         #GO BY TIME BIN
 
         
-
-        
         bins = self.dataBinner.bins
         j=0
         for i in range(len(bins)-1):
@@ -156,19 +154,33 @@ class GBMReader(DataRead):
         ax=fig.add_subplot(111)
 
         Step(ax,tBins,cnts/self.dataBinner.binWidth,"k",.5)
+        #Step(ax,tBins,cnts,"k",.5)
 
         cnts,_ = histogram(self.dataBinner.filteredEvts,bins=self.dataBinner.bins)
 
         Step(ax,tBins,cnts/self.dataBinner.binWidth,"b",.7)
+        #Step(ax,tBins,cnts,"b",.7)
 
         
+        #bkg = []
+        #for i in range(len(self.dataBinner.bins)-1):
+    
+        #    b=0
+        #    for j in range(len(self.bkgMods)):
+        
+        #        b+= self.bkgMods[j].integral(self.dataBinner.bins[i],self.dataBinner.bins[i+1])#/(self.dataBinner.bins[i+1]-self.dataBinner.bins[i])
+        #    bkg.append(b)
+        #meanT = array(map(mean,tBins))
+
         bkg = []
-        for i in range(len(self.dataBinner.bins)-1):
+        oneSecBins =arange(self.dataBinner.bins[0],self.dataBinner.bins[-1],1.) 
+        for i in range(len(oneSecBins)-1):
     
             b=0
-            for j in range(128):
+            for j in range(len(self.bkgMods)):
         
-                b+= self.bkgMods[j].integral(self.dataBinner.bins[i],self.dataBinner.bins[i+1])/(self.dataBinner.bins[i+1]-self.dataBinner.bins[i])
+                b+= self.bkgMods[j].integral(oneSecBins[i],oneSecBins[i+1])/(oneSecBins[i+1]-oneSecBins[i])
             bkg.append(b)
-        meanT = array(map(mean,tBins))
-        ax.plot(meanT,bkg,linewidth=2,color="r")
+        meanT = map(mean,zip(oneSecBins[:-1],oneSecBins[1:]))
+        ax.plot(meanT,array(bkg),linewidth=2,color="r")
+        #Step(ax,tBins,bkg/,"r",1)
