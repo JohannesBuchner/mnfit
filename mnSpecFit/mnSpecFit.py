@@ -75,7 +75,7 @@ class mnSpecFit(mnfit):
                 db.SetHiChan(hi)   # Call DataBin method for channel 
                 db.SetLoChan(lo)   # selection
                 return
-        print "\n Detector: %s has not been loaded!  \n"
+        print "\n Detector: %s has not been loaded!  \n"%detector
             
 
 
