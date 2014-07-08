@@ -24,7 +24,6 @@ double intergrand(double gamma, void *p)
 }
 
 
-
 double electronDist(double gamma, double norm, double index, double gammaMin, double gammaTH)
 {
 
@@ -79,3 +78,137 @@ double synchrotron(double energy, double norm, double estar, double index)
 
 
 }
+
+
+/*
+
+  More complex synchrotron model
+
+ */
+
+double synchrotronComplex(double energy, double norm, double estar, double gammaMin, double gammaTH, double index)
+{
+  gsl_set_error_handler_off();
+
+  double result, error;
+
+  double epsabs = 0;
+  double epsrel = 1e-5;
+  double abserr;
+  size_t limit = 10000;
+
+
+  
+  gsl_integration_workspace *w = gsl_integration_workspace_alloc(10000);
+
+  struct synch_params_complex p = {energy, norm, estar, gammaMin, gammaTH, index};
+
+  gsl_function F;
+  F.function = &intergrand;
+  F.params=&p;
+
+  gsl_integration_qagiu(&F, 1., epsabs, epsrel,limit, w, &result, &abserr);
+  
+  
+  gsl_integration_workspace_free(w);
+  
+  result/=energy;
+  return result;
+
+
+}
+
+double intergrandComplex(double gamma, void *p)
+{
+
+  double f;
+  struct synch_params_complex *params = (struct synch_params_complex *)p;
+  double energy = (params->energy);
+  double norm = (params->norm);
+  double estar = (params->estar);
+  double index = (params->index);
+
+  
+  double gammaMin = (params->gammaMin);
+  double gammaTH = (params->gammaTH);
+
+
+  f = electronDist(gamma,norm,index, gammaMin, gammaTH)*gsl_sf_synchrotron_1(energy/(estar*gamma*gamma));
+  
+
+  return f;
+}
+
+
+/* PL Synch*/
+
+
+
+double electronPL(double gamma, double norm, double index, double gammaMin)
+{
+
+  double ed;
+
+
+	ed = norm *  pow(gamma/gammaMin,-index);
+
+	
+
+  return ed;
+
+
+}
+
+double intergrandPL(double gamma, void *p)
+{
+
+  double f;
+  struct synch_params_pl *params = (struct synch_params_pl *)p;
+  double energy = (params->energy);
+  double norm = (params->norm);
+  double estar = (params->estar);
+  double index = (params->index);
+
+  
+  double gammaMin = (params->gammaMin);
+  
+
+
+  f = electronPL(gamma,norm,index, gammaMin)*gsl_sf_synchrotron_1(energy/(estar*gamma*gamma));
+  
+
+  return f;
+}
+
+double synchrotronPL(double energy, double norm, double estar, double index, double gammaMin)
+{
+  gsl_set_error_handler_off();
+
+  double result, error;
+
+  double epsabs = 0;
+  double epsrel = 1e-5;
+  double abserr;
+  size_t limit = 10000;
+
+
+  
+  gsl_integration_workspace *w = gsl_integration_workspace_alloc(10000);
+
+  struct synch_params_pl p = {energy, norm, estar, index, gammaMin};
+
+  gsl_function F;
+  F.function = &intergrand;
+  F.params=&p;
+
+  gsl_integration_qagiu(&F, 1., epsabs, epsrel,limit, w, &result, &abserr);
+  
+  
+  gsl_integration_workspace_free(w);
+  
+  result/=energy;
+  return result;
+
+
+}
+
