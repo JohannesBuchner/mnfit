@@ -150,8 +150,8 @@ double electronPL(double gamma, double norm, double index, double gammaMin)
   double ed;
 
 
-	ed = norm *  pow(gamma/gammaMin,-index);
-
+  ed = norm * (index - 1.) * pow(gammaMin,index-1.)  *pow(gamma,-index);
+	
 	
 
   return ed;
@@ -201,13 +201,14 @@ double synchrotronPL(double energy, double norm, double estar, double index, dou
   F.function = &intergrand;
   F.params=&p;
 
-  gsl_integration_qagiu(&F, 1., epsabs, epsrel,limit, w, &result, &abserr);
+  gsl_integration_qagiu(&F, gammaMin, epsabs, epsrel,limit, w, &result, &abserr);
   
   
   gsl_integration_workspace_free(w);
   
   result/=energy;
   return result;
+
 
 
 }
