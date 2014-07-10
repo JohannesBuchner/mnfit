@@ -28,7 +28,7 @@ cpdef double synchrotronPLPy(double energy, double norm, double estar, double in
 #Synchrotron from a power-law with a high-energy cutoff due to a max gamma
 cpdef double synchrotronPL_CO_Py(double energy, double norm, double estar, double index, double gammaMin, double gammaMax):
 
-    return synchrotronPL(energy, norm, estar, index, gammaMin, gammaMax)
+    return synchrotronPL_cutoff(energy, norm, estar, index, gammaMin, gammaMax)
 
 
 
