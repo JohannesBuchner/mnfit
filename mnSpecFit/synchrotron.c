@@ -150,7 +150,7 @@ double electronPL(double gamma, double norm, double index, double gammaMin)
   double ed;
 
 
-  ed = norm * (index - 1.) * pow(gammaMin,index-1.)  *pow(gamma,-index);
+  ed = norm * /*(index - 1.) * pow(gammaMin,index-1.)  */pow(gamma/gammaMin,-index);
 	
 	
 
