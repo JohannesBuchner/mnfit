@@ -54,3 +54,8 @@ struct synch_params_fast {double energy; double norm; double estar; double index
 /*         */
 
 double synchrotronPL_cutoff(double energy, double norm, double estar, double index, double gammaMin, double gammaMax);
+
+
+double synchrotron_cutoff(double energy, double norm, double estar, double index, double gammaMax);
+
+
