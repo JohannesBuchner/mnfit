@@ -338,5 +338,38 @@ double synchrotronPL_cutoff(double energy, double norm, double estar, double ind
 
 
 
+double synchrotron_cutoff(double energy, double norm, double estar, double index, double gammaMax)
+{
+  gsl_set_error_handler_off();
+
+  double result, error;
+
+  double epsabs = 0;
+  double epsrel = 1e-5;
+  double abserr;
+  size_t limit = 10000;
+
+
+  
+  gsl_integration_workspace *w = gsl_integration_workspace_alloc(10000);
+
+  struct synch_params p = {energy, norm, estar, index};
+
+  gsl_function F;
+  F.function = &intergrand;
+  F.params=&p;
+
+  gsl_integration_qags(&F, 1., gammaMax ,epsabs, epsrel,limit, w, &result, &abserr);
+  
+  
+  gsl_integration_workspace_free(w);
+  
+  result/=energy;
+  return result;
+
+
+}
+
+
 
 
