@@ -28,7 +28,7 @@ class FitCompare(object):
             parameters.append(self.parameters)  #Gather the parameter names of the models
             
             
-
+        self.fits = fits
         self.analyzers = analyzers
         self.modelnames = modelnames
         self.parameters = parameters
@@ -61,14 +61,15 @@ class FitCompare(object):
         Sort the models based on the logZ
         '''
 
-        results = zip(self.modelnames, self.parameters, self.analyzers, self.logZ)
+        results = zip(self.modelnames, self.parameters, self.analyzers, self.logZ,self.fits)
         modelnames  = self.modelnames
         parameters  = self.parameters
         analyzers   = self.analyzers
         logZ        = self.logZ
+        fits        = self.fits
 
         #results = sorted(results, key=lambda (self.modelnames, self.parameters, self.analyzers, self.logZ): self.logZ)
-        results = sorted(results, key=lambda (modelnames, parameters, analyzers, logZ): logZ)
+        results = sorted(results, key=lambda (modelnames, parameters, analyzers, logZ, fits): logZ)
 
         self.results = results
 
@@ -191,7 +192,7 @@ class FitCompare(object):
         best2worst  = self.results[-1][3]-self.results[0][3]
         bestModel = self.results[-1]
 
-        
+        return bestModel[4]
         
         
         

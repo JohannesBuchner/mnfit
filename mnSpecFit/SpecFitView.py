@@ -85,7 +85,7 @@ class SpecFitView(FitView):
         print "%s per d.o.f.:\n\t %.2f/%d"%(self.stat,-2.*self.loglike,self.dof)
 
 
-    def PlotvFv(self):
+    def PlotvFv(self,fignum = 100):
         '''
         Plots the best fit and the surrounding likelihood space
         but in vFv space instead of the standard photon space.
@@ -96,7 +96,7 @@ class SpecFitView(FitView):
 
 
 
-        fig = plt.figure(130)
+        fig = plt.figure(fignum)
         ax = fig.add_subplot(111)
 
         yData = []

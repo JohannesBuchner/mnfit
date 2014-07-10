@@ -92,6 +92,7 @@ class GBMReader(DataRead):
             hib=bins[i+1]
             
             if lob>=start and hib<=stop:
+                
                 bkgCounts = []
                 bkgError = []
             
