@@ -104,7 +104,7 @@ double synchrotronComplex(double energy, double norm, double estar, double gamma
   struct synch_params_complex p = {energy, norm, estar, gammaMin, gammaTH, index};
 
   gsl_function F;
-  F.function = &intergrand;
+  F.function = &intergrandComplex;
   F.params=&p;
 
   gsl_integration_qagiu(&F, 1., epsabs, epsrel,limit, w, &result, &abserr);
@@ -196,7 +196,7 @@ double synchrotronPL(double energy, double norm, double estar, double index, dou
   struct synch_params_pl p = {energy, norm, estar, index, gammaMin};
 
   gsl_function F;
-  F.function = &intergrand;
+  F.function = &intergrandPL;
   F.params=&p;
 
   gsl_integration_qagiu(&F, gammaMin, epsabs, epsrel,limit, w, &result, &abserr);
@@ -254,7 +254,7 @@ double electronDistFast(double gamma, double norm, double index, double gammaMin
       }
     else
       {
-	ed = epsilon*pow(gamma/gammaMin,1-index)
+	ed = epsilon*pow(gamma/gammaMin,1-index);
       }	
 	
 
@@ -281,7 +281,7 @@ double synchrotronFast(double energy, double norm, double estar, double index, d
   struct synch_params_fast p = {energy, norm, estar, index, gammaMin};
 
   gsl_function F;
-  F.function = &intergrand;
+  F.function = &intergrandFast;
   F.params=&p;
 
   gsl_integration_qagiu(&F, 1., epsabs, epsrel,limit, w, &result, &abserr);
