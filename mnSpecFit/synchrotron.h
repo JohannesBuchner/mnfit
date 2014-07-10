@@ -39,16 +39,16 @@ double intergrandPL(double gamma, void *p);
 double electronPL(double gamma, double norm, double index, double gammaMin);
 
 
-struct synch_params_pl {double energy; double norm; double estar; double gammaMin; double index;};
+struct synch_params_pl {double energy; double norm; double estar; double index; double gammaMin;};
 
 /*         */
 
-double synchrotronFast(double energy, double norm, double estar, double index);
+double synchrotronFast(double energy, double norm, double estar, double index, double gammaMin);
 
 double electronDistFast(double gamma, double norm, double index, double gammaMin);
 
 double intergrandFast(double gamma, void *p);
 
-struct synch_params_pl {double energy; double norm; double estar; double index;  double gammaMin;};
+struct synch_params_fast {double energy; double norm; double estar; double index;  double gammaMin;};
 
 
