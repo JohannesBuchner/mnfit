@@ -263,7 +263,7 @@ double electronDistFast(double gamma, double norm, double index, double gammaMin
 
 }
 
-double synchrotronFast(double energy, double norm, double estar, double index)
+double synchrotronFast(double energy, double norm, double estar, double index, double gammaMin)
 {
   gsl_set_error_handler_off();
 
