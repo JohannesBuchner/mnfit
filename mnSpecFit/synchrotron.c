@@ -150,7 +150,7 @@ double electronPL(double gamma, double norm, double index, double gammaMin)
   double ed;
 
 
-  ed = norm * /*(index - 1.) * pow(gammaMin,index-1.)  */pow(gamma/gammaMin,-index);
+  ed = norm * (index - 1.) * pow(gammaMin,index-1.)  * pow(gamma/gammaMin,-index);
 	
 	
 
@@ -294,6 +294,48 @@ double synchrotronFast(double energy, double norm, double estar, double index, d
 
 
 }
+
+/**************************************/
+/**************************************/
+/**************************************/
+/**************************************/
+/**************************************/
+
+/* CUT OFFS */
+
+double synchrotronPL_cutoff(double energy, double norm, double estar, double index, double gammaMin, double gammaMax)
+{
+  gsl_set_error_handler_off();
+
+  double result, error;
+
+  double epsabs = 0;
+  double epsrel = 1e-5;
+  double abserr;
+  size_t limit = 10000;
+
+
+  
+  gsl_integration_workspace *w = gsl_integration_workspace_alloc(10000);
+
+  struct synch_params_pl p = {energy, norm, estar, index, gammaMin};
+
+  gsl_function F;
+  F.function = &intergrandPL;
+  F.params=&p;
+
+  gsl_integration_qags(&F, gammaMin, gammaMax, epsabs, epsrel,limit, w, &result, &abserr);
+  
+  
+  gsl_integration_workspace_free(w);
+  
+  result/=energy;
+  return result;
+
+
+
+}
+
 
 
 
