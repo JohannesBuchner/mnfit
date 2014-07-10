@@ -4,7 +4,7 @@ cdef extern from "synchrotron.h":
     double synchrotron(double,double,double,double)
     double synchrotronComplex(double,double,double,double,double,double)
     double synchrotronPL(double, double, double, double, double)
-{
+    double synchrotronFast(double, double, double, double, double)
 
 
 
@@ -19,4 +19,12 @@ cpdef double synchrotronComplexPy(double energy, double norm, double estar, doub
 cpdef double synchrotronPLPy(double energy, double norm, double estar, double index, double gammaMin):
 
     return synchrotronPL(energy, norm, estar, index, gammaMin)
+
+cpdef double synchrotronFastPy(double energy, double norm, double estar, double index, double gammaMin):
+
+    return synchrotronFast(energy, norm, estar, index, gammaMin)
+
+
+
+
 
