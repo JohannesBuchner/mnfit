@@ -168,8 +168,6 @@ double intergrandPL(double gamma, void *p)
   double norm = (params->norm);
   double estar = (params->estar);
   double index = (params->index);
-
-  
   double gammaMin = (params->gammaMin);
   
 
@@ -212,4 +210,91 @@ double synchrotronPL(double energy, double norm, double estar, double index, dou
 
 
 }
+
+
+
+
+/**********
+
+	  Fast cooled synchrotron
+
+
+**************/
+
+double intergrandFast(double gamma, void *p)
+{
+
+  double f;
+  struct synch_params_fast *params = (struct synch_params_fast *)p;
+  double energy = (params->energy);
+  double norm = (params->norm);
+  double estar = (params->estar);
+  double index = (params->index);
+  double gammaMin = (params->gammaMin);
+  
+
+  f = electronDistFast(gamma,norm,index, gammaMin)*gsl_sf_synchrotron_1(energy/(estar*gamma*gamma));
+  
+
+  return f;
+}
+
+
+double electronDistFast(double gamma, double norm, double index, double gammaMin)
+{
+
+  double ed;
+  
+
+  double epsilon = norm*gammaMin/(gamma*gamma);
+  
+    if (gamma<=gammaMin)
+      {
+	ed = epsilon;
+      }
+    else
+      {
+	ed = epsilon*pow(gamma/gammaMin,1-index)
+      }	
+	
+
+  return ed;
+
+
+}
+
+double synchrotronFast(double energy, double norm, double estar, double index)
+{
+  gsl_set_error_handler_off();
+
+  double result, error;
+
+  double epsabs = 0;
+  double epsrel = 1e-5;
+  double abserr;
+  size_t limit = 10000;
+
+
+  
+  gsl_integration_workspace *w = gsl_integration_workspace_alloc(10000);
+
+  struct synch_params_fast p = {energy, norm, estar, index, gammaMin};
+
+  gsl_function F;
+  F.function = &intergrand;
+  F.params=&p;
+
+  gsl_integration_qagiu(&F, 1., epsabs, epsrel,limit, w, &result, &abserr);
+  
+  
+  gsl_integration_workspace_free(w);
+  
+  result/=energy;
+  return result;
+
+
+}
+
+
+
 
