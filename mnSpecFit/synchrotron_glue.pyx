@@ -6,11 +6,18 @@ cdef extern from "synchrotron.h":
     double synchrotronPL(double, double, double, double, double)
     double synchrotronFast(double, double, double, double, double)
     double synchrotronPL_cutoff(double, double, double, double, double, double)
+    double synchrotron_cutoff(double, double, double, double, double)
+
 
 #Synchrotron from shock accelerated electrons
 cpdef double synchrotronPy(double energy, double norm, double estar, double index):
 
     return synchrotron(energy, norm, estar, index)
+
+#Synchrotron from shock accelerated electrons
+cpdef double synchrotron_CO_Py(double energy, double norm, double estar, double index, double gammaMax):
+
+    return synchrotron_cutoff(energy, norm, estar, index, gammaMax)
 
 
 
