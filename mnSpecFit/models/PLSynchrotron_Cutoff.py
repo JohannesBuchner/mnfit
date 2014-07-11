@@ -1,5 +1,5 @@
-from Model import Model
-from synchrotron_glue import synchrotronPLPy
+from mnfit.mnSpecFit.Model import Model
+from mnfit.mnSpecFit.synchrotron_glue import synchrotronPL_CO_Py
 from numpy import power
 from mnfit.priorGen import *
 class PLSynchrotron_Cutoff(Model):
@@ -13,7 +13,7 @@ class PLSynchrotron_Cutoff(Model):
             # So set it to 900
             norm = power(10.,norm)
 
-            return synchrotronPyPL(ene, norm, estar, index, 900.)
+            return synchrotronPL_cutoff(ene, norm, estar, index, 900.,gammaMax)
 
 
         def SynchPrior(params, ndim, nparams):
