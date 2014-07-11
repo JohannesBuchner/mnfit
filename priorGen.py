@@ -2,7 +2,7 @@ from numpy import log10
 
 
 
-def jeffreysPrior(par,bottom,top):
+def jefferysPrior(par,bottom,top): #spelling is bad!
 
 
     low = log10(bottom)
