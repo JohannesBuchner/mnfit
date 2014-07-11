@@ -1,6 +1,6 @@
-from Model import Model
+from mnfit.mnSpecFit.Model import Model
 from numpy import exp, power
-
+from mnfit.priorFit import *
 
 
 
@@ -35,11 +35,11 @@ class BB2(Model):
 
       def BB2Prior(params, ndim, nparams):
          
-         params[0] = -8*params[0]
-         params[1] = 1.99E3*params[1]+1E1 #keV
-         params[2] = -8*params[2]
-         params[3] = 1.99E3*params[3]+1.E0 #keV
-         
+         params[0] = jefferysPrior(params[0], 1E-15,1E-0)
+         params[1] = uniformPrior(params[1], 5., 500.)#keV
+         params[2] = jefferysPrior(params[2], 1E-15,1E-0)
+         params[3] = uniformPrior(params[3], 5., 500.)#keV
+
          pass
 
        
