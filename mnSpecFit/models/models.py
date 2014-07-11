@@ -10,7 +10,7 @@ from SynchrotronBB import SynchrotronBB
 from Synchrotron_Cutoff import Synchrotron_Cutoff
 from PLSynchrotron import PLSynchrotron
 from PLSynchrotron_Cutoff import PLSynchrotron_Cutoff
-#from FastSynchrotron import FastSynchrotron
+from FastSynchrotron import FastSynchrotron
 from TsviSlow import TsviSlow
 from TsviFast import TsviFast
 
