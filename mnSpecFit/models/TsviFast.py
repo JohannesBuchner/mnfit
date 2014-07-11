@@ -29,7 +29,7 @@ class TsviFast(Model):
             
 
 
-        def TsvPrior(params, ndim, nparams):
+        def TsviPrior(params, ndim, nparams):
          
 
             params[0] = jefferysPrior(params[0],1E-15,1.)
@@ -45,7 +45,7 @@ class TsviFast(Model):
 
         self.modName = "TsviFast"
         self.model=tsvinchrotron
-        self.prior=SynchPrior
+        self.prior=TsviPrior
         self.n_params = 4
         self.parameters = ["logNorm",r"$\v_m$", r"$\v_c$",r"$\delta$"]
 
