@@ -1,5 +1,7 @@
-from Model import Model
+from mnfit.mnSpecFit.Model import Model
 from numpy import log, exp, log10, power
+from mnfit.priorGen import *
+
 
 class SBPL(Model):
 
@@ -53,11 +55,11 @@ class SBPL(Model):
 
         def SBPLPrior(params, ndim, nparams):
 
-            params[0]=-6.*params[0]+1.
-            params[1] = 3.*params[1]-2.
-            params[2] = 9.9E3*params[2]+1E2
-            params[3] = 3*params[3]
-            params[4] = 4.*params[4]-5.
+            params[0] = jefferysPrior(params[0], 1E-15, 1.)
+            params[1] = uniformPrior(params[1],-5.,1.)
+            params[2] = uniformPrior(params[2], 10., 20000.)
+            params[3] = uniformPrior(params[3], 0., 3.)
+            params[4] = uniformPrior(params[4], -6, -1.)
             
             pass
 
