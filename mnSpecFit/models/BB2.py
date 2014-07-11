@@ -1,6 +1,6 @@
 from mnfit.mnSpecFit.Model import Model
 from numpy import exp, power
-from mnfit.priorFit import *
+from mnfit.priorGen import *
 
 
 
