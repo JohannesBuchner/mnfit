@@ -1,6 +1,9 @@
-from Model import Model
-from synchrotron_glue import synchrotronPy
+from mnfit.mnSpecFit.Model import Model
+from mnfit.mnSpecFit.synchrotron_glue import synchrotronPy
 from numpy import power, exp
+from mnfit.priorGen import *
+
+
 class SynchrotronBB(Model):
 
 
@@ -21,13 +24,11 @@ class SynchrotronBB(Model):
             
         def SynchBBPrior(params, ndim, nparams):
          
-
-            params[0] = -3*params[0]
-            params[1] = 3.*params[1]
-            params[2] = 10.*params[2]+2.1 #Must be positive!
-            params[3] = -8.*params[3]
-            params[4] = 397.*params[4]+3 #keV
-         
+            params[0] = jefferysPrior(params[0],1E-15,1.)
+            params[1] = uniformPrior(params[1], 0., 3.)
+            params[2] = uniformPrior(params[2], 2., 12.)#Must be positive!
+            params[3] = jefferysPrior(params[3], 1E-15,1E-0)
+            params[4] = uniformPrior(params[4], 5., 500.)#keV
             pass
 
        
