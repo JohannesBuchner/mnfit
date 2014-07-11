@@ -1,6 +1,8 @@
-from Model import Model
-from synchrotron_glue import synchrotronPLPy
+from mnfit.mnSpecFit.Model import Model
+from mnfit.mnSpecFit.synchrotron_glue import synchrotronPLPy
 from numpy import power
+from mnfit.priorGen import *
+
 class PLSynchrotron(Model):
 
 
@@ -17,10 +19,9 @@ class PLSynchrotron(Model):
 
         def SynchPrior(params, ndim, nparams):
          
-
-            params[0] = -4*params[0] #Check on this
-            params[1] = 3.*params[1]
-            params[2] = 10.*params[2]+2.1 #Must be positive!
+            params[0] = jefferysPrior(params[0],1E-15,1.)
+            params[1] = uniformPrior(params[1], 0., 3.)
+            params[2] = uniformPrior(params[2], 2., 12.)#Must be positive!
              
             pass
 
