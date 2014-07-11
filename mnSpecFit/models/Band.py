@@ -1,6 +1,6 @@
-from Model import Model
+from mnfit.mnSpecFit.Model import Model
 from numpy import exp, power
-
+from mnfit.priorGen import *
 
 
 
@@ -34,10 +34,10 @@ class Band(Model):
 
       def BandPrior(params, ndim, nparams):
          
-         params[0] = -2.5*params[0]
-         params[1] = 9.9E3*params[1]+1E2
-         params[2] = 3.*params[2]-2.
-         params[3] = 4.*params[3]-5.
+         params[0] = jefferysPrior(params[0],1E-6,1E-3.)
+         params[1] = uniformPrior(params[1], 10., 20000.)
+         params[2] = uniformPrior(params[2], -2., 1.)
+         params[3] = uniformPrior(params[3], -2., -6.)
          pass
 
        
