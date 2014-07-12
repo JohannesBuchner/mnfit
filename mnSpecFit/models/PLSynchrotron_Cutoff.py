@@ -19,7 +19,7 @@ class PLSynchrotron_Cutoff(Model):
         def SynchPrior(params, ndim, nparams):
          
 
-            params[0] = jefferysPrior(param[0],0,1E-4) #Check on this
+            params[0] = jefferysPrior(params[0],1E-15,1) #Check on this
             params[1] = uniformPrior(params[1],0.,3.)
             params[2] = uniformPrior(params[2],2.,12.)#Must be positive!
             params[3] = uniformPrior(params[3],900.,6000.)
