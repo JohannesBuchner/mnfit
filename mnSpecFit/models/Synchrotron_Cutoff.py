@@ -18,10 +18,10 @@ class Synchrotron_Cutoff(Model):
         def SynchPrior(params, ndim, nparams):
          
 
-            params[0] = jefferysPrior(params[0], 0., 1E-4)
+            params[0] = jefferysPrior(params[0], 1E-8, 1.)
             params[1] = uniformPrior(params[1], 0., 3.)
             params[2] = uniformPrior(params[2], 2., 12.) #Must be positive!
-            params[4] = uniformPrior(params[3], 90., 1000.)
+            params[3] = uniformPrior(params[3], 90., 1000.)
             pass
 
        
