@@ -1,7 +1,7 @@
 from mnfit.FitView import FitView
 from astropy.table import Table
 from DataBin import DataBin
-from models import models
+from mnfit.mnSpecFit.models.models import models
 import matplotlib.pyplot as plt
 from numpy import array, cumsum, linspace, sqrt
 from scipy.stats import ks_2samp
