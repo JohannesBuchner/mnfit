@@ -13,7 +13,7 @@ class PLSynchrotron_Cutoff(Model):
             # So set it to 900
             norm = power(10.,norm)
 
-            return synchrotronPL_cutoff(ene, norm, estar, index, 900.,gammaMax)
+            return synchrotronPL_CO_Py(ene, norm, estar, index, 900.,gammaMax)
 
 
         def SynchPrior(params, ndim, nparams):
