@@ -10,7 +10,7 @@ import time
 class mnfit:
 
 
-    def __init__(self,silent=False,live_points = 1000, ins=True, resume = True, verbose = False, sampling_efficiency = 'model'):
+    def __init__(self,silent=False,live_points = 1000, ins=True, resume = True, verbose = False, sampling_efficiency = 'model', write=True):
         '''
         This is a Bayesian MC utilizing the package
         multinest to explore the posterior space of the 
@@ -27,6 +27,7 @@ class mnfit:
 
         '''
 
+        self.callback = None
         self.silent = silent
         self.n_live_points = live_points
         self.importance_nested_sampling = ins
@@ -35,7 +36,7 @@ class mnfit:
         self.sampling_efficiency = sampling_efficiency
         self.basename = "chains/1-"
         self.savefile="fit"
-
+        self.write = write
         self._dataLoaded = False
         self._saveFileSet = False
 
@@ -94,7 +95,7 @@ class mnfit:
         self._PreFitInfo()
 
         # run MultiNest
-        pymultinest.run(self.likelihood, self.prior, self.n_params, importance_nested_sampling = self.importance_nested_sampling, resume = self.resume, verbose = self.verbose, sampling_efficiency = self.sampling_efficiency, n_live_points = self.n_live_points,outputfiles_basename=self.basename, init_MPI=False)
+        pymultinest.run(self.likelihood, self.prior, self.n_params, importance_nested_sampling = self.importance_nested_sampling, resume = self.resume, verbose = self.verbose, sampling_efficiency = self.sampling_efficiency, n_live_points = self.n_live_points,outputfiles_basename=self.basename, init_MPI=False, dump_callback=self.callback,write_output=self.write)
 
 
         # ok, done. Stop our progress watcher
