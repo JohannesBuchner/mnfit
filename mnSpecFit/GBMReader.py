@@ -13,6 +13,16 @@ from glob import glob
 
 from phaMake.phaMake import phaMake
 
+import os
+import errno
+
+def make_sure_path_exists(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
+
 
 
 class GBMReader(DataRead):
@@ -128,7 +138,7 @@ class GBMReader(DataRead):
                 
                 
                         
-               tab = Table(array(zip(totalCounts,sourceCounts,bkgCounts,bkgError,self.emin,self.emax,self.meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
+                tab = Table(array(zip(totalCounts,sourceCounts,bkgCounts,bkgError,self.emin,self.emax,self.meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
                 tab.meta={"duration":hib-lob,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":lob,"TMAX":hib}
                 
                 
@@ -140,6 +150,7 @@ class GBMReader(DataRead):
 
 
                 if pha:
+                    make_sure_path_exists(self.directory+directory)
                     exposure = hib-lob # Need to add deadtime????
                     phaFile = phaMake(self.directory+directory+"/"+self.det,self.dataFile,totalCounts,bkgCounts,bkgError,exposure,lob,hib)
 
@@ -147,7 +158,7 @@ class GBMReader(DataRead):
                 j+=1
 
 
-    def PlotData(self):
+    def PlotData(self,save = None):
 
         tBins = []
         for i in range(len(self.dataBinner.bins)-1):
@@ -192,4 +203,6 @@ class GBMReader(DataRead):
             bkg.append(b)
         meanT = map(mean,zip(oneSecBins[:-1],oneSecBins[1:]))
         ax.plot(meanT,array(bkg),linewidth=2,color="r")
-        #Step(ax,tBins,bkg/,"r",1)
+        
+        if save:
+            fig.savefig(save,bbox_inches="tight")
