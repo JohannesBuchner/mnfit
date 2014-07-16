@@ -11,6 +11,9 @@ from spectralTools.binning.tteBinning import tteBinning
 from glob import glob
 
 
+from phaMake.phaMake import phaMake
+
+
 
 class GBMReader(DataRead):
 
@@ -74,7 +77,7 @@ class GBMReader(DataRead):
         
 
 
-    def CreateCounts(self,start=0,stop=10):
+    def CreateCounts(self,start=0,stop=10,pha=True):
         
         
         self.dataBinner.MakeBackgroundSelectionsForDataBinner()
@@ -125,7 +128,7 @@ class GBMReader(DataRead):
                 
                 
                         
-                tab = Table(array(zip(totalCounts,sourceCounts,bkgCounts,bkgError,self.emin,self.emax,self.meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
+               tab = Table(array(zip(totalCounts,sourceCounts,bkgCounts,bkgError,self.emin,self.emax,self.meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
                 tab.meta={"duration":hib-lob,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":lob,"TMAX":hib}
                 
                 
@@ -134,7 +137,12 @@ class GBMReader(DataRead):
                 tab.meta["fileLoc"] = self.directory+directory+"/"
 
                 self.binDict[directory] = tab
-                
+
+
+                if pha:
+                    exposure = hib-lob # Need to add deadtime????
+                    phaFile = phaMake(self.directory+directory+"/"+self.det,self.dataFile,totalCounts,bkgCounts,bkgError,exposure,lob,hib)
+
                 
                 j+=1
 
