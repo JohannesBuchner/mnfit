@@ -373,3 +373,158 @@ double synchrotron_cutoff(double energy, double norm, double estar, double index
 
 
 
+/* Synchrotron Self Compton
+
+ */
+
+
+
+double SSC(double energy, double normalization, double chi, double delta)
+{
+
+  gsl_set_error_handler_off();
+
+  double result, resultP, resultQ, error;
+
+  double epsabs = 0;
+  double epsrel = 1e-5;
+  double abserr;
+  size_t limit = 10000;
+
+
+  
+  gsl_integration_workspace *w1 = gsl_integration_workspace_alloc(10000);
+  gsl_integration_workspace *w2 = gsl_integration_workspace_alloc(10000);
+
+  
+  chi = chi*energy;
+  
+  
+
+  struct ssc_params p = {energy, chi, delta};
+
+  /* P intergral  */
+
+  gsl_function F1;
+  F1.function = &Pintergrand;
+  F1.params=&p;
+
+  gsl_integration_qags(&F1, 0, chi,epsabs, epsrel,limit, w1, &resultP, &abserr);
+  
+  
+  gsl_integration_workspace_free(w1);
+
+  /* Q intergral  */
+
+  
+  gsl_function F2;
+  F2.function = &Qintergrand;
+  F2.params=&p;
+
+  gsl_integration_qagiu(&F2, chi, epsabs, epsrel,limit, w2, &resultQ, &abserr);
+
+  result = resultP + resultQ;
+
+  result*=normalization*(delta-1.)*(delta-1.)/(delta+1.)/energy;
+
+  return result;
+
+
+}
+
+double Pintergrand(double y, void *p)
+{
+
+  struct ssc_params *params = (struct ssc_params *)p;
+  double energy = (params->energy);
+  double delta = (params->delta);
+  double chi = (params->chi);
+  
+  
+  
+  double order = 5./3.;
+  double result;
+
+  result = gsl_sf_bessel_Knu(order,y);
+  result *= P(delta,y/chi);
+  return result;
+    
+
+}
+
+
+double Qintergrand(double y, void *p)
+{
+
+  struct ssc_params *params = (struct ssc_params *)p;
+  double energy = (params->energy);
+  double delta = (params->delta);
+  double chi = (params->chi);
+  
+  
+  
+  double order = 5./3.;
+  double result;
+
+  result = gsl_sf_bessel_Knu(order,y);
+  result *= P(delta,chi/y);
+  return result;
+    
+
+}
+
+
+double P(double delta, double z)
+{
+  double result;
+
+  result = pow(z,(delta+1.)/2.);
+  result*=((2./(delta+1.)-log(z))*G(delta,1.)+H(delta,1.));
+  return result;
+
+}
+
+
+double Q(double delta, double z)
+{
+  double result;
+
+  result = -2.*z*(delta+1.)/((delta+3.)*(delta+3.));
+  result *= (2.*log(z)- (delta+11.)/(delta+3.));
+  result -= 4.*(delta-1.)/((delta+1.)*(delta+1.));
+  result -= 2.*log(z)/(delta+1.);
+  result += 2.*z*z*(delta+1.)/((delta+5.)*(delta+5.));
+
+  return result;
+
+
+}
+
+
+double G(double delta, double z)
+{
+  double result;
+
+  result =  2.*z/(delta+3.);
+  result *= (2.*log(z)+(delta-1.)/(delta+3.));
+  result += 2./(delta+1.);
+  result -= 4.*z*z/(delta+5.);
+  
+  return result;
+
+}
+
+
+double H(double delta, double z)
+{
+  double result;
+
+  result =  4.*z/((delta+3.)*(delta+3.));
+  result *= (2.*log(z)+(delta-5.)/(delta+3.));
+  result += 4./((delta+1.)*(delta+1.));
+  result -= 8.*z*z/((delta+5.)*(delta+5.));
+
+  return result;
+
+}
+
