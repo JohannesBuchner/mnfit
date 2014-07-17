@@ -59,3 +59,21 @@ double synchrotronPL_cutoff(double energy, double norm, double estar, double ind
 double synchrotron_cutoff(double energy, double norm, double estar, double index, double gammaMax);
 
 
+
+/*         */
+
+double SSC(double energy, double normalization, double chi, double delta);
+
+struct ssc_params {double energy; double chi; double delta;};
+
+
+double Qintergrand(double y, void *p);
+double Pintergrand(double y, void *p);
+
+double P(double delta, double z);
+double Q(double delta, double z);
+double G(double delta, double z);
+double H(double delta, double z);
+
+
+
