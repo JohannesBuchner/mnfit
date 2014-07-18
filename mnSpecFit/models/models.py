@@ -15,6 +15,8 @@ from TsviSlow import TsviSlow
 from TsviFast import TsviFast
 
 
+from SynchSSC import SynchSSC
+
 
 from BB2 import BB2
 
@@ -31,5 +33,6 @@ models = {"Band":Band,\
           "PLSynchrotron_Cutoff":PLSynchrotron_Cutoff,\
           "TsviSlow":TsviSlow,\
           "TsviFast":TsviFast,\
-          "FastSynchrotron":FastSynchrotron
+          "FastSynchrotron":FastSynchrotron,\
+          "SynchSSC":SynchSSC
 }
