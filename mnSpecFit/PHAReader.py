@@ -30,9 +30,13 @@ class PHAReader(DataRead):
 
         f= fits.open(bakFile)
 
-        self.bkg =f[1].data["COUNTS"]
-        self.berr = f[1].data["COUNTS"]
-        
+        try:
+            self.bkg =f[1].data["COUNTS"]
+            self.berr = f[1].data["COUNTS"]
+        except KeyError:
+            self.bkg =f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0] #Turn it back into counts
+            self.berr = f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0]
+            
         f.close()
 
 
@@ -43,39 +47,58 @@ class PHAReader(DataRead):
     def CreateCounts(self):
 
 
-        duration = self.data[1].header["EXPOSURE"]
-
+        try:
+            duration = self.data[1].header["EXPOSURE"]
+        except KeyError:
+            
+            duration = self.data[1].data["EXPOSURE"][0]
+            
         self.bkg = self.bkg/duration
 
-        totalCounts = self.data[1].data["COUNTS"]/duration
-        sourceCounts = totalCounts - self.bkg
 
+        totalCounts = self.data[1].data["COUNTS"]/duration
+
+        if len(totalCounts) == 1:
+            totalCounts = totalCounts[0]
+
+        sourceCounts = totalCounts - self.bkg
+        
         self.berr = self.berr/duration 
 
 
         emin = self.data[2].data["E_MIN"]
         emax = self.data[2].data["E_MAX"]
-        self.det = detLU[self.data[0].header["DETNAM"]]
         self.instrument = self.data[0].header["INSTRUME"]
-
-
+        if self.instrument == 'LAT':
+            self.det="LLE"
+        else:
+            self.det = detLU[self.data[0].header["DETNAM"]]
+       
+        
         chans = array(zip(emin,emax))
 
 
         meanChan = array(map(mean,chans))
 
-
+        
         directory = ""
 
         for x in self.dataFile.split('/')[:-1]:
             directory+=x+"/"
-            
+        
         self.directory = directory
-
+        
         tab = Table(array(zip(totalCounts,sourceCounts,self.bkg,self.berr,emin,emax,meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
 
 
-        tab.meta={"duration":duration,"INST":self.instrument,"DET":self.det,"RSP":self.rsp}
+
+        trigTime = self.data[0].header["TRIGTIME"]
+        tstart = self.data[1].data["TSTART"][0]-trigTime
+        tstop = tstart + self.data[1].data["TELAPSE"][0]
+        
+
+
+        tab.meta={"duration":duration,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":tstart,"TMAX":tstop}
 
         directory = "bin0"
 
