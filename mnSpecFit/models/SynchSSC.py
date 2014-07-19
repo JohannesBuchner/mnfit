@@ -19,9 +19,9 @@ class SynchSSC(Model):
             return val
         def SynchPrior(params, ndim, nparams):
          
-            params[0] = jefferysPrior(params[0],1E-15,1.E0)
+            params[0] = jefferysPrior(params[0],1E-15,1.E1)
             params[1] = uniformPrior(params[1], 1.E-2, .1E4)
-            params[2] = jefferysPrior(params[2],1E-15,1.)
+            params[2] = jefferysPrior(params[2],1E-15,1.E1)
             params[3] = uniformPrior(params[3], 0.5, 1E-7)
             params[4] = uniformPrior(params[4], 2., 12.)#Must be positive!
              
