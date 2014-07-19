@@ -3,7 +3,7 @@ from astropy.table import Table
 from DataBin import DataBin
 from mnfit.mnSpecFit.models.models import models
 import matplotlib.pyplot as plt
-from numpy import array, cumsum, linspace, sqrt
+from numpy import array, cumsum, linspace, sqrt, logspace, log10
 from scipy.stats import ks_2samp
 import json
 
@@ -39,9 +39,10 @@ class SpecFitView(FitView):
         self.dof = fit["dof"]
 
         self.cntMods = []
-        
+        self.activeLos = []
+        self.activeHis = []
         #load counts and model counts
-        for det in self.detectors:
+        for det ,lo, hi  in zip(self.detectors,fit["loEne"],fit["hiEne"]):
 
             db = DataBin(self.dataBinExt+det+".fits")
 
@@ -57,6 +58,13 @@ class SpecFitView(FitView):
             
             self.sourceCounts.append(db.source)
 
+            db.SetLoChan(lo)
+            db.SetHiChan(hi)
+            loIndex = db.activeLoChan
+            hiIndex = db.activeHiChan
+            self.activeLos.append(loIndex)
+            self.activeHis.append(hiIndex+1)
+
         #Move all of these to arrays
         self.sourceCounts = array(self.sourceCounts)
         self.meanChan = array(self.meanChan)
@@ -64,6 +72,10 @@ class SpecFitView(FitView):
 
         self.xlabel = "Energy [keV]"
 
+        minE = min(fit["loEne"])
+        maxE = max(fit["hiEne"])
+        
+        self.dataRange = logspace(log10(minE),log10(maxE),700)
 
 
     def _CustomInfo(self):
@@ -143,6 +155,73 @@ class SpecFitView(FitView):
             
 
 
+    def PlotvFvComponents(self,fignum=400):
+
+        '''
+        Plots the best fit and the surrounding likelihood space
+        but in vFv space instead of the standard photon space.
+
+        self.dataRange must be set!
+
+        '''
+
+
+
+        fig = plt.figure(fignum)
+        ax = fig.add_subplot(111)
+        model = models[self.modName]() #Remember that models must be instantiated!!
+        
+        bfColors = ["#FF0040","#2E2EFE","#01DF3A"]
+        #contourColors = ["#AC58FA","#FF00FF","#088A29"]
+        #First get the components
+        components = model.componentLU.keys()
+
+        colorIndex = 0
+        for comp in components:
+            
+            thisComp= model.SelectComponent(comp)
+            
+            
+            #First the best fit params
+            tt = self.GetParamIndex(thisComp["params"])
+            bfParams = self.bestFit[tt]
+
+            #Plot the best fit component
+            yData = []
+
+            for x in self.dataRange:
+
+                yData.append(x*x*thisComp["model"](x, *bfParams)) #Computes vFv
+
+
+            ax.loglog(self.dataRange,yData,color="k")
+            
+
+            #Now Plot the contours
+
+            yData = []
+
+
+            for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
+
+                tmp = []
+                params = params[tt]
+                for x in self.dataRange:
+
+                    tmp.append(x*x*thisComp["model"](x, *params)) #Computes vFv
+                yData.append(tmp)
+            
+
+            for y in yData:
+
+                ax.loglog(self.dataRange,y,color=bfColors[colorIndex],alpha=.2) ## modify later
+
+            colorIndex+=1    
+        ax.set_xlim(min(self.dataRange),max(self.dataRange))
+
+        return ax
+    
+
     def PlotCounts(self):
         '''
         Plots the data counts along with the deconvolved models
@@ -170,7 +249,7 @@ class SpecFitView(FitView):
         # and the matrix is convolved to get
         # model counts
 
-        for mod,chan,cw in zip(self.cntMods,self.meanChan,self.chanWidths):
+        for mod,chan,cw,lo,hi in zip(self.cntMods,self.meanChan,self.chanWidths,self.activeLos,self.activeHis):
 
             yData = []
 
@@ -179,12 +258,12 @@ class SpecFitView(FitView):
 
                 mod.SetParams(params)
                     
-                yData.append(mod.GetModelCnts()/cw)
+                yData.append(mod.GetModelCnts()[lo:hi]/cw[lo:hi])
 
             for y  in yData:
 
 
-                ax.loglog(chan,y,"k",alpha=.09)
+                ax.loglog(chan[lo:hi],y,"k",alpha=.09)
 
 
 
