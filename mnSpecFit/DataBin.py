@@ -148,5 +148,10 @@ class DataBin:
         Step(ax,chans,self.total/width,"k",lw=1.)
         ax.set_xscale('log')
         ax.set_yscale('log')
-        ax.vlines(self.chanMin[self.activeLoChan],max(self.total/width),min(self.total/width),color="r")
-        ax.vlines(self.chanMax[self.activeHiChan],max(self.total/width),min(self.total/width),color="b")
+
+
+        rate = self.total/width
+        minRate = min(rate[rate>0.])
+        
+        ax.vlines(self.chanMin[self.activeLoChan],minRate,max(rate),color="r")
+        ax.vlines(self.chanMax[self.activeHiChan],minRate,max(rate),color="b")
