@@ -14,6 +14,9 @@ from FastSynchrotron import FastSynchrotron
 from TsviSlow import TsviSlow
 from TsviFast import TsviFast
 
+from Bandx2 import Bandx2
+from Band_SBPL import Band_SBPL
+from BandPL import BandPL
 
 from SynchSSC import SynchSSC
 
@@ -34,5 +37,8 @@ models = {"Band":Band,\
           "TsviSlow":TsviSlow,\
           "TsviFast":TsviFast,\
           "FastSynchrotron":FastSynchrotron,\
-          "SynchSSC":SynchSSC
+          "SynchSSC":SynchSSC,\
+          "Bandx2":Bandx2,\
+          "Band_SBPL":Band_SBPL,\
+          "BandPL":BandPL\
 }
