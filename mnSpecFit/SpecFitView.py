@@ -147,7 +147,7 @@ class SpecFitView(FitView):
         ax.set_ylabel(r"$\nu F_{\nu}$ [keV$^2$ s$^{-s}$ cm$^{-2}$ keV$^{-1}$]")
         ax.grid(False)
         ax.set_xlim(min(self.dataRange),max(self.dataRange))
-
+        ax.set_ylim(bottom=10)
         return ax
         
             
@@ -218,7 +218,9 @@ class SpecFitView(FitView):
 
             colorIndex+=1    
         ax.set_xlim(min(self.dataRange),max(self.dataRange))
-
+        ax.set_ylim(bottom=10)
+        ax.set_xlabel(self.xlabel)
+        ax.set_ylabel(r"$\nu F_{\nu}$ [keV$^2$ s$^{-s}$ cm$^{-2}$ keV$^{-1}$]")
         return ax
     
 
