@@ -50,7 +50,7 @@ class SynchSSC(Model):
         }    
 
 
-        self.componentLU={"Synchrotron":synchDict.\
+        self.componentLU={"Synchrotron":synchDict,\
                           "SSC":sscDict}
 
         self.modName = "SynchSSC"
