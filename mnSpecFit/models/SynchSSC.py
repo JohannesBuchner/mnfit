@@ -14,16 +14,16 @@ class SynchSSC(Model):
             # So set it to 900
             norm1 =  power(10.,norm1)
             norm2 =  power(10.,norm2)
-            val   =  synchrotronPLPy(ene, norm1, estar, index, 900.)
+            val   =  synchrotronPLPy(ene, norm1, estar, index, 10.)
             val   += SSCpy(ene,norm2,chi,index)
-
+            return val
         def SynchPrior(params, ndim, nparams):
          
-            params[0] = jefferysPrior(params[0],1E-15,1.)
-            params[1] = uniformPrior(params[1], 0., 3.)
-            params[2] = jefferysPrior(params[0],1E-15,1.)
-            params[3] = uniformPrior(params[1], 0., 3.)
-            params[4] = uniformPrior(params[2], 2., 12.)#Must be positive!
+            params[0] = jefferysPrior(params[0],1E-15,1.E0)
+            params[1] = uniformPrior(params[1], 1.E-2, .1E4)
+            params[2] = jefferysPrior(params[2],1E-15,1.)
+            params[3] = uniformPrior(params[3], 0.5, 1E-7)
+            params[4] = uniformPrior(params[4], 2., 12.)#Must be positive!
              
             pass
 
@@ -34,7 +34,7 @@ class SynchSSC(Model):
         #Component definitions
         def synch(ene,norm,estar,index):
             norm = power(10.,norm)
-            return synchrotronPLPy(ene,norm,estar,index,900.)
+            return synchrotronPLPy(ene,norm,estar,index,10.)
 
         def ssc(ene,norm,chi,index):
             norm = power(10.,norm)
