@@ -1,5 +1,5 @@
 from mnfit.FitCompare import FitCompare
-from mnfit.mnSpecFit.models import models
+from mnfit.mnSpecFit.models.models import models
 import json
 import matplotlib.pyplot as plt
 

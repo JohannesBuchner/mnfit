@@ -16,12 +16,7 @@ class Bandx2(Model):
 
 
 
-      def bandx2(x,logA,Ep,alpha,beta,logA2,Ep2,alpha2,beta2):
-
-         val =  band(x,logA,Ep,alpha,beta)
-         val += band(x,logA2,Ep2,alpha2,beta2)
-         return val
-
+      
       def band(x,logA,Ep,alpha,beta):
 
 
@@ -36,34 +31,40 @@ class Bandx2(Model):
             return 10**(logA)* ( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
 
 
+      def bandx2(x,logA,Ep,alpha,beta,logA2,Ep2,alpha2,beta2):
 
+         val =  band(x,logA,Ep,alpha,beta)
+         val += band(x,logA2,Ep2,alpha2,beta2)
+         return val
+
+         
       def BandPrior(params, ndim, nparams):
          
          params[0] = jefferysPrior(params[0],1E-6,1.)
          params[1] = uniformPrior(params[1], 10., 20000.)
          params[2] = uniformPrior(params[2], -2., 1.)
-         params[3] = uniformPrior(params[3], -2., -6.)
-         params[0] = jefferysPrior(params[0],1E-6,1.)
-         params[1] = uniformPrior(params[1], 10., 200000.)
-         params[2] = uniformPrior(params[2], -2., 1.)
-         params[3] = uniformPrior(params[3], -2., -6.)
+         params[3] = uniformPrior(params[3], -10., -2.)
+         params[4] = jefferysPrior(params[4],1E-6,1.)
+         params[5] = uniformPrior(params[5], 10., 200000.)
+         params[6] = uniformPrior(params[6], -2., 1.)
+         params[7] = uniformPrior(params[7], -10., -2.)
          pass
 
 
       #Component Definitions
       band1Dict={"params":\
-                [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
+                [r"logNorm",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
                 "model":band\
       }
 
 
       band2Dict={"params":\
-                [r"logN$_{\rm Band}2",r"E$_{\rm p}$2",r"$\alpha$2",r"$\beta$2"],\
+                [r"logNorm2",r"E$_{\rm p}$2",r"$\alpha$2",r"$\beta$2"],\
                 "model":band\
       }
 
-      self.componentLU={"Band":bandDict,\
-                        "Blackbody":bbDict\
+      self.componentLU={"Band1":band1Dict,\
+                        "Band2":band2Dict\
       }
 
 

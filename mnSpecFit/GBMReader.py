@@ -15,6 +15,8 @@ from phaMake.phaMake import phaMake
 
 import os
 import errno
+from random import randint
+
 
 def make_sure_path_exists(path):
     try:
@@ -170,7 +172,7 @@ class GBMReader(DataRead):
         cnts,_ = histogram(self.dataBinner.evts,bins=self.dataBinner.bins)
 
         
-        fig=plt.figure(200)
+        fig=plt.figure(randint(1,1E6))
         ax=fig.add_subplot(111)
 
         Step(ax,tBins,cnts/self.dataBinner.binWidth,"k",.5)

@@ -7,6 +7,7 @@ cdef extern from "synchrotron.h":
     double synchrotronFast(double, double, double, double, double)
     double synchrotronPL_cutoff(double, double, double, double, double, double)
     double synchrotron_cutoff(double, double, double, double, double)
+    double SSC(double, double, double , double )
 
 
 #Synchrotron from shock accelerated electrons
@@ -44,7 +45,11 @@ cpdef double synchrotronFastPy(double energy, double norm, double estar, double 
 
     return synchrotronFast(energy, norm, estar, index, gammaMin)
 
+#Synchrotron Self Compton
 
+cpdef SSCpy(double energy, double norm, double chi, double delta):
+
+    return SSC(energy, norm, chi, delta)
 
 
 

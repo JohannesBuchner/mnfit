@@ -197,7 +197,7 @@ class cstat(Likelihood):
                     -B[i]*(1.0-np.log(B[i])))
         index_sb_zero=findall(list(SB), lambda nummyx:nummyx==0)
         if(len(index_sb_zero) >=1):
-            print "here"
+            
             for i in index_sb_zero:
                 if(S[i]==0):
                     tmp=ts*m[i]\

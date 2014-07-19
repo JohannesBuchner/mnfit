@@ -47,7 +47,7 @@ class TsviFast(Model):
         self.model=tsvinchrotron
         self.prior=TsviPrior
         self.n_params = 4
-        self.parameters = ["logNorm",r"$\v_m$", r"$\v_c$",r"$\delta$"]
+        self.parameters = ["logNorm",r"$\nu_m$", r"$\nu_c$",r"$\delta$"]
 
 
 

@@ -427,6 +427,9 @@ double SSC(double energy, double normalization, double chi, double delta)
 
   result*=normalization*(delta-1.)*(delta-1.)/(delta+1.)/energy;
 
+  gsl_integration_workspace_free(w2);
+
+
   return result;
 
 

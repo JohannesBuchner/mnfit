@@ -36,6 +36,7 @@ class DataRead:
             
             tab = self.binDict[key]
             make_sure_path_exists(self.directory+key)
+            self.tab = tab 
             tab.write(self.directory+key+"/"+self.instrument+"_"+self.det+".fits",format="fits",overwrite=True)
 
 

@@ -37,7 +37,7 @@ class Band(Model):
          params[0] = jefferysPrior(params[0],1E-6,1.)
          params[1] = uniformPrior(params[1], 10., 20000.)
          params[2] = uniformPrior(params[2], -2., 1.)
-         params[3] = uniformPrior(params[3], -2., -6.)
+         params[3] = uniformPrior(params[3], -10, -2.)
          pass
 
        

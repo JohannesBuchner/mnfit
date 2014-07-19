@@ -59,7 +59,7 @@ class SBPL(Model):
             params[1] = uniformPrior(params[1],-5.,1.)
             params[2] = uniformPrior(params[2], 10., 20000.)
             params[3] = uniformPrior(params[3], 0., 3.)
-            params[4] = uniformPrior(params[4], -6, -1.)
+            params[4] = uniformPrior(params[4], -10, -1.)
             
             pass
 

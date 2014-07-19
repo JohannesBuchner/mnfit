@@ -44,7 +44,7 @@ class PHAReader(DataRead):
 
         self.rsp  = rsp
         
-    def CreateCounts(self):
+    def CreateCounts(self,ext="bin0"):
 
 
         try:
@@ -100,7 +100,7 @@ class PHAReader(DataRead):
 
         tab.meta={"duration":duration,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":tstart,"TMAX":tstop}
 
-        directory = "bin0"
+        directory = ext
 
         
                 
