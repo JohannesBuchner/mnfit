@@ -42,7 +42,7 @@ class BandPL(Model):
       def BandPLPrior(params, ndim, nparams):
          
          params[0] = jefferysPrior(params[0],1E-6,1.)
-         params[1] = uniformPrior(params[1], 10., 20000.)
+         params[1] = uniformPrior(params[1], 10., 100000.)
          params[2] = uniformPrior(params[2], -2., 1.)
          params[3] = uniformPrior(params[3], -10, -2.)
          params[4] = jefferysPrior(params[4], 1E-15,1E-0)

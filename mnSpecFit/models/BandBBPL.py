@@ -53,7 +53,7 @@ class BandBBPL(Model):
       def BandBBPLPrior(params, ndim, nparams):
          
          params[0] = jefferysPrior(params[0],1E-6,1.)
-         params[1] = uniformPrior(params[1], 10., 20000.)
+         params[1] = uniformPrior(params[1], 10., 100000.)
          params[2] = uniformPrior(params[2], -2., 1.)
          params[3] = uniformPrior(params[3], -10, -2.)
          params[4] = jefferysPrior(params[4], 1E-15,1E-0)
@@ -65,16 +65,16 @@ class BandBBPL(Model):
 
 
       bandDict={"params":\
-                [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
+                [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
                 "model":band\
       }
       plDict = {"params":\
-                [r"logN$_{\rm PL}",r"$\delta$"],\
+                [r"logN$_{\rm PL}$",r"$\delta$"],\
                 "model":pl\
       }
 
       bbDict = {"params":\
-                [r"logN$_{\rm BB}","kT"],\
+                [r"logN$_{\rm BB}$","kT"],\
                 "model":bb\
       }
       
@@ -88,4 +88,4 @@ class BandBBPL(Model):
       self.model=bandBBPL
       self.prior=BandBBPLPrior
       self.n_params = 8
-      self.parameters = [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm PL}",r"$\delta$",r"logN$_{\rm BB}","kT"]
+      self.parameters = [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm PL}$",r"$\delta$",r"logN$_{\rm BB}$","kT"]
