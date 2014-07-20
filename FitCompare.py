@@ -96,7 +96,10 @@ class FitCompare(object):
 
     def _PrintResults(self):
 
-        
+
+
+
+        maxNameLength = max(map(len,self.modelnames))
         print
         self._CustomInfo()
         print
@@ -106,7 +109,7 @@ class FitCompare(object):
         print "_"*30 + "Model Rankings"+"_"*30
         print
         print "Model:\tlogZ:\tEvidence"
-        print "------\t-----\t--------"
+        print "------\t-----\t--------\t"
         for i in range(len(self.results) -1):
             if i>0:
                 print "%s\t%.2f\t%s"%(self.results[i][0],self.results[i][3]-self.results[0][3],self.JefferyScale(self.results[i][3]-self.results[0][3]))
@@ -123,7 +126,7 @@ class FitCompare(object):
         print
         k=0
         rows = []
-        maxNameLength = max(map(len,self.modelnames))
+        
 
         for res in self.results:
             name=res[0]

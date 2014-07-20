@@ -65,7 +65,7 @@ class BandPL(Model):
 
       def pl(x,logA,index):
          
-         val = power(10.,logA)*power(x/300.,2.)
+         val = power(10.,logA)*power(x/300.,index)
          return val
 
 
