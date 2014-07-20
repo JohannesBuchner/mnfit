@@ -17,7 +17,7 @@ from TsviFast import TsviFast
 from Bandx2 import Bandx2
 from Band_SBPL import Band_SBPL
 from BandPL import BandPL
-
+from BandBBPL import BandBBPL
 from SynchSSC import SynchSSC
 
 
@@ -40,5 +40,6 @@ models = {"Band":Band,\
           "SynchSSC":SynchSSC,\
           "Bandx2":Bandx2,\
           "Band_SBPL":Band_SBPL,\
-          "BandPL":BandPL\
+          "BandPL":BandPL,\
+          "BandBBPL":BandBBPL\
 }
