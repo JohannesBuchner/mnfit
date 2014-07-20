@@ -70,11 +70,11 @@ class BandPL(Model):
 
 
       bandDict={"params":\
-                [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
+                [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
                 "model":band\
       }
       plDict = {"params":\
-                [r"logN$_{\rm PL}",r"$\delta$"],\
+                [r"logN$_{\rm PL}$",r"$\delta$"],\
                 "model":pl\
       }
 
@@ -87,4 +87,4 @@ class BandPL(Model):
       self.model=bandPL
       self.prior=BandPLPrior
       self.n_params = 6
-      self.parameters = [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm PL}",r"$\delta$"]
+      self.parameters = [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm PL}$",r"$\delta$"]
