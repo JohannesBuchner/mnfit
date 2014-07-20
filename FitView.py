@@ -86,7 +86,7 @@ class FitView(object):
 
         pass
 
-    def ViewMarginals(self):
+    def ViewMarginals(self,fignum=900):
         '''
         Plot the marginal distributions of the parameters
         along with the best-fit and 1-sigma errors
@@ -98,7 +98,7 @@ class FitView(object):
         marg = self.anal.get_stats()["marginals"]
 
         p = probPlot.PlotMarginalModes(self.anal)
-        fig = plt.figure(figsize=(5*self.n_params,5*self.n_params))
+        fig = plt.figure(fignum,figsize=(5*self.n_params,5*self.n_params))
 
         for i in range(self.n_params):
             ax = fig.add_subplot(self.n_params,self.n_params, i+1, axisbg="#FCF4F4")
