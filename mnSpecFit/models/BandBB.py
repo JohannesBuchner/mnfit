@@ -44,7 +44,7 @@ class BandBB(Model):
          params[0] = jefferysPrior(params[0],1E-6,1.)
          params[1] = uniformPrior(params[1], 10., 20000.)
          params[2] = uniformPrior(params[2], -2., 1.)
-         params[3] = uniformPrior(params[3], -2., -6.)
+         params[3] = uniformPrior(params[3], -10, -2.)
          params[4] = jefferysPrior(params[4], 1E-15,1E-0)
          params[5] = uniformPrior(params[5], 5., 500.)#keV
          pass
@@ -70,11 +70,11 @@ class BandBB(Model):
 
 
       bandDict={"params":\
-                [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
+                [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
                 "model":band\
       }
       bbDict = {"params":\
-                [r"logN$_{\rm BB}","kT"],\
+                [r"logN$_{\rm BB}$","kT"],\
                 "model":bb\
       }
 
@@ -87,4 +87,4 @@ class BandBB(Model):
       self.model=bandBB
       self.prior=BandBBPrior
       self.n_params = 6
-      self.parameters = [r"logN$_{\rm Band}",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm BB}","kT"]
+      self.parameters = [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm BB}$","kT"]
