@@ -20,6 +20,11 @@ from BandPL import BandPL
 from BandBBPL import BandBBPL
 from SynchSSC import SynchSSC
 
+from BandCPL import BandCPL
+from CPLBB import CPLBB
+from CPL import CPL
+
+
 
 from BB2 import BB2
 
@@ -41,5 +46,8 @@ models = {"Band":Band,\
           "Bandx2":Bandx2,\
           "Band_SBPL":Band_SBPL,\
           "BandPL":BandPL,\
-          "BandBBPL":BandBBPL\
+          "BandBBPL":BandBBPL,\
+          "BandCPL":BandCPL,\
+          "CPL":CPL,\
+          "CPLBB":CPLBB\
 }
