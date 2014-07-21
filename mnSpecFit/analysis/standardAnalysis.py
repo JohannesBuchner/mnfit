@@ -10,11 +10,12 @@ from mnfit.mnSpecFit.pgstat import pgstat
 from mnfit.mnSpecFit.cstat import cstat
 from mnfit.mnSpecFit.DataBin import DataBin
 
-
+from mnfit.mnSpecFit.SpecFitView import SpecFitView as SFV
+from mnfit.mnSpecFit.SpecCompare import SpecCompare as SC
 
 class standardAnalysis(object):
 
-    def __init__(self, files, stat="pgstat"):
+    def __init__(self, files, stat="pgstat",ext="pdf"):
         '''
         This makes it easier to initiate a simple model comparison
         using a set of Fermi data. The files argument is intended to
@@ -24,6 +25,7 @@ class standardAnalysis(object):
 
         '''
 
+        self.figExt=ext
         if stat == "pgstat":
             self.stat = pgstat
         else:
