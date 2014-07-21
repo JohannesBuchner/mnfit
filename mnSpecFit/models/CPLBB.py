@@ -61,7 +61,7 @@ class CPLBB(Model):
                 [r"logN$_{\rm BB}$","kT"],\
                 "model":bb\
       }
-      }
+
       cplDict = {"params":\
                  [r"logN$_{\rm CPL}$",r"$\delta$","eFold"],\
                 "model":cpl\
