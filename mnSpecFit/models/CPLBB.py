@@ -72,7 +72,7 @@ class CPLBB(Model):
       }
 
       
-      self.modName = "BandCPL"
+      self.modName = "CPLBB"
       self.model=cplBB
       self.prior=CPLbbPrior
       self.n_params = 5
