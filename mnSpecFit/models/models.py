@@ -18,11 +18,18 @@ from Bandx2 import Bandx2
 from Band_SBPL import Band_SBPL
 from BandPL import BandPL
 from BandBBPL import BandBBPL
+from BandBBCPL import BandBBCPL
 from SynchSSC import SynchSSC
 
 from BandCPL import BandCPL
 from CPLBB import CPLBB
 from CPL import CPL
+
+from BandCO import BandCO
+
+from ZhaoSynchrotron import ZhaoSynchrotron
+from FastSynchrotronBB import FastSynchrotronBB
+from SBPL_BB import SBPL_BB
 
 
 
@@ -47,7 +54,12 @@ models = {"Band":Band,\
           "Band_SBPL":Band_SBPL,\
           "BandPL":BandPL,\
           "BandBBPL":BandBBPL,\
+          "BandBBCPL":BandBBCPL,\
           "BandCPL":BandCPL,\
           "CPL":CPL,\
-          "CPLBB":CPLBB\
+          "CPLBB":CPLBB,\
+          "BandCO":BandCO,\
+          "ZhaoSynchrotron":ZhaoSynchrotron,\
+          "FastSynchrotronBB":FastSynchrotronBB,\
+          "SBPL_BB":SBPL_BB\
 }
