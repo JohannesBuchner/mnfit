@@ -30,7 +30,7 @@ from BandCO import BandCO
 from ZhaoSynchrotron import ZhaoSynchrotron
 from FastSynchrotronBB import FastSynchrotronBB
 from SBPL_BB import SBPL_BB
-
+from SynchSSC_BB import SynchSSC_BB
 
 
 from BB2 import BB2
@@ -61,5 +61,6 @@ models = {"Band":Band,\
           "BandCO":BandCO,\
           "ZhaoSynchrotron":ZhaoSynchrotron,\
           "FastSynchrotronBB":FastSynchrotronBB,\
-          "SBPL_BB":SBPL_BB\
+          "SBPL_BB":SBPL_BB,\
+          "SynchSSC_BB":SynchSSC_BB,\
 }
