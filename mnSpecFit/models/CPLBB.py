@@ -67,7 +67,7 @@ class CPLBB(Model):
                 "model":cpl\
       }
 
-      self.componentLU={"Band":bandDict,\
+      self.componentLU={"Blackbody":bbDict,\
                         "CPL":cplDict\
       }
 
