@@ -1,7 +1,7 @@
 from pymultinest import Analyzer
 import numpy as np
-
-
+from astropy.table import Table
+from copy import copy
 class FitCompare(object):
     '''
     Compare evidences from mnfit chains
@@ -89,7 +89,7 @@ class FitCompare(object):
 
                 loZ = self.results[j][3]
 
-                dZ  = hiZ - loZ
+                dZ  = loZ - hiZ
                 deltaZ.append(dZ)
 
         self.deltaZ = deltaZ
@@ -108,44 +108,50 @@ class FitCompare(object):
         print "_"*73
         print "_"*30 + "Model Rankings"+"_"*30
         print
-        print "Model:\tlogZ:\tEvidence"
-        print "------\t-----\t--------\t"
-        for i in range(len(self.results) -1):
+
+        tab = Table(names=["Model","logZ","Evidence"],dtype=["S15",float,"S20"])
+
+#        print "Model:\tlogZ:\tEvidence"
+#        print "------\t-----\t--------\t"
+        for i in range(len(self.results) -0):
             if i>0:
-                print "%s\t%.2f\t%s"%(self.results[i][0],self.results[i][3]-self.results[0][3],self.JefferyScale(self.results[i][3]-self.results[0][3]))
+                tab.add_row( [self.results[i][0],round(self.results[i][3]-self.results[-1][3],2),self.JefferyScale(abs(self.results[i][3]-self.results[0][3])) ] )
             else:
-                print "%s\t%.2f"%(self.results[i][0],self.results[i][3]-self.results[0][3])
-        print "%s\t%.2f\t%s\t<---- BEST MODEL"%(self.results[-1][0],self.results[-1][3]-self.results[0][3],self.JefferyScale(self.results[-1][3]-self.results[0][3]))
+                tab.add_row( [self.results[i][0],round( self.results[i][3]-self.results[-1][3] ,2), "" ] )
+        print tab
+
 
         print
-
-        print "(Normalized to best model)"
-        print
-
         print "_"*30 + "Bayes Factors"+"_"*30
         print
         k=0
         rows = []
+
+        matNames = []
+        for name in self.results:
+            matNames.append(name[0])
+        matNames.insert(0," ")
+        dtypes = [float]*len(self.modelnames)
+        dtypes.insert(0,"S15")
         
+        tab2 = Table(names=matNames, dtype=dtypes )
+        
+            
 
-        for res in self.results:
-            name=res[0]
-            space = maxNameLength-len(name)
-            rows.append(name+" "*space+"|")
-
-        s=" "*(maxNameLength+1)
+            
+        
         for i in range(len(self.results)):
-            s+=self.results[i][0]+"\t"
+            s=[]
+            s.append(self.results[i][0])
             for j in range(len(self.results)):
                 if i > j:
-                    rows[j]+="%.1f\t"%self.deltaZ[k]
+                    s.append(round(self.deltaZ[k],2))
                     k+=1
                 else:
-                    rows[j]+='-\t'
-        print s
-        print " "*(maxNameLength+1)+"-"*len(s)
-        for r in rows:
-            print r
+                    s.append(0.)
+            tab2.add_row(s)
+        print tab2
+        
         print
         print "_"*73
 
