@@ -89,7 +89,7 @@ class SBPL_BB(Model):
             }
 
         sbplDict = {"params":\
-              ["logNorm1",r"indx1",r"breakE",r"breakScale","indx2"]
+              ["logNorm1",r"indx1",r"breakE",r"breakScale","indx2"],\
                 "model":sbpl\
                }
 

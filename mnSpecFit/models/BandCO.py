@@ -45,7 +45,7 @@ class BandCO(Model):
 
        
 
-      self.modName = "Band"
+      self.modName = "BandCO"
       self.model=bandCO
       self.prior=BandPrior
       self.n_params = 5

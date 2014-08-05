@@ -88,7 +88,7 @@ class BandBBCPL(Model):
       }
 
       
-      self.modName = "BandBBPL"
+      self.modName = "BandBBCPL"
       self.model=bandBBCPL
       self.prior=BandBBCPLPrior
       self.n_params = 9
