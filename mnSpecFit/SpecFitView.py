@@ -254,7 +254,8 @@ class SpecFitView(FitView):
 
         for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
 
-            ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt=".", color=color, elinewidth=.5,capsize=.2)
+            #ax.errorbar(chan,c/cw,yerr = sqrt(c/cw),fmt=".", color=color, elinewidth=.5,capsize=.2)
+            ax.errorbar(chan,c/cw,fmt="+", color=color)
 
         
         #ax.legend(self.detectors,loc="lower left")
