@@ -111,16 +111,24 @@ class SpecFitView(FitView):
         fig = plt.figure(fignum)
         ax = fig.add_subplot(111)
 
+
+        
         yData = []
 
 
         for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
 
             tmp = []
-            
-            for x in self.dataRange:
 
-                tmp.append(x*x*self.model(x, *params)) #Computes vFv
+            try:
+                for x in self.dataRange:
+
+                    tmp.append(x*x*self.model(x, *params)) #Computes vFv
+            except TypeError:
+
+                tmp = self.dataRange**2*self.model(self.dataRange,*params)
+                
+                
             yData.append(tmp)
 
 
@@ -134,9 +142,14 @@ class SpecFitView(FitView):
             ax.plot(self.dataRange,y,"#04B404",alpha=.2) ## modify later
 
         bfModel = []
-        for x in self.dataRange:
 
-            bfModel.append(x*x*self.model(x, *self.bestFit))
+        try:
+            for x in self.dataRange:
+
+                bfModel.append(x*x*self.model(x, *self.bestFit))
+        except TypeError:
+
+            bfModel = self.dataRange**2*self.model(self.dataRange,*self.bestFit)
         
             
         ax.plot(self.dataRange,bfModel,"#642EFE",linewidth=1.2) #modify later
