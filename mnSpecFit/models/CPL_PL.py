@@ -53,8 +53,8 @@ class CPL_PL(Model):
                 "model":pl\
       }
 
-      self.componentLU={"CPL":cpl1Dict,\
-                        "PL":cpl2Dict\
+      self.componentLU={"CPL":cplDict,\
+                        "PL":plDict\
                         }
 
 
