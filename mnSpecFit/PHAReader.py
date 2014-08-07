@@ -34,9 +34,12 @@ class PHAReader(DataRead):
             self.bkg =f[1].data["COUNTS"]
             self.berr = f[1].data["COUNTS"]
         except KeyError:
-            self.bkg =f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0] #Turn it back into counts
-            self.berr = f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0]
-            
+            try:
+                self.bkg =f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0] #Turn it back into counts
+                self.berr = f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0]
+            except KeyError:
+                self.bkg =f[1].data["RATE"]*f[1].header["EXPOSURE"] #Turn it back into counts
+                self.berr = f[1].data["RATE"]*f[1].header["EXPOSURE"]
         f.close()
 
 
@@ -70,7 +73,10 @@ class PHAReader(DataRead):
         emax = self.data[2].data["E_MAX"]
         self.instrument = self.data[0].header["INSTRUME"]
         if self.instrument == 'LAT':
-            self.det="LLE"
+            try:
+                self.det=self.data[0].header["DATATYPE"]
+            except KeyError:
+                self.det="STD"
         else:
             self.det = detLU[self.data[0].header["DETNAM"]]
        
@@ -93,10 +99,17 @@ class PHAReader(DataRead):
 
 
         trigTime = self.data[0].header["TRIGTIME"]
-        tstart = self.data[1].data["TSTART"][0]-trigTime
-        tstop = tstart + self.data[1].data["TELAPSE"][0]
-        
+        try:
+            tstart = self.data[1].data["TSTART"][0]-trigTime
+        except KeyError:
 
+            tstart = self.data[3].header["TSTART"]-float(trigTime)
+
+        try:    
+            tstop = tstart + self.data[1].data["TELAPSE"][0]
+        except KeyError:
+            tstop = self.data[3].header["TSTOP"]-float(trigTime)
+            
 
         tab.meta={"duration":duration,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":tstart,"TMAX":tstop}
 
