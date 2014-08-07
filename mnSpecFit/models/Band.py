@@ -20,7 +20,8 @@ class Band(Model):
       def band(x,logA,Ep,alpha,beta):
 
 
-
+         #Ep=power(10.,Ep)  #Test !!!
+         
          cond = (alpha-beta)*Ep/(2+alpha)
        
          if (x < cond):
@@ -36,8 +37,9 @@ class Band(Model):
          
          params[0] = jefferysPrior(params[0],1E-6,1.)
          params[1] = uniformPrior(params[1], 10., 100000.)
+         #params[1] = jefferysPrior(params[1],1,1E5)
          params[2] = uniformPrior(params[2], -2., 1.)
-         params[3] = uniformPrior(params[3], -10, -2.)
+         params[3] = uniformPrior(params[3], -10, -1.)
          pass
 
        

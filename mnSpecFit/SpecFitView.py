@@ -250,7 +250,7 @@ class SpecFitView(FitView):
 
         ax = fig.add_subplot(111)
 
-        colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF"]
+        colorLU = ["#FF0000","#01DF01","#DA81F5","#0101DF","#F781D8","#58D3F7","#FFFF00"]
 
         for c,chan, color,cw in zip(self.sourceCounts,self.meanChan,colorLU,self.chanWidths):
 
@@ -284,11 +284,11 @@ class SpecFitView(FitView):
 
 
         
-
+        ax.set_xlim(left=min(self.dataRange), right=max(self.dataRange))
         ax.set_xlabel(self.xlabel)
         ax.set_ylabel(r"cnts s$^{-1}$ keV$^{-1}$")
-        ax.set_yscale("log", nonposy= "clip")
-
+        #ax.set_yscale("log", nonposy= "clip")
+        
         
         return ax
 

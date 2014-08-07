@@ -28,7 +28,7 @@ class rsp(object):
         except KeyError:
             print "This is an LLE response"
             self.numDetChans = rspFile[1].header['DETCHANS']
-            self.numEnergyBins = 50
+            self.numEnergyBins = rspFile[2].header["NAXIS2"]
         
         #self.beta = angle
         self.photonE = array(zip([rspFile[2].data["ENERG_LO"], rspFile[2].data["ENERG_HI"]]))
@@ -73,7 +73,7 @@ class rsp(object):
                     self.drm[i,fc-1:fc+nc]=mData["MATRIX"][i][colIndx:colIndx+nc]
                     colIndx+=nc
             except TypeError: #Prolly not formatted correctly
-                self.drm[i,fcs-1:fcs+ncs]=mData["MATRIX"][i][colIndx:colIndx+ncs]
+                self.drm[i,fcs-1:fcs-1+ncs]=mData["MATRIX"][i][colIndx:colIndx+ncs]
                 colIndx+=ncs
 
         self.drm=matrix(self.drm)
