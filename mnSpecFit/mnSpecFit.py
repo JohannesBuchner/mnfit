@@ -74,6 +74,9 @@ class mnSpecFit(mnfit):
 
                 db.SetHiChan(hi)   # Call DataBin method for channel 
                 db.SetLoChan(lo)   # selection
+
+                print "Detector %s ignoring channels (0-%d) and (%d-%d)"%(detector,db.activeLoChan,db.activeHiChan,len(db.total))
+                print "%d active PHA channel"%len(db.GetTotalCounts())
                 return
         print "\n Detector: %s has not been loaded!  \n"%detector
             
@@ -180,7 +183,7 @@ class mnSpecFit(mnfit):
         rsps = []
         loChans = []
         hiChans = []
-        dof = self.n_params
+        dof = -self.n_params
         for det in self.detList:
 
             loChans.append(det.emin)
