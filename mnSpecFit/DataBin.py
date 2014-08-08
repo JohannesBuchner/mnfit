@@ -36,7 +36,7 @@ class DataBin:
         self.tmax = self.data.meta["TMAX"]
         self.activeLoChan = 0
         self.activeHiChan = len(self.chanMax)-1
-
+        self.file=self.data.meta["FILE"]
 
         #Remove the negative counts and replace with zeros || EXPERIMENTNAL
 

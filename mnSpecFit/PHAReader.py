@@ -114,7 +114,7 @@ class PHAReader(DataRead):
         tab.meta={"duration":duration,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":tstart,"TMAX":tstop}
 
         directory = ext
-
+        tab.meta["file"]=self.dataFile.split('/')[-1]
         
                 
 
