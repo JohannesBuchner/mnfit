@@ -31,7 +31,7 @@ class GBMReader(DataRead):
 
 
     
-    def ReadData(self,bkgIntervals=[[-20,-.1],[50.,300.]]):
+    def ReadData(self,bkgIntervals=[[-20,-.1],[50.,300.]],rspFile=None):
         '''
         Momentarily GBM specific 
         
@@ -46,7 +46,7 @@ class GBMReader(DataRead):
         
 
         self.instrument="GBM"
-        self.det = self.dataFile.split('/')[-1][8:10]
+        self.det = self.data[0].header["DETNAM"]
 
 
         directory = ""
@@ -55,11 +55,20 @@ class GBMReader(DataRead):
             directory+=x+"/"
             
         self.directory = directory
+
+        if rspFile == None:
         
-        rsp = glob(directory+"glg_cspec_"+self.det+"*.rsp")[0]
+            rsp = glob(directory+"glg_cspec_"+self.det+"*.rsp")[0]
+            
+        else:
+
+            rsp = rspFile
+
         print "Found RSP: "+rsp
         self.rsp = rsp
+            
 
+            
         self.emin = self.data[1].data["E_MIN"]
         self.emax = self.data[1].data["E_MAX"]
 
