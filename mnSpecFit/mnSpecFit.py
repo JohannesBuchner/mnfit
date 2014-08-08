@@ -221,9 +221,32 @@ class mnSpecFit(mnfit):
         
         f.close()
 
+        self._MakeXspecTemplate()
 
     def _PreFitInfo(self):
 
         print "Starting fit of model:"
         print "\t%s"%self.models[0].modName
         print
+
+    def _MakeXspecTemplate(self):
+
+
+        s="from xspec import *\n"
+        s+="Plot.device=\"/xs\"\n"
+        s+="Plot.xAxis = \"keV\"\n"
+        s+="Plot.xLog = True\n"
+        s+="Plot.yLog = True\n\n"
+        sNum = 0
+        for det in self.detList:
+            s+="s%d = Spectrum(\"%s{1}\")\n"%(sNum,det.file)
+            s+="s%d.ignore(\"**-%.1f %.1f-**\")\n\n"%(sNum,det.chanMin[det.activeLoChan],det.chanMax[det.activeHiChan])
+            sNum+=1
+        s+="\n\nFit.statMethod = \"%s\"\n"%self.lhs[0].statName
+        s+="Fit.nIterations = 100000\n\n"
+        s+="m = Model(\" \")\n"
+        s+="\nFit.perform()\n"
+
+        f = open("xspecTemplate.py","w")
+        f.write(s)
+        f.close()
