@@ -1,6 +1,6 @@
 from mnfit.mnSpecFit.SpecFitView import SpecFitView as sfv
 from scipy.integrate import quad
-from mnfit.mnSpecFit.models import models
+from mnfit.mnSpecFit.models.models import models
 keV2erg = 1.602E-9
 
 class flux(object):
