@@ -120,7 +120,7 @@ class FitCompare(object):
                 tab.add_row( [self.results[i][0],round( self.results[i][3]-self.results[-1][3] ,2), "" ] )
         print tab
 
-
+        self.comparisonTab = tab
         print
         print "_"*30 + "Bayes Factors"+"_"*30
         print
@@ -151,7 +151,7 @@ class FitCompare(object):
                     s.append(0.)
             tab2.add_row(s)
         print tab2
-        
+        self.evidenceMatrix = tab2
         print
         print "_"*73
 
