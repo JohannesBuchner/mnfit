@@ -237,7 +237,7 @@ class SpecFitView(FitView):
         return ax
     
 
-    def PlotCounts(self):
+    def PlotCounts(self,fignum=140):
         '''
         Plots the data counts along with the deconvolved models
         for each detector used in the fit. 
@@ -246,7 +246,7 @@ class SpecFitView(FitView):
 
         
         
-        fig = plt.figure(140)
+        fig = plt.figure(fignum)
 
         ax = fig.add_subplot(111)
 
@@ -279,7 +279,7 @@ class SpecFitView(FitView):
             for y  in yData:
 
 
-                ax.loglog(chan[lo:hi],y,"k",alpha=.09)
+                ax.loglog(chan[lo:hi],y,"k",alpha=.1)
 
 
 
