@@ -2,6 +2,7 @@ from mnfit.FitCompare import FitCompare
 from mnfit.mnSpecFit.models.models import models
 import json
 import matplotlib.pyplot as plt
+from numpy import logspace, log10
 
 class SpecCompare(FitCompare):
     '''
@@ -32,6 +33,14 @@ class SpecCompare(FitCompare):
         self.stat = fit["stat"]
         self.dof = fit["dof"]
 
+
+        self.xlabel = "Energy [keV]"
+
+        minE = min(fit["loEne"])
+        maxE = max(fit["hiEne"])
+        
+        self.dataRange = logspace(log10(minE),log10(maxE),700)
+        
     def CompareVFV(self):
 
         colorLU = ["red","blue","green"]
