@@ -1,7 +1,7 @@
 from pymultinest import Analyzer
 import probPlot
 import matplotlib.pyplot as plt
-from numpy import logical_or, array
+from numpy import logical_or, array, mean
 
 
 
@@ -36,6 +36,13 @@ class FitView(object):
         self.bestFit = array(self.anal.get_best_fit()["parameters"])
         self.loglike = self.anal.get_best_fit()["log_likelihood"]
 
+        #Calculate teh effective # of free parameters from Spiegelhalter (2002)
+        posterior = self.anal.get_equal_weighted_posterior()[:,-1]
+        posteriorMean = mean(posterior)
+
+        self.effNparams = -2.*(posteriorMean - self.loglike)
+
+        
         if silent: #Don't print anything out
             return
         self._StatResults()
@@ -61,11 +68,11 @@ class FitView(object):
         self._CustomInfo()
         print
         
-        print "Global Evidence:\n\t%.3e +- %.3e" % ( s['nested sampling global log-evidence'],\
-                                                     s['nested sampling global log-evidence error'] )
-
-        
-        print "LogLikelihood of Best Fit:\n\t %.2f"%self.loglike
+        #print "Global Evidence:\n\t%.3e +- %.3e" % ( s['nested sampling global log-evidence'],\
+        #                                             s['nested sampling global log-evidence error'] )
+        print "Effective number of free parameters:\n\t%.2f"%self.effNparams
+        print
+        print "LogLikelihood of Best Fit:\n\t%.2f"%self.loglike
         print
         print "-"*69
         
@@ -86,6 +93,31 @@ class FitView(object):
 
         pass
 
+
+    def ViewParam(self,param,fignum=1000):
+
+
+        i = self.parameters.index(param)
+        
+        marg = self.anal.get_stats()["marginals"]
+
+        p = probPlot.PlotMarginalModes(self.anal)
+        fig = plt.figure(fignum,figsize=(5*self.n_params,5*self.n_params))
+
+
+        ax = fig.add_subplot(self.n_params,self.n_params, i+1, axisbg="#FCF4F4")
+
+        p.plot_marginal(i, with_ellipses=True , with_points = False, grid_points=50)
+
+        marg1 = marg[i]["1sigma"]
+        h=.005
+        ax.hlines(h,marg1[0],marg1[1],color="#FF0040",linewidth=1.2)
+        ax.plot(self.bestFit[i],h,"o",color="#FF0040")
+        
+        ax.set_ylabel("Probability")
+        ax.set_xlabel(param)
+        return ax
+    
     def ViewMarginals(self,fignum=900):
         '''
         Plot the marginal distributions of the parameters
@@ -103,7 +135,7 @@ class FitView(object):
         for i in range(self.n_params):
             ax = fig.add_subplot(self.n_params,self.n_params, i+1, axisbg="#FCF4F4")
 
-            p.plot_marginal(i, with_ellipses=False , with_points = False, grid_points=50)
+            p.plot_marginal(i, with_ellipses=True , with_points = False, grid_points=50)
 
             marg1 = marg[i]["1sigma"]
             h=.005
