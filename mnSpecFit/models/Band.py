@@ -33,21 +33,6 @@ class Band(Model):
          val[nidx] = A*power((alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x[nidx]/100.,beta)
          return val
 
-      def bandSlow(x,logA,Ep,alpha,beta):
-
-
-         #Ep=power(10.,Ep)  #Test !!!
-         
-         cond = (alpha-beta)*Ep/(2+alpha)
-       
-         if (x < cond):
-            return  10**(logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
-
-
-         else:
-            return 10**(logA)* ( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
-
-
 
       def BandPrior(params, ndim, nparams):
          
@@ -59,7 +44,7 @@ class Band(Model):
          pass
 
        
-      self.slow = bandSlow
+
       self.modName = "Band"
       self.model=band
       self.prior=BandPrior

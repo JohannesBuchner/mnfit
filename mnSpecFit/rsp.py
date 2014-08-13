@@ -26,9 +26,15 @@ class rsp(object):
             self.numDetChans = rspFile[2].header['DETCHANS']
             self.det = rspFile[0].header['DETNAM']
         except KeyError:
+            try:
+                self.numEnergyBins = rspFile[1].header['NUMEBINS']
+                self.numDetChans = rspFile[1].header['DETCHANS']
+                self.det = rspFile[1].header['DETNAM']
+            except KeyError:
+            
             #print "This is an LLE response"
-            self.numDetChans = rspFile[1].header['DETCHANS']
-            self.numEnergyBins = rspFile[2].header["NAXIS2"]
+                self.numDetChans = rspFile[1].header['DETCHANS']
+                self.numEnergyBins = rspFile[2].header["NAXIS2"]
         
         #self.beta = angle
         try:

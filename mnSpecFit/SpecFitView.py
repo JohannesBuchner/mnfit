@@ -198,7 +198,7 @@ class SpecFitView(FitView):
 
             #Plot the best fit component
         
-            yData.append(self.dataRange**2*thisComp["model"](self.dataRange, *bfParams)) #Computes vFv
+            yData = self.dataRange**2*thisComp["model"](self.dataRange, *bfParams) #Computes vFv
 
 
             ax.loglog(self.dataRange,yData,color="k")
@@ -211,10 +211,10 @@ class SpecFitView(FitView):
 
             for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
 
-                tmp = []
+                
                 params = params[tt]
                 
-                tmp.append(self.dataRange**2*thisComp["model"](self.dataRange, *params)) #Computes vFv
+                tmp = self.dataRange**2*thisComp["model"](self.dataRange, *params) #Computes vFv
                 yData.append(tmp)
             
 

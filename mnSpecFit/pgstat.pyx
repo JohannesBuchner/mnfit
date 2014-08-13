@@ -31,15 +31,15 @@ class pgstat(Likelihood):
 
         self.bg = np.array(bg)
 
-        #self.berr = bgErr #THIS IS TEMPORARY!!!!!
+        self.berr = bgErr #THIS IS TEMPORARY!!!!!
 
-        self.berr = np.zeros(len(bg))
-        i = self.bg>0.
-        self.berr[i] = np.sqrt(self.bg[i])
-        i = self.bg<=0.
+        #self.berr = np.zeros(len(bg))
+        #i = self.bg>0.
+        #self.berr[i] = np.sqrt(self.bg[i])
+        #i = self.bg<=0.
 
-        self.bg[i]=0.
-        self.berr[i]=0
+        #self.bg[i]=0.
+        #self.berr[i]=0
         #self.berr = np.sqrt(bg)
 
 
