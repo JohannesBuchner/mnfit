@@ -56,11 +56,8 @@ class SpecCompare(FitCompare):
             
             for params in res[2].get_equal_weighted_posterior()[::100,:-1]:
 
-                tmp = []
-            
-                for x in self.dataRange:
 
-                    tmp.append(x*x*mod.model(x, *params)) #Computes vFv
+                tmp = self.dataRange**2.*mod.model(self.dataRange, *params) #Computes vFv
                 yData.append(tmp)
 
 
@@ -73,11 +70,8 @@ class SpecCompare(FitCompare):
 
                 ax.plot(self.dataRange,y,colorLU[i],alpha=.2) ## modify later
 
-            bfModel = []
-            for x in self.dataRange:
-
-                bfModel.append(x*x*mod.model(x, *bestFit))
-        
+            
+            bfModel = self.dataRange**2.*mod.model(self.dataRange, *bestFit)        
             
             ax.plot(self.dataRange,bfModel,color="k",linewidth=1.2) #modify later
             ax.set_xscale('log')
