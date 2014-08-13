@@ -36,10 +36,14 @@ class PHAReader(DataRead):
         except KeyError:
             try:
                 self.bkg =f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0] #Turn it back into counts
-                self.berr = f[1].data["RATE"][0]*f[1].data["EXPOSURE"][0]
+                self.berr = f[1].data["STAT_ERR"][0]*f[1].data["EXPOSURE"][0]
             except KeyError:
-                self.bkg =f[1].data["RATE"]*f[1].header["EXPOSURE"] #Turn it back into counts
-                self.berr = f[1].data["RATE"]*f[1].header["EXPOSURE"]
+                try:
+                    self.bkg =f[1].data["RATE"]*f[1].header["EXPOSURE"] #Turn it back into counts
+                    self.berr = f[1].data["STAT_ERR"]*f[1].header["EXPOSURE"]
+                except KeyError:
+                    self.bkg =f[2].data["RATE"]*f[2].header["EXPOSURE"] #Turn it back into counts
+                    self.berr = f[2].data["STAT_ERR"]*f[2].header["EXPOSURE"]
         f.close()
 
 
@@ -71,15 +75,23 @@ class PHAReader(DataRead):
 
         emin = self.data[2].data["E_MIN"]
         emax = self.data[2].data["E_MAX"]
-        self.instrument = self.data[0].header["INSTRUME"]
+        try:
+            self.instrument = self.data[0].header["INSTRUME"]
+        except KeyError:
+            self.instrument = self.data[1].header["INSTRUME"]
         if self.instrument == 'LAT':
             try:
                 self.det=self.data[0].header["DATATYPE"]
             except KeyError:
-                self.det="STD"
+                try:
+                    self.det=self.data[1].header["DETNAM"]
+                except KeyError:
+                    self.det="STD"
         else:
-            self.det = detLU[self.data[0].header["DETNAM"]]
-       
+            try:
+                self.det = detLU[self.data[0].header["DETNAM"]]
+            except KeyError:
+                self.det = detLU[self.data[1].header["DETNAM"]]
         
         chans = array(zip(emin,emax))
 
@@ -96,19 +108,30 @@ class PHAReader(DataRead):
         
         tab = Table(array(zip(totalCounts,sourceCounts,self.bkg,self.berr,emin,emax,meanChan)),names=["total","source","bkg","berr","emin","emax","meanChan"])
 
-
-
-        trigTime = self.data[0].header["TRIGTIME"]
+        
+        try:
+            trigTime = self.data[0].header["TRIGTIME"]
+        except KeyError:
+            try:
+                trigTime = self.data[1].header["TRIGTIME"]
+            except KeyError:
+                trigTime = self.data[2].header["TRIGTIME"]
+            
         try:
             tstart = self.data[1].data["TSTART"][0]-trigTime
         except KeyError:
-
-            tstart = self.data[3].header["TSTART"]-float(trigTime)
-
+            try:
+                tstart = self.data[3].header["TSTART"]-float(trigTime)
+            except IndexError:
+                print "Cannot find TSTART!\n\twill be set to 0"
+                tstart = 0.
         try:    
             tstop = tstart + self.data[1].data["TELAPSE"][0]
         except KeyError:
-            tstop = self.data[3].header["TSTOP"]-float(trigTime)
+            try:
+                tstop = self.data[3].header["TSTOP"]-float(trigTime)
+            except IndexError:
+                tstop = tstart+duration
             
 
         tab.meta={"duration":duration,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":tstart,"TMAX":tstop}
