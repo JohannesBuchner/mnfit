@@ -111,21 +111,21 @@ class ZhaoSynchrotron(Model):
 
 
 
-   def _EvalModel(self):
-
-      tmpCounts = zeros(len(self.rsp.photonE))
-
+#   def _EvalModel(self):
+#
+#      tmpCounts = zeros(len(self.rsp.photonE))
+#
       #Low res bins
+#
+#      lowRes = array(self.model(self.rsp.lowEne,*self.params)) 
+#      
+#      medRes = array(map(lambda x: sum(self.model(x,*self.params))/3.,self.rsp.medEne))
 
-      lowRes = array(self.model(self.rsp.lowEne,*self.params)) 
+#      hiRes = array(map(lambda x: sum(self.model(x,*self.params))/7.,self.rsp.highEne))
+
+#      tmpCounts[self.rsp.lowEval]=lowRes
+#      tmpCounts[self.rsp.medEval]=medRes
+#      tmpCounts[self.rsp.highEval]=hiRes
       
-      medRes = array(map(lambda x: sum(self.model(x,*self.params))/3.,self.rsp.medEne))
-
-      hiRes = array(map(lambda x: sum(self.model(x,*self.params))/7.,self.rsp.highEne))
-
-      tmpCounts[self.rsp.lowEval]=lowRes
-      tmpCounts[self.rsp.medEval]=medRes
-      tmpCounts[self.rsp.highEval]=hiRes
-      
-      self.rsp.SetModelVec(tmpCounts)
+#      self.rsp.SetModelVec(tmpCounts)
     
