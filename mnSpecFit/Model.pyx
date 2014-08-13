@@ -72,6 +72,27 @@ class Model:
 
         #Low res bins
 
+        lowRes = self.model(self.rsp.lowEne,*self.params) 
+
+
+
+        medRes = array(map(lambda x: sum(self.model(x,*self.params))/3.,self.rsp.medEne))
+
+        hiRes =  array(map(lambda x: sum(self.model(x,*self.params))/7.,self.rsp.highEne))
+
+
+        tmpCounts[self.rsp.lowEval]=lowRes
+        tmpCounts[self.rsp.medEval]=medRes
+        tmpCounts[self.rsp.highEval]=hiRes
+
+        self.rsp.SetModelVec(tmpCounts)
+
+    def _EvalModelSlow(self):
+
+        tmpCounts = zeros(len(self.rsp.photonE))
+
+        #Low res bins
+
         lowRes = array( map(lambda e: self.model(e,*self.params),self.rsp.lowEne)) 
 
         medRes = array(map(lambda x: sum(map(lambda e: self.model(e,*self.params), x    ))/3.,self.rsp.medEne         ))
@@ -83,7 +104,7 @@ class Model:
         tmpCounts[self.rsp.highEval]=hiRes
 
         self.rsp.SetModelVec(tmpCounts)
-        
+    
 
         
     def SetRSP(self,rsp):

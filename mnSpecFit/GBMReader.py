@@ -26,6 +26,21 @@ def make_sure_path_exists(path):
             raise
 
 
+detLU = {"NAI_00":"n0",\
+         "NAI_01":"n1",\
+         "NAI_02":"n2",\
+         "NAI_03":"n3",\
+         "NAI_04":"n4",\
+         "NAI_05":"n5",\
+         "NAI_06":"n6",\
+         "NAI_07":"n7",\
+         "NAI_08":"n8",\
+         "NAI_09":"n9",\
+         "NAI_10":"na",\
+         "NAI_11":"nb",\
+         "BGO_00":"b0",\
+         "BGO_01":"b1"}
+
 
 class GBMReader(DataRead):
 
@@ -46,7 +61,8 @@ class GBMReader(DataRead):
         
 
         self.instrument="GBM"
-        self.det = self.data[0].header["DETNAM"]
+        self.det = detLU[self.data[0].header["DETNAM"]]
+        
 
 
         directory = ""

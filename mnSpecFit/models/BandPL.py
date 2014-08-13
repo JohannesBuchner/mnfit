@@ -1,5 +1,5 @@
 from mnfit.mnSpecFit.Model import Model
-from numpy import exp, power
+from numpy import exp, power, zeros
 from mnfit.priorGen import *
 
 
@@ -14,26 +14,39 @@ class BandPL(Model):
    def __init__(self):
 
 
+      #Component definitions
+
+      def band(x,logA,Ep,alpha,beta):
+
+         val = zeros(x.flatten().shape[0])
+
+         
+         
+         A = power(10.,logA)
+         idx  = (x < (alpha-beta)*Ep/(2+alpha))
+         nidx = ~idx
+         
+
+         val[idx]  = A*( power(x[idx]/100., alpha) * exp(-x[idx]*(2+alpha)/Ep) )
+         
+         val[nidx] = A*power((alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x[nidx]/100.,beta)
+
+         return val
+
+      def pl(x,logA,index):
+         
+         val = power(10.,logA)*power(x/300.,index)
+         return val
 
       
 
       def bandPL(x,logA,Ep,alpha,beta,logA2,index):
 
 
-
-
-          #BB
-          val = power(10,logA2)*power(x/300.,index)
-
-
-          cond = (alpha-beta)*Ep/(2+alpha)
-
-          if (x < cond):
-              val +=   10**(logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
-              return val
-          else:
-              val +=  10**(logA)* ( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
-              return val
+         val = band(x,logA,Ep,alpha,beta)
+         val +=pl(x,logA2,index)
+         
+         return val
         
         
 
@@ -50,23 +63,7 @@ class BandPL(Model):
          pass
 
 
-      #Component definitions
-
-      def band(x,logA,Ep,alpha,beta):
-
-          cond = (alpha-beta)*Ep/(2+alpha)
-
-          if (x < cond):
-              val =   power(10.,logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
-              return val
-          else:
-              val =  power(10.,logA)*( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
-              return val
-
-      def pl(x,logA,index):
-         
-         val = power(10.,logA)*power(x/300.,index)
-         return val
+      
 
 
       bandDict={"params":\

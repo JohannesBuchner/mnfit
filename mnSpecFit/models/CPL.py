@@ -27,7 +27,7 @@ class CPL(Model):
 
       def CPLPrior(params, ndim, nparams):
          
-         params[0] = jefferysPrior(params[0], 1E-15,1.E2)
+         params[0] = jefferysPrior(params[0], 1E-15,1.E3)
          params[1] = uniformPrior(params[1], -4., 2.)
          params[2] = uniformPrior(params[2], 5., 3.E6)#keV
          pass

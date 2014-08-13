@@ -70,6 +70,12 @@ class SpecFitView(FitView):
         self.meanChan = array(self.meanChan)
         self.cntMods = array(self.cntMods)
 
+
+        
+        
+        
+        
+        
         self.xlabel = "Energy [keV]"
 
         minE = min(fit["loEne"])
@@ -120,13 +126,9 @@ class SpecFitView(FitView):
 
             tmp = []
 
-            try:
-                for x in self.dataRange:
+            
 
-                    tmp.append(x*x*self.model(x, *params)) #Computes vFv
-            except TypeError:
-
-                tmp = self.dataRange**2*self.model(self.dataRange,*params)
+            tmp = self.dataRange**2*self.model(self.dataRange,*params)
                 
                 
             yData.append(tmp)
@@ -141,15 +143,10 @@ class SpecFitView(FitView):
 
             ax.plot(self.dataRange,y,"#04B404",alpha=.2) ## modify later
 
-        bfModel = []
+        
 
-        try:
-            for x in self.dataRange:
-
-                bfModel.append(x*x*self.model(x, *self.bestFit))
-        except TypeError:
-
-            bfModel = self.dataRange**2*self.model(self.dataRange,*self.bestFit)
+        
+        bfModel = self.dataRange**2*self.model(self.dataRange,*self.bestFit)
         
             
         ax.plot(self.dataRange,bfModel,"#642EFE",linewidth=1.2) #modify later
@@ -200,11 +197,8 @@ class SpecFitView(FitView):
             bfParams = self.bestFit[tt]
 
             #Plot the best fit component
-            yData = []
-
-            for x in self.dataRange:
-
-                yData.append(x*x*thisComp["model"](x, *bfParams)) #Computes vFv
+        
+            yData.append(self.dataRange**2*thisComp["model"](self.dataRange, *bfParams)) #Computes vFv
 
 
             ax.loglog(self.dataRange,yData,color="k")
@@ -219,9 +213,8 @@ class SpecFitView(FitView):
 
                 tmp = []
                 params = params[tt]
-                for x in self.dataRange:
-
-                    tmp.append(x*x*thisComp["model"](x, *params)) #Computes vFv
+                
+                tmp.append(self.dataRange**2*thisComp["model"](self.dataRange, *params)) #Computes vFv
                 yData.append(tmp)
             
 

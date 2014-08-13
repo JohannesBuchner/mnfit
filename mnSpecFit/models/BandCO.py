@@ -1,5 +1,5 @@
 from mnfit.mnSpecFit.Model import Model
-from numpy import exp, power
+from numpy import exp, power, zeros
 from mnfit.priorGen import *
 
 
@@ -15,22 +15,25 @@ class BandCO(Model):
 
 
 
-      
+
+
 
       def bandCO(x,logA,Ep,alpha,beta,eFolding):
 
+         val = zeros(x.flatten().shape[0])
 
+         
+         
+         A = power(10.,logA)
+         idx  = (x < (alpha-beta)*Ep/(2+alpha))
+         nidx = ~idx
+         
 
-         cond = (alpha-beta)*Ep/(2+alpha)
-       
-         if (x < cond):
-            val = 10.**(logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
-
-
-         else:
-            val =  10.**(logA)* ( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
-
+         val[idx]  = A*( power(x[idx]/100., alpha) * exp(-x[idx]*(2+alpha)/Ep) )
+         
+         val[nidx] = A*power((alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x[nidx]/100.,beta)
          val *= exp(-x/eFolding)
+
          return val
 
 

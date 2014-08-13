@@ -1,5 +1,5 @@
 from mnfit.mnSpecFit.Model import Model
-from numpy import log, exp, log10, power
+from numpy import log, exp,zeros,  log10, power, logical_or
 from mnfit.priorGen import *
 
 
@@ -13,6 +13,9 @@ class Band_SBPL(Model):
 
         def sbpl(ene, logN, indx1, breakE, breakScale, indx2):
 
+
+            val = zeros(ene.flatten().shape[0])
+            
             pivot =300. #keV
 
             B = (indx1 + indx2)/2.0
@@ -36,34 +39,41 @@ class Band_SBPL(Model):
 
             arg = log10(ene/breakE)/breakScale
 
-            if arg < -6.0:
+            
+            idx1 =  arg < -6.0
+            idx2 =  arg >  4.0
+            idx3 =  ~logical_or(idx1,idx2)
 
-                pcosh = M * breakScale * (-arg-log(2.0))
+            pcosh = zeros(ene.flatten().shape[0])
+            
+            pcosh[idx1] = M * breakScale * (-arg[idx1]-log(2.0))
 
-            elif arg > 4.0:
+            pcosh[idx2] = M * breakScale * (arg[idx2] - log(2.0))
 
-                pcosh = M * breakScale * (arg - log(2.0))
+            pcosh[idx3] = M * breakScale * (log( (exp(arg[idx3]) + exp(-arg[idx3]))/2.0 ))
 
-            else:
-
-                pcosh = M * breakScale * (log( (exp(arg) + exp(-arg))/2.0 ))
-
-            val = power(10,logN) * power(ene/pivot,B)*power(10.,pcosh-pcosh_piv)
+            val = power(10.,logN) * power(ene/pivot,B)*power(10.,pcosh-pcosh_piv)
 
             return val
 
 
-
         def band(x,logA,Ep,alpha,beta):
 
-            cond = (alpha-beta)*Ep/(2+alpha)
+            val = zeros(x.flatten().shape[0])
+
+         
+         
+            A = power(10.,logA)
+            idx  = (x < (alpha-beta)*Ep/(2+alpha))
+            nidx = ~idx
+         
+
+            val[idx]  = A*( power(x[idx]/100., alpha) * exp(-x[idx]*(2+alpha)/Ep) )
+         
+            val[nidx] = A*power((alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x[nidx]/100.,beta)
+            return val
+
        
-            if (x < cond):
-                return  10**(logA)*( power(x/100., alpha) * exp(-x*(2+alpha)/Ep) )
-
-
-            else:
-                return 10**(logA)* ( power( (alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x/100.,beta))
 
 
         def band_sbpl(x,logAband,Ep,alpha,beta,logNsbpl, indx1, breakE, breakScale, indx2):

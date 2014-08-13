@@ -1,5 +1,5 @@
 from mnfit.mnSpecFit.Model import Model
-from numpy import log, exp, log10, power
+from numpy import log, exp, log10, power, logical_or, zeros
 from mnfit.priorGen import *
 
 
@@ -13,6 +13,9 @@ class SBPL(Model):
 
         def sbpl(ene, logN, indx1, breakE, breakScale, indx2):
 
+
+            val = zeros(ene.flatten().shape[0])
+            
             pivot =300. #keV
 
             B = (indx1 + indx2)/2.0
@@ -36,19 +39,20 @@ class SBPL(Model):
 
             arg = log10(ene/breakE)/breakScale
 
-            if arg < -6.0:
+            
+            idx1 =  arg < -6.0
+            idx2 =  arg >  4.0
+            idx3 =  ~logical_or(idx1,idx2)
 
-                pcosh = M * breakScale * (-arg-log(2.0))
+            pcosh = zeros(ene.flatten().shape[0])
+            
+            pcosh[idx1] = M * breakScale * (-arg[idx1]-log(2.0))
 
-            elif arg > 4.0:
+            pcosh[idx2] = M * breakScale * (arg[idx2] - log(2.0))
 
-                pcosh = M * breakScale * (arg - log(2.0))
+            pcosh[idx3] = M * breakScale * (log( (exp(arg[idx3]) + exp(-arg[idx3]))/2.0 ))
 
-            else:
-
-                pcosh = M * breakScale * (log( (exp(arg) + exp(-arg))/2.0 ))
-
-            val = power(10,logN) * power(ene/pivot,B)*power(10.,pcosh-pcosh_piv)
+            val = power(10.,logN) * power(ene/pivot,B)*power(10.,pcosh-pcosh_piv)
 
             return val
 
