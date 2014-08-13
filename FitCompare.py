@@ -203,5 +203,14 @@ class FitCompare(object):
 
         return bestModel[4]
         
-        
-        
+    def PrintJefferyScale(self):
+
+        print 
+        print"logZ<0\t\t::\tNegative"
+        print "0<=logZ<.47\t::\tBarely worth mentioning"
+        print ".47<=logZ<1\t::\tSubstantial"
+        print "1<=logZ<1.47\t::\tStrong"
+        print "1.47<=logZ<2\t::\tVery Strong"
+        print "2<=logZ\t\t::\tDecisive"
+        print
+         
