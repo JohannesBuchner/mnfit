@@ -16,7 +16,7 @@ class BandCO_BB(Model):
 
 
 
-      def band(x,logA,Ep,alpha,beta,efolding):
+      def band(x,logA,Ep,alpha,beta,eFolding):
 
          val = zeros(x.flatten().shape[0])
 
