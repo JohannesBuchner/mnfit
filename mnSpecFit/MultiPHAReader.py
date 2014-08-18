@@ -71,11 +71,25 @@ class MultiPHAReader(DataRead):
 
             emin = self.data[2].data["E_MIN"]
             emax = self.data[2].data["E_MAX"]
-            self.instrument = self.data[0].header["INSTRUME"]
+
+            try:
+                self.instrument = self.data[0].header["INSTRUME"]
+            except KeyError:
+                self.instrument = self.data[1].header["INSTRUME"]
             if self.instrument == 'LAT':
-                self.det="LLE"
+                try:
+                    self.det=self.data[0].header["DATATYPE"]
+                except KeyError:
+                    try:
+                        self.det=self.data[1].header["DETNAM"]
+                    except KeyError:
+                        self.det="STD"
             else:
-                self.det = detLU[self.data[0].header["DETNAM"]]
+                try:
+                    self.det = detLU[self.data[0].header["DETNAM"]]
+                except KeyError:
+                    self.det = detLU[self.data[1].header["DETNAM"]]
+
        
         
             chans = array(zip(emin,emax))
@@ -107,7 +121,7 @@ class MultiPHAReader(DataRead):
 
             
 
-        
+            tab.meta["file"]=self.dataFile.split('/')[-1]
                 
 
                 
