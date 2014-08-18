@@ -5,9 +5,9 @@ import pyqt_fit.kernel_smoothing as smooth
 from numpy import logical_and, array, mean, histogram, arange
 
 import matplotlib.pyplot as plt
-from spectralTools.step import Step
+from binning.step import Step
 
-from spectralTools.binning.tteBinning import tteBinning
+from binning.tteBinning import tteBinning
 from glob import glob
 
 
