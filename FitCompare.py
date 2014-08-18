@@ -6,7 +6,7 @@ class FitCompare(object):
     '''
     Compare evidences from mnfit chains
     '''
-    def __init__(self,fits):
+    def __init__(self,fits,silent=False):
         '''
         Loads the fits and creates an array of analyzers
         to compare with
@@ -32,6 +32,8 @@ class FitCompare(object):
         self.analyzers = analyzers
         self.modelnames = modelnames
         self.parameters = parameters
+
+        self.silent = silent
         
         #Call the private functions
         self._Evidence() #Compute logZ for each model
@@ -100,14 +102,15 @@ class FitCompare(object):
 
 
         maxNameLength = max(map(len,self.modelnames))
-        print
-        self._CustomInfo()
-        print
-        #First print best models
-        print
-        print "_"*73
-        print "_"*30 + "Model Rankings"+"_"*30
-        print
+        if not self.silent:
+            print
+            self._CustomInfo()
+            print
+            #First print best models
+            print
+            print "_"*73
+            print "_"*30 + "Model Rankings"+"_"*30
+            print
 
         tab = Table(names=["Model","logZ","Evidence"],dtype=["S15",float,"S20"])
 
@@ -118,12 +121,14 @@ class FitCompare(object):
                 tab.add_row( [self.results[i][0],round(self.results[i][3]-self.results[-1][3],2),self.JefferyScale(abs(self.results[i][3]-self.results[0][3])) ] )
             else:
                 tab.add_row( [self.results[i][0],round( self.results[i][3]-self.results[-1][3] ,2), "" ] )
-        print tab
+        if not self.silent:
+            print tab
 
         self.comparisonTab = tab
-        print
-        print "_"*30 + "Bayes Factors"+"_"*30
-        print
+        if not self.silent:
+            print
+            print "_"*30 + "Bayes Factors"+"_"*30
+            print
         k=0
         rows = []
 
@@ -150,10 +155,13 @@ class FitCompare(object):
                 else:
                     s.append(0.)
             tab2.add_row(s)
-        print tab2
+
+        if not self.silent:
+            print tab2
         self.evidenceMatrix = tab2
-        print
-        print "_"*73
+        if not self.silent:
+            print
+            print "_"*73
 
 
     def _CustomInfo(self):
