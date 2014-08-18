@@ -87,13 +87,13 @@ class BandBBPL(Model):
                 "model":bb\
       }
       
-      self.componentLU={"Band":bandDict,\
+      self.componentLU={"BandCO":bandDict,\
                         "PowerLaw":plDict,\
                         "Blackbody":bbDict\
       }
 
       
-      self.modName = "BandBBPL"
+      self.modName = "BandCO+BB+PL"
       self.model=bandBBPL
       self.prior=BandBBPLPrior
       self.n_params = 9

@@ -43,7 +43,7 @@ class BandCO(Model):
          params[1] = uniformPrior(params[1], 10., 100000.)
          params[2] = uniformPrior(params[2], -2., 1.)
          params[3] = uniformPrior(params[3], -10, -2.)
-         params[4] = uniformPrior(params[4], -100,1.E7)
+         params[4] = uniformPrior(params[4], 1E2,1.E7)
          pass
 
        
