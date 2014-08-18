@@ -40,11 +40,11 @@ class BandCO_BB(Model):
          return val
 
 
-      def bandBB(x,logA,Ep,alpha,beta,logA2,kT):
+      def bandBB(x,logA,Ep,alpha,beta,eFolding,logA2,kT):
 
           #BB
           val = bb(x,logA2,kT)
-          val += band(x,logA,Ep,alpha,beta)
+          val += band(x,logA,Ep,alpha,beta,eFolding)
 
 
           return val
