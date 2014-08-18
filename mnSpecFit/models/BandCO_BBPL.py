@@ -74,7 +74,7 @@ class BandBBPL(Model):
 
 
       bandDict={"params":\
-                [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"],\
+                [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$","eFold"],\
                 "model":band\
       }
       plDict = {"params":\
@@ -96,5 +96,5 @@ class BandBBPL(Model):
       self.modName = "BandBBPL"
       self.model=bandBBPL
       self.prior=BandBBPLPrior
-      self.n_params = 8
-      self.parameters = [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"logN$_{\rm PL}$",r"$\delta$",r"logN$_{\rm BB}$","kT"]
+      self.n_params = 9
+      self.parameters = [r"logN$_{\rm Band}$",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$",r"eFold",r"logN$_{\rm PL}$",r"$\delta$",r"logN$_{\rm BB}$","kT"]
