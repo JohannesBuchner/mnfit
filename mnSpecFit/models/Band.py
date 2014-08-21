@@ -40,17 +40,6 @@ class Band(Model):
                             
 
       
-      def BandPrior_old(params, ndim, nparams):
-         
-         params[0] = jefferysPrior(params[0],1E-6,1E3)
-         params[1] = uniformPrior(params[1], 10., 100000.)
-         #params[1] = jefferysPrior(params[1],1,1E5)
-         params[2] = uniformPrior(params[2], -2., 1.)
-         params[3] = uniformPrior(params[3], -10, -2.)
-         pass
-
-
-
       def BandPrior(params, ndim, nparams):
 
          for i in range(ndim):

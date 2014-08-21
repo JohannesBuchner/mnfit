@@ -36,7 +36,7 @@ from SynchSSC_BB import SynchSSC_BB
 
 from CPL2 import CPL2
 from CPL_PL import CPL_PL
-
+from BB import BB
 
 
 
@@ -75,4 +75,5 @@ models = {"Band":Band,\
           "CPL+PL":CPL_PL,\
           "BandCO+BB":BandCO_BB,\
           "BandCO+BB+PL":BandCO_BBPL,\
+          "blackbody":BB\
 }

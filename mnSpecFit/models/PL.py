@@ -44,6 +44,6 @@ class PL(Model):
       self.parameters = [r"logN$_{\rm PL}$",r"$\delta$"]
 
       self._modelDict = {"params":self.parameters,\
-                         "model":band\
+                         "model":pl\
                       }
       self._composite = False

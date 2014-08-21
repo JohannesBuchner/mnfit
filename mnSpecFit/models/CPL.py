@@ -22,18 +22,17 @@ class CPL(Model):
 
       
         
-
+      self.paramsRanges = [[1.E-6,1.E3,"J"],[1.E2,1.E5,"U"],[-2.,1.,"U"]]
 
 
       def CPLPrior(params, ndim, nparams):
          
-         params[0] = jefferysPrior(params[0], 1E-15,1.E3)
-         params[1] = uniformPrior(params[1], -4., 2.)
-         params[2] = uniformPrior(params[2], 5., 3.E6)#keV
-         pass
+         for i in range(ndim):
+            params[i] = priorLU[self.paramsRanges[i][-1]](params[i],self.paramsRanges[i][0],self.paramsRanges[i][1])
+      
 
 
-      #Component definitions
+      
 
 
       self.modName = "CPL"
@@ -41,3 +40,7 @@ class CPL(Model):
       self.prior=CPLPrior
       self.n_params = 3
       self.parameters = [r"logN$_{\rm CPL}$",r"$\delta$","eFold"]
+      self._modelDict = {"params":self.parameters,\
+                         "model":cpl\
+                      }
+      self._composite = False

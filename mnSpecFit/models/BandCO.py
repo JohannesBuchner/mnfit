@@ -1,5 +1,5 @@
 from mnfit.mnSpecFit.Model import Model
-from numpy import exp, power, zeros
+from numpy import exp, power, maximum, zeros
 from mnfit.priorGen import *
 
 
@@ -9,16 +9,15 @@ from mnfit.priorGen import *
 
 
 
-class BandCO(Model):
+class Band(Model):
 
    def __init__(self):
 
+      
 
-
-
-
-
-      def bandCO(x,logA,Ep,alpha,beta,eFolding):
+      
+      
+      def bandco(x,logA,Ep,alpha,beta,eFolding):
 
          val = zeros(x.flatten().shape[0])
 
@@ -32,24 +31,31 @@ class BandCO(Model):
          val[idx]  = A*( power(x[idx]/100., alpha) * exp(-x[idx]*(2+alpha)/Ep) )
          
          val[nidx] = A*power((alpha -beta)*Ep/(100.*(2+alpha)),alpha-beta)*exp(beta-alpha)*power(x[nidx]/100.,beta)
-         val *= exp(-x/eFolding)
-
+         val = val * exp(-x/eFolding)
          return val
 
 
-      def BandPrior(params, ndim, nparams):
+
+
+      self.paramsRanges = [[1.E-6,1.E3,"J"],[1.E2,1.E5,"U"],[-2.,1.,"U"],[-10.,-2,"U"],[500.,1E7,"U"]]
+                            
+
+      
+      def BandCOPrior(params, ndim, nparams):
+
+         for i in range(ndim):
+            params[i] = priorLU[self.paramsRanges[i][-1]](params[i],self.paramsRanges[i][0],self.paramsRanges[i][1])
          
-         params[0] = jefferysPrior(params[0],1E-6,1.)
-         params[1] = uniformPrior(params[1], 10., 100000.)
-         params[2] = uniformPrior(params[2], -2., 1.)
-         params[3] = uniformPrior(params[3], -10, -2.)
-         params[4] = uniformPrior(params[4], 1E2,1.E7)
-         pass
 
        
-
-      self.modName = "BandCO"
-      self.model=bandCO
-      self.prior=BandPrior
+      
+      self.modName = "Cutoffband"
+      self.model=bandco
+      self.prior=BandCOPrior
       self.n_params = 5
-      self.parameters = ["logNorm",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$","eFold"]
+      self.parameters = ["logNorm",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$","eFolding"]
+
+      self._modelDict = {"params":self.parameters,\
+                         "model":bandco\
+                      }
+      self._composite = False

@@ -33,18 +33,9 @@ class BB(Model):
          for i in range(ndim):
             params[i] = priorLU[self.paramsRanges[i][-1]](params[i],self.paramsRanges[i][0],self.paramsRanges[i][1])
      
-     
-      bbDict = {"params":\
-                [r"logN$_{\rm BB}$","kT"],\
-                "model":bb\
-      }
-
-      self.componentLU={"Band":bandDict,\
-                        "Blackbody":bbDict\
-      }
 
       
-      self.modName = "Band+BB"
+      self.modName = "blackbody"
       self.model=bb
       self.prior=BBPrior
       self.n_params = 2
