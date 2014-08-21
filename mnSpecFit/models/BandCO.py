@@ -9,7 +9,7 @@ from mnfit.priorGen import *
 
 
 
-class Band(Model):
+class BandCO(Model):
 
    def __init__(self):
 

@@ -14,14 +14,10 @@ from CPL import CPL
 from BandCO import BandCO
 from ZhaoSynchrotron import ZhaoSynchrotron
 from FastSynchrotronBB import FastSynchrotronBB
-from SBPL_BB import SBPL_BB
 from SynchSSC_BB import SynchSSC_BB
 from BB import BB
 from PL import PL
 
-
-
-from BB2 import BB2
 
 models = {"Band":Band,\
           "Synchrotron":Synchrotron,\
