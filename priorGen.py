@@ -20,3 +20,4 @@ def uniformPrior(par,bottom,top):
 def modifiedJefferysPrior(par,top):
     pass
 
+priorLU={"U":uniformPrior,"J":jefferysPrior}

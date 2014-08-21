@@ -13,7 +13,7 @@ class Band(Model):
 
    def __init__(self):
 
-
+      
 
       
       
@@ -34,7 +34,13 @@ class Band(Model):
          return val
 
 
-      def BandPrior(params, ndim, nparams):
+
+
+      self.paramsRanges = [[1.E-6,1.E3,"J"],[1.E2,1.E5,"U"],[-2.,1.,"U"],[-10.,-2,"U"]]
+                            
+
+      
+      def BandPrior_old(params, ndim, nparams):
          
          params[0] = jefferysPrior(params[0],1E-6,1E3)
          params[1] = uniformPrior(params[1], 10., 100000.)
@@ -43,10 +49,23 @@ class Band(Model):
          params[3] = uniformPrior(params[3], -10, -2.)
          pass
 
-       
 
+
+      def BandPrior(params, ndim, nparams):
+
+         for i in range(ndim):
+            params[i] = priorLU[self.paramsRanges[i][-1]](params[i],self.paramsRanges[i][0],self.paramsRanges[i][1])
+         
+
+       
+      
       self.modName = "Band"
       self.model=band
       self.prior=BandPrior
       self.n_params = 4
       self.parameters = ["logNorm",r"E$_{\rm p}$",r"$\alpha$",r"$\beta$"]
+
+      self._modelDict = {"params":self.parameters,\
+                         "model":band\
+                      }
+      self._composite = False

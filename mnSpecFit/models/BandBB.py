@@ -49,7 +49,7 @@ class BandBB(Model):
           return val
         
         
-
+                      
 
 
       def BandBBPrior(params, ndim, nparams):

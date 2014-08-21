@@ -20,6 +20,20 @@ class SpecFitView(FitView):
         fit = json.load(f)
 
         self.modName = fit["model"]
+
+        self._composite = False
+        #Check to see if this is a composite model
+
+        test = self.modName.split("+")
+        if len(test)>1:
+            self._composite = True
+            compositeModels = test
+            
+            for i in range(len(compositeModels)):
+
+                tmp = compositeModels[i].split('_')[0] #Hack off the duplicate model number tag
+                compositeModels[i] = tmp
+            
         self.parameters = fit["params"]
         self.n_params = len(self.parameters)
 
@@ -31,7 +45,19 @@ class SpecFitView(FitView):
         self.basename = fit["basename"]
         self.meanChan = []
         self.chanWidths = []
-        model = (models[fit["model"]])()
+        
+        if self._composite:
+
+            model = (models[compositeModels[0]])()
+            for mod in compositeModels[1:]:
+
+                tmp = (models[mod])()
+                model = model + tmp
+
+            self._componentLU = model.componentLU
+            self._componentModel = model
+        else:
+            model = (models[fit["model"]])()
         self.model = model.model
 
 
@@ -46,7 +72,17 @@ class SpecFitView(FitView):
 
             db = DataBin(self.dataBinExt+det+".fits")
 
-            mod = (models[fit["model"]])()
+            if self._composite:
+
+                mod = (models[compositeModels[0]])()
+                for m in compositeModels[1:]:
+
+                    tmp = (models[m])()
+                    mod = mod + tmp
+            else:
+                mod = (models[fit["model"]])()
+
+            #mod = (models[fit["model"]])()
             mod.SetRSP(db.rsp)
 
             chanWidth = db.chanMax - db.chanMin
@@ -175,22 +211,27 @@ class SpecFitView(FitView):
 
         '''
 
+        if not self._composite:
 
+            print "This is not a composite model!"
+            return
 
         fig = plt.figure(fignum)
         ax = fig.add_subplot(111)
-        model = models[self.modName]() #Remember that models must be instantiated!!
+        #model = models[self.modName]() #Remember that models must be instantiated!!
         
         bfColors = ["#FF0040","#2E2EFE","#01DF3A"]
         #contourColors = ["#AC58FA","#FF00FF","#088A29"]
         #First get the components
-        components = model.componentLU.keys()
-
+        
+        components = self._componentLU.keys()
+        print components
+            
         colorIndex = 0
         for comp in components:
             
-            thisComp= model.SelectComponent(comp)
-            
+            thisComp= self._componentModel.SelectComponent(comp)
+            print thisComp
             
             #First the best fit params
             tt = self.GetParamIndex(thisComp["params"])

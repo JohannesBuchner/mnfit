@@ -107,14 +107,32 @@ class mnSpecFit(mnfit):
 
         '''
 
+        if type(model) == list:
+
+            listModels = True
+        else:
+            listModels = False
+            
 
         self.models = []
 
         for db in self.detList:
 
-            mod = model()   # Instantiate a model
-            mod.SetRSP(db.rsp) #Pass the rsp to model
-            self.models.append(mod)
+
+            if listModels:
+
+                tmp1 = model[0]()
+                for mod in model[1:]:
+                    tmp2 = mod()
+                    tmp1 = tmp1+tmp2
+
+                myModel = tmp1
+            else:
+                myModel = model()
+            
+            #mod = model()   # Instantiate a model #NEW Now the model should be an object NOT a class!
+            myModel.SetRSP(db.rsp) #Pass the rsp to model
+            self.models.append(myModel)
         self.n_params = self.models[0].n_params
 
         pass
