@@ -57,15 +57,15 @@ class SBPL(Model):
             return val
 
 
+        self.paramsRanges = [[1.E-15,1.E3,"J"],[-5.,1.,"U"],[1E1,1E7,"U"],[-5.,-2,"U"]]
+                            
+
+      
         def SBPLPrior(params, ndim, nparams):
 
-            params[0] = jefferysPrior(params[0], 1E-15, 1.)
-            params[1] = uniformPrior(params[1],-5.,1.)
-            params[2] = uniformPrior(params[2], 10., 20000.)
-            params[3] = uniformPrior(params[3], 0., 3.)
-            params[4] = uniformPrior(params[4], -10, -1.)
-            
-            pass
+            for i in range(ndim):
+                params[i] = priorLU[self.paramsRanges[i][-1]](params[i],self.paramsRanges[i][0],self.paramsRanges[i][1])
+         
 
 
         self.modName = "SBPL"
@@ -73,5 +73,10 @@ class SBPL(Model):
         self.model=sbpl
         self.prior=SBPLPrior
         self.n_params = 5
-        self.parameters = ["logNorm",r"indx1",r"breakE",r"breakScale","indx2"]
+        self.parameters = [r"logN$_{\rm sbpl}$",r"indx1",r"breakE",r"breakScale","indx2"]
+
+        self._modelDict = {"params":self.parameters,\
+                           "model":sbpl\
+        }
+        self._composite = False
 
