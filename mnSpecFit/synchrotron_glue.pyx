@@ -54,9 +54,16 @@ cpdef double synchrotronComplexPy(double energy, double norm, double estar, doub
 #Synchrotron from a power law of electrons
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double synchrotronPLPy(double energy, double norm, double estar, double index, double gammaMin):
+cpdef np.ndarray[np.double_t,ndim=1] synchrotronPLPy(np.ndarray[DTYPE_t, ndim=1] energy, double norm, double estar, double index, double gammaMin):
 
-    return synchrotronPL(energy, norm, estar, index, gammaMin)
+    cdef np.ndarray[np.double_t,ndim=1] val = np.zeros(len(energy)) 
+    for i in range(len(energy)):
+        val[i]  = synchrotronPL(energy[i], norm, estar, index, gammaMin)
+
+    return val
+
+
+    
 
 #Synchrotron from a power-law with a high-energy cutoff due to a max gamma
 @cython.boundscheck(False)
