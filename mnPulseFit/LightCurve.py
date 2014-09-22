@@ -38,17 +38,25 @@ class LightCurve(object):
         self.timebins = lcTable["TIMEBINS"]
         self.dataPoints = lcTable["DATA"]
         self.errors = lcTable["ERR"]
-
+        self.binStart = lcTable["BSTART"]
+        self.binStop  = lcTable["BSTOP"]
+        if self.lcType == "TTE":
+            self.bkg = lcTable["BKG"]
+            self.bkgErr = lcTable["BKGERR"]
 
     def _WriteLightCurve(self):
 
 
-        tab = Table(array( zip(self.timebins, self.dataPoints, self.errors)),names=["TIMEBINS","DATA","ERR"]    )
+        if self.lcType == "TTE":
 
-        tab.meta = {"TYPE":self.lcType,"EMIN":self.emin,"EMAX":self.emax,'DURATION':self.duration,"TMIN":self.time,"TMAX":self.tmax}
+            tab = Table(array( zip(self.timebins,  self.binStart,  self.binStop, self.dataPoints, self.errors,self.bkg,self.bkgErr)),names=["TIMEBINS","BSTART","BSTOP","DATA","ERR","BKG","BKGERR"]    )
+        else:
+            tab = Table(array( zip(self.timebins, self.binStart,  self.binStop, self.dataPoints, self.errors)),names=["TIMEBINS","BSTART","BSTOP","DATA","ERR"]    )
+
+        tab.meta = {"TYPE":self.lcType,"EMIN":self.emin,"EMAX":self.emax,'DURATION':self.duration,"TMIN":self.tmin,"TMAX":self.tmax}
 
         
-        tab.write(self.fileName,format="fits")
+        tab.write(self.fileName,format="fits",overwrite=True)
         print "Wrote:\n\t%s"%self.fileName    
 
             

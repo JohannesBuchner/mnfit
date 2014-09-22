@@ -65,7 +65,7 @@ class mnPulseFit(mnfit):
         '''
 
         
-        self.n_params = self.models[0].n_params
+        self.n_params = self.model.n_params
 
         pass
 
