@@ -77,10 +77,13 @@ cpdef double synchrotronPL_CO_Py(double energy, double norm, double estar, doubl
 #Simple Fast cooled synchrotron
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double synchrotronFastPy(double energy, double norm, double estar, double index, double gammaMin):
+cpdef np.ndarray[np.double_t,ndim=1] synchrotronFastPy(np.ndarray[DTYPE_t, ndim=1] energy, double norm, double estar, double index, double gammaMin):
 
-    return synchrotronFast(energy, norm, estar, index, gammaMin)
+        cdef np.ndarray[np.double_t,ndim=1] val = np.zeros(len(energy)) 
+        for i in range(len(energy)):
+            val[i] = synchrotronFast(energy[i], norm, estar, index, gammaMin)
 
+        return val
 #Synchrotron Self Compton
 @cython.boundscheck(False)
 @cython.wraparound(False)

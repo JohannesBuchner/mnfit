@@ -76,14 +76,6 @@ class RSPconvolve:
         full integrator
 
         '''
-        #print "DIE"
-        
-        #vec=[]
-        #for lim in self.photonE:
-        #    vec.append(self.model.integrate(lim))
-
-        
-        #self.vec = vec
 
         
         self._ConvolveMatrix()

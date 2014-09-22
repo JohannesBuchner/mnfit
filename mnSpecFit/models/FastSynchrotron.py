@@ -14,7 +14,7 @@ class FastSynchrotron(Model):
 
             norm = power(10.,norm)
 
-            gammaMin = 900. #Assuming that I cannot find this
+            gammaMin = 90. #Assuming that I cannot find this
             
             return synchrotronFastPy(ene, norm, estar,index, gammaMin)
 
