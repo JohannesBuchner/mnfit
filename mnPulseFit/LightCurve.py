@@ -44,6 +44,13 @@ class LightCurve(object):
             self.bkg = lcTable["BKG"]
             self.bkgErr = lcTable["BKGERR"]
 
+        self.duration = lcTable.meta["DURATION"]
+        self.tmin = self.lcTable["TMIN"]
+        self.tmax = self.lcTable["TMAX"]
+        self.emin = self.lcTable["EMIN"]
+        self.emax = self.lcTable["EMAX"]
+
+            
     def _WriteLightCurve(self):
 
 
