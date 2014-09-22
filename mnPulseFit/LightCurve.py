@@ -61,6 +61,23 @@ class LightCurve(object):
 
             
 
+    def GetTimeBins(self):
+
+        return self.timebins
+
+    def GetCounts(self):
+
+        return self.dataPoints
+
+    def GetBkg(self):
+
+        return self.bkg
+
+
+    def GetBkgErr(self):
+
+        return self.bkgErr
+
 
         
  
