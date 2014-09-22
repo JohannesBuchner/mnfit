@@ -79,5 +79,7 @@ class LightCurve(object):
         return self.bkgErr
 
 
-        
+    def GetErr(self):
+
+        return self.errors
  
