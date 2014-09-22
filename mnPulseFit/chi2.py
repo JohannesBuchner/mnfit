@@ -1,5 +1,3 @@
-cimport cython
-cimport numpy as np
 import numpy as np
 
 
@@ -7,16 +5,6 @@ from mnfit.Likelihood import Likelihood
 
 
 ##Import math log
-
-
-cdef extern from "math.h":
-    double log(double)
-cdef extern from "math.h":
-    double sqrt(double)
-
-
-
-
 
 
 class chi2(Likelihood):
@@ -43,9 +31,8 @@ class chi2(Likelihood):
 
         self.modelCounts
         
-    @cython.cdivision(True)
-    @cython.boundscheck(False)
-    cpdef ComputeLikelihood(self):
+
+    def ComputeLikelihood(self):
 
         C=np.array(self.counts)
         M=np.array(self.modelCounts)

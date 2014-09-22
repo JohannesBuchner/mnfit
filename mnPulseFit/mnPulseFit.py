@@ -29,11 +29,13 @@ class mnPulseFit(mnfit):
 
         
         #Choose a statistic
-        if self.lightcurve.lcType = "TTE":
-            self.stat = pgstat
+        if self.lightcurve.lcType == "TTE":
+            self.stat = pgstat()
         else:
-            self.stat = chi2
+            self.stat = chi2()
 
+
+        self._dataLoaded = True #Mark that data are loaded
 
         pass
 
@@ -99,13 +101,20 @@ class mnPulseFit(mnfit):
             self.pModel.SetParams(params)
 
             self.stat.SetModelCounts(self.pModel.GetModelCounts())
-            self.stat.SetCounts(self.lightcurve.GetCounts())
+            
 
             if self.lightcurve.lcType == "TTE":
 
-                self.stat.SetBackground(self.lightcurve.GetBkg(),self.lightcurve.GetBkgErr())
+                self.stat.SetCounts(self.lightcurve.GetCounts()+self.lightcurve.GetBkg())
+                self.stat.SetBackGround(self.lightcurve.GetBkg(),self.lightcurve.GetBkgErr())
+                binWidths = self.lightcurve.binStop-self.lightcurve.binStart
 
+                #######THIS IS TMP
+                self.stat.ts = binWidths[0]
+                self.stat.tb = binWidths[0]
+                
             else:
+                self.stat.SetCounts(self.lightcurve.GetCounts())
                 self.stat.SetErrors(self.lightcurve.GetErr())
                 
             logL = self.stat.ComputeLikelihood()
@@ -138,7 +147,7 @@ class mnPulseFit(mnfit):
         '''
 
 
-        dof = len(self.lightcurve.timeBins)
+        dof = len(self.lightcurve.GetTimeBins())-self.n_params
 
         # need to subtract off the number of fit params
 
@@ -149,13 +158,13 @@ class mnPulseFit(mnfit):
         out = {"outfiles":self.outfilesDir,\
                "basename":self.basename,\
                "duration":self.lightcurve.duration,\
-               "params":self.pulseModel.parameters,\
-               
-               "lightCurve":self.lightcurve.fileLoc,\
-               "model":self.pulseModel.modName,\
+               "params":self.pModel.parameters,\
+               "lightCurve":self.lightcurve.fileName,\
+               "model":self.pModel.modName,\
                "stat":self.stat.statName,\
                "dof":dof,\
-               
+               "emin":self.lightcurve.emin,\
+               "emax":self.lightcurve.emax,\
                "tmin":self.lightcurve.tmin,\
                "tmax":self.lightcurve.tmax\
         }
@@ -175,6 +184,6 @@ class mnPulseFit(mnfit):
     def _PreFitInfo(self):
 
         print "Starting fit of model:"
-        print "\t%s"%self.pulseModel.modName
+        print "\t%s"%self.pModel.modName
         print
 

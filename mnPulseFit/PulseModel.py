@@ -12,7 +12,9 @@ class PulseModel(object):
         self.n_params = None
         self.likelihood = None
 
+    def SetTimes(self,times):
 
+        self.timebins = times
 
     def SetParams(self, params):
         '''
@@ -20,11 +22,16 @@ class PulseModel(object):
         and then evaluate it
         '''
 
-        self.params
+        self.params = params
 
 
         self._EvaluateModel()
 
+
+    def GetModelCounts(self):
+
+        return self.modelCounts
+        
     def _EvaluateModel(self):
         '''
         Evaluate the model at its timebins
@@ -32,4 +39,4 @@ class PulseModel(object):
         '''
 
 
-        self.modelCounts = self.model(self.timebins)
+        self.modelCounts = self.model(self.timebins,*self.params)
