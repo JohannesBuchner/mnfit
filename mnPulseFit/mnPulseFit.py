@@ -1,5 +1,10 @@
 from mnfit.mnfit import mnfit
-from PulseModel import PulseModel
+from mnfit.mnPulseFit.PulseModel import PulseModel
+from mnfit.mnPulseFit.LightCurve import LightCurve
+from mnfit.mnSpecFit.pgstat import pgstat
+from mnfit.mnPulseFit.chi2 import chi2
+
+
 from numpy import array
 from astropy.table import Table
 import json
@@ -7,7 +12,7 @@ import json
 class mnPulseFit(mnfit):
 
 
-    def LoadData(self,dataBins):
+    def LoadData(self,lightcurveFile):
         '''
         This member loads a light curve object. The lightcurve object
         is either built from TTE data or from flux points. depending on 
@@ -18,11 +23,17 @@ class mnPulseFit(mnfit):
 
 
         #Load the LC object and check is type
-
-        #Choose a statistic
+        self.lightcurve = LightCurve()
+        self.lightcurve.ReadData(lightcurveFile)
 
 
         
+        #Choose a statistic
+        if self.lightcurve.lcType = "TTE":
+            self.stat = pgstat
+        else:
+            self.stat = chi2
+
 
         pass
 
@@ -63,9 +74,9 @@ class mnPulseFit(mnfit):
         model: a derived Model class
 
         '''
-
+        self.pModel = model()
         
-        self.n_params = self.model.n_params
+        self.n_params = self.pModel.n_params
 
         pass
 
@@ -83,9 +94,24 @@ class mnPulseFit(mnfit):
             params = array([cube[i] for i in range(ndim)])
             logL = 0. # This will be -2. * log(L)
 
-
+            self.pModel.SetTimes(self.lightcurve.GetTimeBins())
             #Calculates the model counts based off the params
+            self.pModel.SetParams(params)
 
+            self.stat.SetModelCounts(self.pModel.GetModelCounts())
+            self.stat.SetCounts(self.lightcurve.GetCounts())
+
+            if self.lightcurve.lcType == "TTE":
+
+                self.stat.SetBackground(self.lightcurve.GetBkg(),self.lightcurve.GetBkgErr())
+
+            else:
+                self.stat.SetErrors(self.lightcurve.GetErr())
+                
+            logL = self.stat.ComputeLikelihood()
+
+
+            
             #calculate the statistic
             
             
@@ -100,7 +126,7 @@ class mnPulseFit(mnfit):
         # as an argument, so it is created here as a callback
 
         self.likelihood = likelihood  #likelihood callback
-        self.prior = self.models[0].prior  #prior callback
+        self.prior = self.pModel.prior  #prior callback
 
 
 
