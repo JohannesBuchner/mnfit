@@ -62,7 +62,7 @@ class LightCurve(object):
 
         tab.meta = {"TYPE":self.lcType,"EMIN":self.emin,"EMAX":self.emax,'DURATION':self.duration,"TMIN":self.tmin,"TMAX":self.tmax}
 
-        self.filename = self.filename[:-5]+"_%.1f_%.1f.fits"%(self.emin,self.emax)
+        self.fileName = self.fileName[:-5]+"_%.1f_%.1f.fits"%(self.emin,self.emax)
         tab.write(self.fileName,format="fits",overwrite=True)
         print "Wrote:\n\t%s"%self.fileName    
 
