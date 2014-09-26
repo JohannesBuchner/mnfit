@@ -120,7 +120,10 @@ class GBMReader(DataRead):
         self.dataBinner.MakeBackgroundSelectionsForDataBinner()
         self.dataBinner._FitBackground()
         self.bkgMods = self.dataBinner.polynomials
-        
+
+        self.thisStart = start
+        self.thisStop  = stop 
+
         #GO BY TIME BIN
 
         
@@ -183,7 +186,7 @@ class GBMReader(DataRead):
 
                 
                 j+=1
-
+        self.PlotData()
 
     def PlotData(self,save = None):
 
@@ -196,28 +199,29 @@ class GBMReader(DataRead):
 
         cnts,_ = histogram(self.dataBinner.evts,bins=self.dataBinner.bins)
 
+        maxCnts = max(cnts/self.dataBinner.binWidth)
+        minCnts = min(cnts/self.dataBinner.binWidth) 
         
         fig=plt.figure(randint(1,1E6))
         ax=fig.add_subplot(111)
 
         Step(ax,tBins,cnts/self.dataBinner.binWidth,"k",.5)
-        #Step(ax,tBins,cnts,"k",.5)
+
+
+        #Plot the background region
 
         cnts,_ = histogram(self.dataBinner.filteredEvts,bins=self.dataBinner.bins)
-
+        
+        
         Step(ax,tBins,cnts/self.dataBinner.binWidth,"b",.7)
-        #Step(ax,tBins,cnts,"b",.7)
+
+
+        #Plot the selection region
 
         
-        #bkg = []
-        #for i in range(len(self.dataBinner.bins)-1):
-    
-        #    b=0
-        #    for j in range(len(self.bkgMods)):
+        ax.vlines(self.thisStart,minCnts-50,maxCnts+50,colors='limegreen',linewidth=1.5)
+        ax.vlines(self.thisStop,minCnts-50,maxCnts+50,colors='limegreen', linewidth=1.5)
         
-        #        b+= self.bkgMods[j].integral(self.dataBinner.bins[i],self.dataBinner.bins[i+1])#/(self.dataBinner.bins[i+1]-self.dataBinner.bins[i])
-        #    bkg.append(b)
-        #meanT = array(map(mean,tBins))
 
         bkg = []
         oneSecBins =arange(self.dataBinner.bins[0],self.dataBinner.bins[-1],1.) 
@@ -230,6 +234,13 @@ class GBMReader(DataRead):
             bkg.append(b)
         meanT = map(mean,zip(oneSecBins[:-1],oneSecBins[1:]))
         ax.plot(meanT,array(bkg),linewidth=2,color="r")
+
+        minX = min(map(lambda x: x[0],self.bkgIntervals))
+        maxX = max(map(lambda x: x[1],self.bkgIntervals))
+
+
+        ax.set_ylim(bottom=minCnts-50.,top=maxCnts+50.)
+        ax.set_xlim(left=minX,right=maxX)
         
         if save:
             fig.savefig(save,bbox_inches="tight")
