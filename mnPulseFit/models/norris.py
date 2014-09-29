@@ -22,7 +22,7 @@ class norris(PulseModel):
 
 
 
-        self.paramsRanges = [[0.,10.,"U"],[1E-5,1.E5,"J"],[0,50.,"U"],[0,5.,"U"],[0.,200.,"U"]]
+        self.paramsRanges = [[0.,10.,"U"],[1E-5,1.E5,"J"],[0.,50.,"U"],[0.,200.,"U"]]
 
         def NorrisPrior(params, ndim, nparams):
 

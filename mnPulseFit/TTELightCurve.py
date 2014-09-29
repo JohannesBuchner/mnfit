@@ -104,7 +104,7 @@ class TTELightCurve(LightCurve):
         
         self.fileName=tteFile[:-4]+"_lightcurve.fits"
 
-
+        self._WriteLightCurve()
        
     def SetEnergyRange(self,emin=8.,emax=300.):
 
