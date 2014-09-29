@@ -29,7 +29,7 @@ class chi2(Likelihood):
 
     def SetModelCounts(self,modelCounts):
 
-        self.modelCounts
+        self.modelCounts = modelsCounts
         
 
     def ComputeLikelihood(self):
