@@ -20,7 +20,7 @@ class mnPulseFit(mnfit):
         TTE data.
 
         '''
-
+        self._customTI = False
 
         #Load the LC object and check is type
         self.lightcurve = LightCurve()
@@ -82,6 +82,17 @@ class mnPulseFit(mnfit):
 
         pass
 
+
+
+    def SetTimeInterval(self,tmin,tmax):
+
+        self.tmin = tmin
+        self.tmax = tmax
+        self._customTI = True
+
+        
+        
+
     def ConstructLikelihood(self):
         '''
         Provides a likelihood function based off the data and
@@ -90,6 +101,9 @@ class mnPulseFit(mnfit):
         '''
 
         # The Likelihood function for MULTINEST
+
+        if self._customTI:
+            self.lightcurve.SetTimeInterval(self.tmin,self.tmax)
         def likelihood(cube, ndim, nparams):
 
 
@@ -165,8 +179,8 @@ class mnPulseFit(mnfit):
                "dof":dof,\
                "emin":self.lightcurve.emin,\
                "emax":self.lightcurve.emax,\
-               "tmin":self.lightcurve.tmin,\
-               "tmax":self.lightcurve.tmax\
+               "tmin":self.tmin,\
+               "tmax":self.tmax\
         }
 
         f = open(self.outfilesDir+self.savefile,'w')

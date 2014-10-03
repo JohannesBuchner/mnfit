@@ -34,6 +34,9 @@ class PulseFitView(FitView):
 
         self.dataRange=linspace(fit["tmin"],fit["tmax"],500)
 
+        self.tmin = fit["tmin"]
+        self.tmax = fit["tmax"]
+
         thisModel =  models[self.modName]()
 
 
@@ -46,6 +49,10 @@ class PulseFitView(FitView):
         print
 
         print "Model:\n\t%s"%self.modName
+
+        print "TMIN: %.2f"%self.tmin
+        print "TMAX: %.2f"%self.tmax
+
         print "\nBest Fit Parameters (1-sigma err):"
 
         marg = self.anal.get_stats()["marginals"]
@@ -70,7 +77,7 @@ class PulseFitView(FitView):
 
         lc = LightCurve()
         lc.ReadData(self.lightCurveFile)
-
+        lc.SetTimeInterval(self.tmin,self.tmax)
         #ADJUST THIS FOR VARIABLE TIMEBIN
         binWidths = lc.binStop-lc.binStart
         

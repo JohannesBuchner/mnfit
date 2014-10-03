@@ -30,6 +30,9 @@ class LightCurve(object):
 
         self.tmin = tmin
         self.tmax = tmax
+        print "Time interval set to\n\t"
+        print "TMIN: %.2f"%self.tmin
+        print "TMAX: %.2f"%self.tmax
 
 
     def ReadData(self,lcSave):
