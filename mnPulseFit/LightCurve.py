@@ -20,6 +20,16 @@ class LightCurve(object):
         self.lcType = None
         self.timebins = None
         self.dataPoints = None
+        self.tmin = 0.
+        self.tmax = 1000.
+        
+
+
+    def SetTimeInterval(self,tmin,tmax):
+
+
+        self.tmin = tmin
+        self.tmax = tmax
 
 
     def ReadData(self,lcSave):
@@ -66,27 +76,38 @@ class LightCurve(object):
         tab.write(self.fileName,format="fits",overwrite=True)
         print "Wrote:\n\t%s"%self.fileName    
 
-            
+
+
+
+    def _GetMinTimeIndex(self):
+
+        return self.binStart.searchsorted(self.tmin)
+
+    def _GetMaxTimeIndex(self):
+
+        return self.binStop.searchsorted(self.tmax)+1
+
+
 
     def GetTimeBins(self):
 
-        return self.timebins
+        return self.timebins[self._GetMinTimeIndex():self._GetMaxTimeIndex()]
 
     def GetCounts(self):
 
-        return self.dataPoints
+        return self.dataPoints[self._GetMinTimeIndex():self._GetMaxTimeIndex()]
 
     def GetBkg(self):
 
-        return self.bkg
+        return self.bkg[self._GetMinTimeIndex():self._GetMaxTimeIndex()]
 
 
     def GetBkgErr(self):
 
-        return self.bkgErr
+        return self.bkgErr[self._GetMinTimeIndex():self._GetMaxTimeIndex()]
 
 
     def GetErr(self):
 
-        return self.errors
+        return self.errors[self._GetMinTimeIndex():self._GetMaxTimeIndex()]
  
