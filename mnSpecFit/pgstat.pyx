@@ -28,20 +28,16 @@ class pgstat(Likelihood):
 
 
     def SetBackGround(self,bg,bgErr):
+        '''
+        Set the background and background error 
+        PGstat uses gaussian errors and when the 
+        background fit is done with a polynomial the
+        full propoagated errors SHOULD be gaussian.
 
+        '''
         self.bg = np.array(bg)
 
-        self.berr = bgErr #THIS IS TEMPORARY!!!!!
-
-        #self.berr = np.zeros(len(bg))
-        #i = self.bg>0.
-        #self.berr[i] = np.sqrt(self.bg[i])
-        #i = self.bg<=0.
-
-        #self.bg[i]=0.
-        #self.berr[i]=0
-        #self.berr = np.sqrt(bg)
-
+        self.berr = bgErr #This is the correct implementation
 
         
     def SetCounts(self,counts):
@@ -136,22 +132,22 @@ class pgstat(Likelihood):
         sb = self.berr*self.counts
         
         if len(sb[sb==0]) >= 1:
-            
+
             i = self.berr==0.
 
                       
-            yb = np.array(map(lambda x: max(FLOOR/self.ts,x), self.modc[i]+self.bg[i]))
+            yb = np.array(map(lambda x: max(FLOOR/self.ts,x), self.modc+self.bg))
 
-            stat[i] = self.ts*yb
+            stat[i] = self.ts*yb[i]
 
-            j=i
+ 
             i = np.logical_and(self.counts >0.,i)
             
-            stat[i] += self.counts[i]*(np.log(self.counts[i])-np.log(self.ts*yb)-1)
+            stat[i] += self.counts[i]*(np.log(self.counts[i])-np.log(self.ts*yb[i])-1)
 
             
             i = self.counts == 0
-             
+
             stat[i] = self.ts*self.modc[i] + self.bg[i]*tr - 0.5*self.berr[i]*tr*tr
 
         stat_sum = 2.*stat.sum()

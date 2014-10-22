@@ -4,7 +4,6 @@ import numpy as np
 from mnfit.Likelihood import Likelihood
 
 
-##Import math log
 
 
 class chi2(Likelihood):
