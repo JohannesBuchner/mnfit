@@ -57,7 +57,7 @@ class SBPL(Model):
             return val
 
 
-        self.paramsRanges = [[1.E-15,1.E3,"J"],[-5.,1.,"U"],[1E1,1E7,"U"],[-5.,-2,"U"]]
+        self.paramsRanges = [[1.E-15,1.E3,"J"],[-5.,1.,"U"],[1E1,1E7,"U"],[.001,9.,"U"],[-5.,-2,"U"]]
                             
 
       
