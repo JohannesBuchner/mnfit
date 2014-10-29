@@ -3,7 +3,7 @@ from astropy.table import Table
 from DataBin import DataBin
 from mnfit.mnSpecFit.models.models import models
 import matplotlib.pyplot as plt
-from numpy import array, cumsum, linspace, sqrt, logspace, log10
+from numpy import array, cumsum, linspace, sqrt, logspace, log10, mean
 from scipy.stats import ks_2samp
 import json
 
@@ -45,7 +45,13 @@ class SpecFitView(FitView):
         self.basename = fit["basename"]
         self.meanChan = []
         self.chanWidths = []
-        
+        self.tmin = fit["tmin"]
+        self.tmax = fit["tmax"]
+
+
+        self.meanTime = mean([self.tmin,self.tmax])
+
+                
         if self._composite:
 
             model = (models[compositeModels[0]])()
