@@ -64,6 +64,15 @@ class mnfit:
 
         '''
 
+        print
+        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        print
+        print "License Info:"
+        print "\t Don't read this.\n\t Do whatever the hell you want with this software"
+        print
+        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+
+        
         if not self._dataLoaded: #Make sure to have loaded data
             print
             print "YOU HAVE NOT LOADED ANY DATA!!"
