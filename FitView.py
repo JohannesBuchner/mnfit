@@ -2,8 +2,8 @@ from pymultinest import Analyzer
 import probPlot
 import matplotlib.pyplot as plt
 from numpy import logical_or, array, mean
-
-
+from astropy.table import Table
+from astropy.io import ascii
 
 
 class FitView(object):
@@ -224,6 +224,42 @@ class FitView(object):
         pass
 
 
+    def GetTeXTable(self,tableName="params.tex"):
+
+
+
+        
+
+        
+
+        marg = self.anal.get_stats()["marginals"]
+
+        tmp = []
+        for params,val,err in zip(self.parameters,self.bestFit,marg):
+
+            
+            
+
+            err = err["1sigma"]
+            
+            print "\t%s:\t%.2f\t+%.2f -%.2f"%(params,val,err[1]-val,val-err[0])
+            tmp.append(['%s'%params,'%.2f'%val,'%.2f'%(err[1]-val),'%.2f'%(val-err[0])])
+
+        data = {}
+
+        for t in tmp:
+            data[t[0]]=["$%s^{+%s}_{-%s}$"%(t[1],t[2],t[3])]
+
+        ascii.write(data,output=tableName,Writer=ascii.Latex,latexdict={'preamble': r'\begin{center}','tablefoot': r'\end{center}','tabletype': 'table*','header_end': '\\hline \\hline \\hspace{3mm}','caption':self.modName})
+        
+
+
+        
+        
+
+
+
+    
     def Propagate(self,function,params,direct=True):
         '''
         Propagates the chain into a derived function
