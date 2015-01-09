@@ -1,7 +1,7 @@
 from pymultinest import Analyzer
 import probPlot
 import matplotlib.pyplot as plt
-from numpy import logical_or, array, mean
+from numpy import logical_or, array, mean, sqrt
 from astropy.table import Table
 from astropy.io import ascii
 
@@ -12,7 +12,7 @@ class FitView(object):
 
     '''
 
-    def __init__(self,data,silent=False):
+    def __init__(self,data,silent=False,journal=None):
         '''
         The type of data depends on the subclass.
         The generic _LoadData function is called and should set
@@ -46,9 +46,53 @@ class FitView(object):
         if silent: #Don't print anything out
             return
         self._StatResults()
+        
+        self.journal = journal
 
+        self.elinewidth = .8
+        self.capsize= 3
+        self.linewidth = 1.8
         
 
+
+        
+        if self.journal == "mnras":
+            figW = 240
+
+        if self.journal == "apj":
+
+            figW = 245.6
+
+
+        if self.journal != None:
+
+            fig_width_pt = figW  # Get this from LaTeX using \showthe\columnwidth
+            inches_per_pt = 1.0/72.27               # Convert pt to inch
+            golden_mean = (sqrt(5)-1.0)/2.0         # Aesthetic ratio
+            fig_width = fig_width_pt*inches_per_pt  # width in inches
+            fig_height = fig_width*golden_mean      # height in inches
+            fig_size =  [fig_width,fig_height]
+            params = {'backend': 'ps',\
+                      'axes.labelsize': 10,\
+                      'text.fontsize': 10,\
+                      'legend.fontsize': 10,\
+                      'xtick.labelsize': 8,\
+                      'ytick.labelsize': 8,\
+                      'figure.figsize': fig_size,\
+                      'lines.markersize': 1,\
+                      'legend.numpoints': 1,\
+                      'legend.fontsize': 6,\
+                      'legend.markerscale': 1.0,\
+                      'font.family': 'serif',\
+                      'ps.useafm' : True,\
+                      'pdf.use14corefonts' : True,\
+                      'text.usetex' : True,\
+                      'pdf.use14corefonts' : True,\
+                       }
+            plt.rcParams.update(params)
+            self.elinewidth = .3
+            self.capsize=1
+            self.linewidth = .7
 
 
     def _StatResults(self):
