@@ -103,7 +103,7 @@ class EpFitView(FitView):
             
         for y in yData:
 
-            ax.loglog(self.dataRange,y,"#04B404",alpha=.2) ## modify later
+            ax.loglog(self.dataRange,y,"#FE9A2E",alpha=.15,lw=self.linewidth*.28) ## modify later
 
         bfModel = []
 
@@ -114,12 +114,12 @@ class EpFitView(FitView):
             bfModel.append(self.model(x, *self.bestFit))
         
             
-        ax.loglog(self.dataRange,bfModel,"#642EFE") #modify later
+        ax.loglog(self.dataRange,bfModel,"#0067DC",lw=self.linewidth) #modify later
 
 
-        ax.errorbar(evo.GetTimeBins(),evo.GetEp(),yerr=evo.GetErr(),fmt='.',color='k')
+        ax.errorbar(evo.GetTimeBins(),evo.GetEp(),yerr=evo.GetErr(),fmt='.',color='#6E6E6E',capsize=self.capsize,elinewidth=self.elinewidth)
 
-
+        ax.set_yscale('log',nonposy='clip')
         ax.set_xlabel("Time [s]")
         ax.set_ylabel(r"$E_{\rm p}$ [keV]")
 
