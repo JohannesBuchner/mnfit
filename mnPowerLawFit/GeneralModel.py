@@ -16,6 +16,9 @@ class GeneralModel(object):
 
         self.xData = xData
 
+       
+
+        
     def SetParams(self, params):
         '''
         Pass the parameters to the model
@@ -36,16 +39,27 @@ class GeneralModel(object):
 
         return self.params[1]
 
-    def SetAmplitudeRange(self,lo,hi):
+    def GetPivot(self):
 
+        return self.pivot
 
-        self.ampHi = hi
-        self.ampLo = lo
+    def GetAmpHi(self):
 
-    def SetSlopeRange(self,lo,hi):
+        return self.ampHi
 
-        self.indxLo = lo
-        self.indxHi = hi
+    def GetAmpLo(self):
+
+        return self.ampLo
+
+    def GetIndxHi(self):
+
+        return self.indxHi
+
+    def GetIndxLo(self):
+
+        return self.indxLo
+
+    
             
     def _EvaluateModel(self):
         '''

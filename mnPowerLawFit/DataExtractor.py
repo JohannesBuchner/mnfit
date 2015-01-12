@@ -29,14 +29,15 @@ class DataExtractor(object):
         self._xErr  = err
         self._xName = name
         self._xLog = isLog 
-
+        self._xSet = True 
+        
     def SetY(self,data,err,name="y",isLog = True):
 
         self._yData = data
         self._yErr  = err
         self._yName = name
         self._yLog = isLog 
-
+        self._ySet = True
 
     
     def _WriteJSON(self):

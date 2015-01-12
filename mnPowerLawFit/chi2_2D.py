@@ -18,7 +18,10 @@ class chi2_2D(Likelihood):
         self.yData = yData
 
 
+    def SetSlope(self,slope):
 
+
+        self.slope= slope
 
     def SetYerrors(self,yErr):
 
@@ -42,7 +45,7 @@ class chi2_2D(Likelihood):
         YErr = np.array(self.yErr)
         XErr = np.array(self.xErr)
 
-         S = (Y-M)/np.sqrt(np.power(YErr,2.)+ np.power(self.slope,2)*np.power(XErr,2) )
+        S = (Y-M)/np.sqrt(np.power(YErr,2.)+ np.power(self.slope,2)*np.power(XErr,2) )
 
 
         sSum = np.sum(S)

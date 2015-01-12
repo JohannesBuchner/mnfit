@@ -1,26 +1,31 @@
 from mnfit.mnfit import mnfit
 from mnfit.mnPowerLawFit.chi2_2D import chi2_2D
 
+from mnfit.mnPowerLawFit.PowerLawData import PowerLawData
+
 from PowerLawData import PowerLawData
 
 
-from numpy import array
+from numpy import array, log10
 #from astropy.table import Table
 import json
 
 class mnPowerLawFit(mnfit):
 
 
-    def LoadData(self,data):
+    def LoadData(self,dataFile):
         '''
-        An EpEvofile is read in. It is JSON file containing the Ep and time
-        derived from either an SCAT or in the future, an mnSpecFit file
+        Load a data file containing the x and y data and
+        errors 
 
         '''
 
         
-        self.data = PowerLawData(data)
+        self.data = PowerLawData(dataFile)
+        self.dataFile = dataFile
 
+
+        
         self.stat = chi2_2D() #Will always be using chi2_2D
     
         
@@ -30,7 +35,7 @@ class mnPowerLawFit(mnfit):
 
         self.n_params = 2
 
-        self.ConstructLikelihood()
+        
         
 
     def SetSaveFile(self,savefile):
@@ -54,8 +59,12 @@ class mnPowerLawFit(mnfit):
         pass
 
 
-        
+    def SetModel(self,model):
 
+        self.fitModel = model()
+        self.ConstructLikelihood()
+
+                
     def ConstructLikelihood(self):
         '''
         Provides a likelihood function based off the data and
@@ -71,26 +80,43 @@ class mnPowerLawFit(mnfit):
             params = array([cube[i] for i in range(ndim)])
             logL = 0. # This will be -2. * log(L)
 
-            #Set the x data
-            self.model.SetXData(self.data.GetXdata())
+
+
+
+            if self.data.xLog:
     
+                self.stat.SetXerrors(self.data.GetLogXerr())
+                self.fitModel.SetXdata(self.data.GetLogXdata())
+            else:
+                self.stat.SetXerrors(self.data.GetXerr())
+
+                self.fitModel.SetXdata(self.data.GetXdata())
+           
             
             #Calculates the model counts based off the params
-            self.model.SetParams(params)
-
-            self.stat.SetModelData(self.model.GetModelY())
+            self.fitModel.SetParams(params)
 
 
-            self.stat.SetYData(self.data.GetYdata())
-            self.stat.SetYerrors(self.data.GetYerr())
             
-            self.stat.SetXerrors(self.data.GetXerr())
-            self.stat.SetSlope(self.model.GetSlope())
+
+            if self.data.yLog:
+                self.stat.SetYdata(self.data.GetLogYdata())
+                self.stat.SetYerrors(self.data.GetLogYerr())
+                self.stat.SetModelData(log10(self.fitModel.GetModelY()))
+
+            else:
+                self.stat.SetYdata(self.data.GetYdata())
+                self.stat.SetYerrors(self.data.GetYerr())
+                self.stat.SetModelData(self.fitModel.GetModelY())
+
+                
+    
+            self.stat.SetSlope(self.fitModel.GetSlope())
             
             logL = self.stat.ComputeLikelihood()
 
-
-
+            
+    
             #calculate the statistic
 
 
@@ -105,7 +131,7 @@ class mnPowerLawFit(mnfit):
         # as an argument, so it is created here as a callback
 
         self.likelihood = likelihood  #likelihood callback
-        self.prior = self.epModel.prior  #prior callback
+        self.prior = self.fitModel.prior  #prior callback
 
 
 
@@ -115,7 +141,7 @@ class mnPowerLawFit(mnfit):
         It saves relevant information from the fits
 
         '''
-        dof = len(self.EpEvo.GetTimeBins())-self.n_params
+        dof = len(self.data.GetXdata())-self.n_params
 
 
 
@@ -124,13 +150,18 @@ class mnPowerLawFit(mnfit):
         # SpecFitView.
         out = {"outfiles":self.outfilesDir,\
                "basename":self.basename,\
-               "params":self.epModel.parameters,\
-               "EpEvo":self.EpEvo.fileName,\
-               "model":self.epModel.modName,\
+               "params":self.fitModel.parameters,\
+               "dataFile":self.dataFile,\
+               "model":self.fitModel.modName,\
                "stat":self.stat.statName,\
                "dof":dof,\
-               "tmin":self.EpEvo.GetTimeBins()[0],\
-               "tmax":self.EpEvo.GetTimeBins()[-1]\
+               "pivot":self.fitModel.GetPivot(),\
+               "ampLo":self.fitModel.GetAmpLo(),\
+               "ampHi":self.fitModel.GetAmpHi(),\
+               "indxLo":self.fitModel.GetIndxLo(),\
+               "indxHi":self.fitModel.GetIndxHi(),\
+               "xmin":self.data.GetXdata()[0],\
+               "xmax":self.data.GetXdata()[-1]\
         }
 
         f = open(self.outfilesDir+self.savefile,'w')
@@ -150,6 +181,6 @@ class mnPowerLawFit(mnfit):
     def _PreFitInfo(self):
 
         print "Starting fit of model:"
-        print "\t%s"%self.epModel.modName
+        print "\t%s"%self.fitModel.modName
         print
 
