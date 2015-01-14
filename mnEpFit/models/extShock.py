@@ -22,11 +22,11 @@ class extShock(EpModel):
             # For now I'm going to set a few params at good values
             # Adjust later
 
-            z=1.
+            z=2.332
             #q=power(10.,q)
             #            q=1.E-4
             #E0 = 1.E54
-            E0 = 6.32E55        
+            E0 = 1.97E55        
             #E0 = power(10.,E0)
             #g = (3.-eta)/2.
             n0 = 1.E2
@@ -93,6 +93,6 @@ class extShock(EpModel):
         self.prior=EpEvoPrior
         self.n_params = 4
         #self.parameters = [r"$\eta$","g",r"$\Gamma_0$","q","E0"]
-        self.parameters = [r"$\eta$","g",r"$\Gamma_0$",r"q$_{-3}$"]
+        self.parameters = [r"$\eta$","g",r"$\Gamma_0$",r"$q_{-3}$"]
 
     
