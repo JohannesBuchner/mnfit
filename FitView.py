@@ -12,7 +12,7 @@ class FitView(object):
 
     '''
 
-    def __init__(self,data,silent=False,journal=None):
+    def __init__(self,data,silent=False,journal="plain",stats="best"):
         '''
         The type of data depends on the subclass.
         The generic _LoadData function is called and should set
@@ -31,9 +31,13 @@ class FitView(object):
         self._LoadData(data)
 
         self.anal  = Analyzer(n_params=self.n_params,outputfiles_basename=self.basename)
+        self.stats = stats
 
+        if self.stats == "best":
+            self.bestFit = array(self.anal.get_best_fit()["parameters"])
+        elif self.stats == "mean":
+            self.bestFit = array(self.anal.get_stats()['modes'][0]['mean'])
 
-        self.bestFit = array(self.anal.get_best_fit()["parameters"])
         self.loglike = self.anal.get_best_fit()["log_likelihood"]
 
         #Calculate teh effective # of free parameters from Spiegelhalter (2002)
@@ -64,7 +68,7 @@ class FitView(object):
             figW = 245.6
 
 
-        if self.journal != None:
+        if self.journal != "plain":
 
             fig_width_pt = figW  # Get this from LaTeX using \showthe\columnwidth
             inches_per_pt = 1.0/72.27               # Convert pt to inch
@@ -193,7 +197,7 @@ class FitView(object):
             for j in range(i):
 
                 ax = fig.add_subplot(self.n_params,self.n_params, self.n_params*(j+1)+i+1)
-                p.plot_conditional(i, j, with_ellipses = False, with_points = False, grid_points=20)
+                p.plot_conditional(i, j, with_ellipses = False, with_points = False, grid_points=30)
 
                 marg1 = marg[i]["1sigma"]
                 marg2 = marg[j]["1sigma"]
