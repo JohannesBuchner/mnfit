@@ -4,6 +4,7 @@ from mnfit.mnEpFit.EpEvo import EpEvo
 from mnfit.mnEpFit.models.models import models
 import matplotlib.pyplot as plt
 from numpy import array, cumsum, linspace, sqrt, logspace, log10
+from numpy import mean, meshgrid, histogram2d, zeros
 from scipy.stats import ks_2samp
 import json
 
@@ -85,6 +86,37 @@ class EpFitView(FitView):
         yData = []
 
 
+        # posterior = array([ self.model(self.dataRange,*params)  for params in self.anal.get_equal_weighted_posterior()[::10,:-1]])
+        
+
+        # posterior = posterior.reshape(len(self.dataRange)*len(self.anal.get_equal_weighted_posterior()[::10,:-1]))
+        # eneVals = array(self.dataRange.tolist()*len(self.anal.get_equal_weighted_posterior()[::10,:-1]))
+
+        
+        # yRange = logspace(log10(min(posterior)),log10(max(posterior)),100)
+
+        
+        # H,xE,yE, = histogram2d(eneVals,posterior,bins=(self.dataRange,yRange),normed=True)
+        # tt = H>0
+        # alpha = H[tt]
+        # alpha/=max(alpha)
+        # #alpha/
+        # self.alpha = alpha
+        # xCoord = array(map(mean,array([xE[:-1],xE[1:]]).T))
+        # yCoord = array(map(mean,array([yE[:-1],yE[1:]]).T))
+        # xy = array(meshgrid(xCoord,yCoord))
+        # coords = xy.T[H>0]
+        # rgba_colors = zeros((len(coords),4))
+        # rgba_colors[:,0] = 1.0
+
+
+        # rgba_colors[:, 3] = alpha
+        # #rgba_colors[:,3]=.5
+        
+        
+        # ax.scatter(coords[:,0],coords[:,1],c=rgba_colors,marker="H",s=1,edgecolors=None,linewidth=0)
+        
+
         for params in self.anal.get_equal_weighted_posterior()[::100,:-1]:
 
             tmp = []
@@ -103,7 +135,7 @@ class EpFitView(FitView):
             
         for y in yData:
 
-            ax.loglog(self.dataRange,y,"#FE9A2E",alpha=.15,lw=self.linewidth*.28) ## modify later
+            ax.loglog(self.dataRange,y,"#fc8d62",alpha=.05,lw=self.linewidth*.5,ls="-",zorder=-32) ## modify later
 
         bfModel = []
 
@@ -114,10 +146,10 @@ class EpFitView(FitView):
             bfModel.append(self.model(x, *self.bestFit))
         
             
-        ax.loglog(self.dataRange,bfModel,"#0067DC",lw=self.linewidth) #modify later
+        ax.loglog(self.dataRange,bfModel,"#8da0cb",lw=self.linewidth,ls="-",zorder=-10) #modify later
 
 
-        ax.errorbar(evo.GetTimeBins(),evo.GetEp(),yerr=evo.GetErr(),fmt='.',color='#6E6E6E',capsize=self.capsize,elinewidth=self.elinewidth)
+        ax.errorbar(evo.GetTimeBins(),evo.GetEp(),yerr=evo.GetErr(),fmt='.',color='#66c2a5',capsize=self.capsize,elinewidth=self.elinewidth,markersize=3.3)
 
         ax.set_yscale('log',nonposy='clip')
         ax.set_xlabel("Time [s]")
