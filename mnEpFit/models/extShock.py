@@ -15,7 +15,7 @@ class extShock(EpModel):
     def __init__(self):
 
 
-        def EpEvo(t,eta,g,Gamma0, q):
+        def EpEvo(t,eta,g,Gamma0,q):
 
 
             #
@@ -23,16 +23,20 @@ class extShock(EpModel):
             # Adjust later
 
             z=2.332
-            #q=power(10.,q)
+            
             #            q=1.E-4
-            #E0 = 1.E54
-            E0 = 1.97E55        
-            #E0 = power(10.,E0)
-            #g = (3.-eta)/2.
-            n0 = 1.E2
+#            q=1E-3
 
+
+            
+            E0 = 9.1E53        
+            
+            n0 = 1.E1
+
+            #n0 = power(10,n0)
+            
             #xd = ((3.-eta)*E0 / ( 4.*pi*n0*Gamma0**2. * mp  ) )**(1./3.)
-            xd = 2.6E16*((1.-eta/3.)*(E0/1.E54)/((n0/100.)*(Gamma0/300.)))**(1./3.)
+            xd = 2.6E16*((1.-eta/3.)*(E0/1.E54)/((n0/100.)*(Gamma0/300.)**2))**(1./3.)
             #td = (1.+z)*xd / (Gamma0**2. * c)
             td = 9.7*(1.+z)*((1.-eta/3.)*(E0/1.E54)/((n0/100.)*(Gamma0/300.)**8.))**(1./3.)
 
@@ -65,7 +69,7 @@ class extShock(EpModel):
 
             ### Calculate Gamma(X)  ###
     
-            eE0 = 3.E-8 * (1E-3)  * n0**(.5)*q*Gamma0**4. /(1.+z)
+            eE0 = 3.E-8 * (1E-3)  * n0**(.5)*q  *Gamma0**4. /(1.+z)
 
 #            eE0 = 3.E-8 * n0**(.5)*q*Gamma0**4. /(1.+z)
 
@@ -75,8 +79,12 @@ class extShock(EpModel):
 
 
 
-        self.paramsRanges = [[0.,4,"U"],[1E-1,2.,"U"],[10.,1000.,"U"],[0.,1.,"U"]]        
+        self.paramsRanges = [[0.,2.,"U"],[.5,2.,"U"],[10.,1000.,"U"],[0.,1.,"U"]]        
 
+        #self.paramsRanges = [[0.,2.,"U"],[.5,2.,"U"],[10.,1000.,"U"],[1E-10,1.E-1,"J"],[1E-1,1E2,"J"]]        
+
+
+        
         #self.paramsRanges = [[0.,4,"U"],[1E-1,3.,"U"],[10.,1000.,"U"]]
 
         #self.paramsRanges = [[0.,3,"U"],[1E-1,3.,"U"],[10.,1000.,"U"],[1.E-6,1.E-2,"J"],[1E50,1E56,"J"]]
@@ -92,7 +100,7 @@ class extShock(EpModel):
         self.model=EpEvo
         self.prior=EpEvoPrior
         self.n_params = 4
-        #self.parameters = [r"$\eta$","g",r"$\Gamma_0$","q","E0"]
-        self.parameters = [r"$\eta$","g",r"$\Gamma_0$",r"$q_{-3}$"]
+        #self.parameters = [r"$\eta$","g",r"$\Gamma_0$"]
+        self.parameters = [r"$\eta$","g",r"$\Gamma_0$",r"$q$"]
 
     

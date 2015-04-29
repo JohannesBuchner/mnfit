@@ -148,8 +148,10 @@ class PlotMarginalModes(object):
 		# add ellipses
         i = 0
         for mode in modes:
+            
             if not with_ellipses or dim2 is None:
                 break
+            
             el_xcenter = mode['mean'][dim1]
             el_xsize = mode['sigma'][dim1] * 2
             el_ycenter = mode['mean'][dim2]

@@ -122,6 +122,7 @@ class tteBinning(object):
             self.binWidth = diff(self.bins)
             return
         else:
+            
             self.bins = arange(self.tStart,self.tStop,dt)
             self.bType='dt'
             self.binWidth = diff(self.bins)

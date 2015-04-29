@@ -89,7 +89,7 @@ class mnfit:
             outfilesDir+=s+'/'
             
         self.outfilesDir = outfilesDir
-
+        
 
         if not os.path.exists(outfilesDir): os.makedirs(outfilesDir)
         

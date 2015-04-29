@@ -22,7 +22,7 @@ class CPL(Model):
 
       
         
-      self.paramsRanges = [[1.E-6,1.E4,"J"],[-2.,1.,"U"],[1.E1,1.E6,"U"]]
+      self.paramsRanges = [[1.E-10,1.E5,"J"],[-2.,1.,"U"],[1.E1,4.E4,"U"]]
 
 
       def CPLPrior(params, ndim, nparams):
@@ -39,7 +39,7 @@ class CPL(Model):
       self.model=cpl
       self.prior=CPLPrior
       self.n_params = 3
-      self.parameters = [r"logN$_{\rm CPL}$",r"$\delta$","eFold"]
+      self.parameters = [r"logN$_{\rm CPL}$",r"index$_{\rm CPL}$","eFold"]
       self._modelDict = {"params":self.parameters,\
                          "model":cpl\
                       }

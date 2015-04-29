@@ -172,7 +172,8 @@ class GBMReader(DataRead):
                 tab.meta={"duration":hib-lob,"INST":self.instrument,"DET":self.det,"RSP":self.rsp,"TMIN":lob,"TMAX":hib}
                 
                 
-                
+
+
                 tab.meta["binN"]=directory
                 tab.meta["fileLoc"] = self.directory+directory+"/"
                 tab.meta["file"]=self.dataFile.split('/')[-1]

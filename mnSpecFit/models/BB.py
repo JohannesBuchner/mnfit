@@ -23,7 +23,7 @@ class BB(Model):
 
 
 
-      self.paramsRanges = [[1.E-6,1.E3,"J"],[1.E0,5.E2,"U"]]
+      self.paramsRanges = [[1.E-15,1.E2,"J"],[1.E0,5.E2,"U"]]
      
 
 

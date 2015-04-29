@@ -35,11 +35,16 @@ cpdef np.ndarray[np.double_t,ndim=1] synchrotronPy(np.ndarray[DTYPE_t, ndim=1] e
 #Synchrotron from shock accelerated electrons
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef double synchrotron_CO_Py(double energy, double norm, double estar, double index, double gammaMax):
+cpdef np.ndarray[np.double_t,ndim=1] synchrotron_CO_Py(np.ndarray[DTYPE_t, ndim=1] energy, double norm, double estar, double index, double gammaMax):
+    cdef np.ndarray[np.double_t,ndim=1] val = np.zeros(len(energy)) 
+    for i in range(len(energy)):
+        val[i]  = synchrotron_cutoff(energy[i], norm, estar, index, gammaMax)
+
+    return val
 
 
 
-    return synchrotron_cutoff(energy, norm, estar, index, gammaMax)
+   
 
 
 
