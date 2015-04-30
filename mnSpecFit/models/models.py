@@ -3,7 +3,7 @@ from SBPL import SBPL
 from Synchrotron import Synchrotron
 #from SynchrotronComplex import SynchrotronComplex
 #from SynchrotronBB import SynchrotronBB
-from Synchrotron_Cutoff import Synchrotron_Cutoff
+from SynchrotronCutoff import SynchrotronCutoff
 #from PLSynchrotron import PLSynchrotron
 #from PLSynchrotron_Cutoff import PLSynchrotron_Cutoff
 #from FastSynchrotron import FastSynchrotron
@@ -25,7 +25,7 @@ models = {"Band":Band,\
  #         "SynchrotronComplex":SynchrotronComplex,\
  #         "SynchrotronBB":SynchrotronBB ,\
           "SBPL":SBPL,\
-          "Synchrotron_Cutoff":Synchrotron_Cutoff,\
+          "SynchrotronCutoff":SynchrotronCutoff,\
  #         "PLSynchrotron":PLSynchrotron,\
  #         "PLSynchrotron_Cutoff":PLSynchrotron_Cutoff,\
           "TsviSlow":TsviSlow,\

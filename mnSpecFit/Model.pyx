@@ -108,12 +108,14 @@ class Model:
         NewModel.otherMod = other.model
         def newModel(*args):
 
-            #print args
+#            print self.orig_n_params
+#            print NewModel.n_params
+#            print args
             ene = args[0]
             thisParam = args[1:self.orig_n_params+1]
-            otherParam = args[self.orig_n_params+1:]
-            #print thisParam
-            #print otherParam
+            otherParam = args[1+self.orig_n_params:]
+#            print thisParam
+#            print otherParam
             val = NewModel.origMod(ene,*thisParam)
             val +=NewModel.otherMod(ene,*otherParam)
             return val

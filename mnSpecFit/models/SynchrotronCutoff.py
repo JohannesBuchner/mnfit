@@ -2,7 +2,7 @@ from mnfit.mnSpecFit.Model import Model
 from mnfit.mnSpecFit.synchrotron_glue import synchrotron_CO_Py
 from mnfit.priorGen import *
 from numpy import power
-class Synchrotron_Cutoff(Model):
+class SynchrotronCutoff(Model):
 
 
     def __init__(self):
@@ -16,7 +16,7 @@ class Synchrotron_Cutoff(Model):
 
 
 
-        self.paramsRanges = [[1.E-15,1.,"J"],[0.,3.,"U"],[2.,12.,"U"],[90,8000.,"U"]]
+        self.paramsRanges = [[1.E-15,1.,"J"],[0.,2.,"U"],[2.,5.,"U"],[90,10000.,"U"]]
                             
 
       
@@ -29,11 +29,16 @@ class Synchrotron_Cutoff(Model):
        
 
 
-        self.modName = "Synchrotron_Cutoff"
+        self.modName = "SynchrotronCutoff"
         self.model=TotalSynchrotron
         self.prior=SynchPrior
         self.n_params = 4
-        self.parameters = ["logNorm",r"E$_{crit}$",r"$\delta$",r"$\gamma_{max}$"]
+        self.parameters = ["logNorm",r"E$_{\star}$",r"$p$",r"$\gamma_{\rm max}$"]
+
+        self._modelDict = {"params":self.parameters,\
+                            "model":TotalSynchrotron\
+                        }
+        self._composite = False
 
 
 

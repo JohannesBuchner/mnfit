@@ -18,7 +18,7 @@ class Synchrotron(Model):
 
 
         ###################################################    
-        self.paramsRanges = [[1.E-15,1.,"J"],[0.,3.,"U"],[2.,12.,"U"]]#Changed the prior... should change back
+        self.paramsRanges = [[1.E-15,1.,"J"],[0.,2.,"U"],[2.,5.,"U"]]#Changed the prior... should change back
                             
 
       
@@ -35,7 +35,11 @@ class Synchrotron(Model):
         self.model=TotalSynchrotron
         self.prior=SynchPrior
         self.n_params = 3
-        self.parameters = ["logNorm",r"E$_{crit}$",r"$\delta$"]
+        self.parameters = ["logNorm",r"E$_{\star}$",r"$p$"]
 
+        self._modelDict = {"params":self.parameters,\
+                            "model":TotalSynchrotron\
+                        }
+        self._composite = False
 
 
