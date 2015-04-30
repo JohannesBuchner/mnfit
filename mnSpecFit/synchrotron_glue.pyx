@@ -19,12 +19,21 @@ ctypedef np.double_t DTYPE_t
 #Synchrotron from shock accelerated electrons
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef np.ndarray[np.double_t,ndim=1] synchrotronPy(np.ndarray[DTYPE_t, ndim=1] energy, double norm, double estar, double index):
-    cdef np.ndarray[np.double_t,ndim=1] val = np.zeros(len(energy)) 
+def synchrotronPy(energy, norm, estar, index):
+    val = np.zeros(len(energy)) 
     for i in range(len(energy)):
         val[i]  = synchrotron(energy[i],norm,estar,index)
 
     return val
+
+
+
+# cpdef np.ndarray[np.double_t,ndim=1] synchrotronPy(np.ndarray[DTYPE_t, ndim=1] energy, double norm, double estar, double index):
+#     cdef np.ndarray[np.double_t,ndim=1] val = np.zeros(len(energy)) 
+#     for i in range(len(energy)):
+#         val[i]  = synchrotron(energy[i],norm,estar,index)
+
+#     return val
 
 #return synchrotron(energy, norm, estar, index)
 
@@ -35,12 +44,27 @@ cpdef np.ndarray[np.double_t,ndim=1] synchrotronPy(np.ndarray[DTYPE_t, ndim=1] e
 #Synchrotron from shock accelerated electrons
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef np.ndarray[np.double_t,ndim=1] synchrotron_CO_Py(np.ndarray[DTYPE_t, ndim=1] energy, double norm, double estar, double index, double gammaMax):
-    cdef np.ndarray[np.double_t,ndim=1] val = np.zeros(len(energy)) 
+def synchrotron_CO_Py(energy, norm, estar, index, gammaMax):
+
+    val = np.zeros(len(energy)) 
+    
     for i in range(len(energy)):
+
         val[i]  = synchrotron_cutoff(energy[i], norm, estar, index, gammaMax)
 
     return val
+
+
+# cpdef np.ndarray[np.double_t,ndim=1] synchrotron_CO_Py(np.ndarray[DTYPE_t, ndim=1] energy, double norm, double estar, double index, double gammaMax):
+#     cdef np.ndarray[np.double_t,ndim=1] val = np.zeros(len(energy)) 
+#     cdef double ene
+#     for i in range(len(energy)):
+
+#         ene = energy[i]
+        
+#         val[i]  = synchrotron_cutoff(ene, norm, estar, index, gammaMax)
+
+#     return val
 
 
 

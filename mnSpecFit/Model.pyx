@@ -1,11 +1,15 @@
 cimport cython
-#cimport numpy as np
+cimport numpy as np
 from scipy.integrate import quad, quadrature
 from mnfit.Likelihood import Likelihood
 from RSPconvolve import RSPconvolve
 from numpy import array, zeros
 from mnfit.priorGen import *
+import numpy as np
 
+
+DTYPE = np.double
+ctypedef np.double_t DTYPE_t
 
 class Model:
 
@@ -171,6 +175,8 @@ class Model:
 
         #Low res bins
 
+        
+        
         lowRes = self.model(self.rsp.lowEne,*self.params) 
 
 
@@ -202,6 +208,9 @@ class Model:
         tmpCounts[self.rsp.medEval]=medRes
         tmpCounts[self.rsp.highEval]=hiRes
 
+        tmpCounts = np.asfarray(tmpCounts, dtype="float")
+
+        
         self.rsp.SetModelVec(tmpCounts)
     
 

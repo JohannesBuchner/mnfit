@@ -1,9 +1,9 @@
 from Band import Band
 from SBPL import SBPL 
-#from Synchrotron import Synchrotron
+from Synchrotron import Synchrotron
 #from SynchrotronComplex import SynchrotronComplex
 #from SynchrotronBB import SynchrotronBB
-#from Synchrotron_Cutoff import Synchrotron_Cutoff
+from Synchrotron_Cutoff import Synchrotron_Cutoff
 #from PLSynchrotron import PLSynchrotron
 #from PLSynchrotron_Cutoff import PLSynchrotron_Cutoff
 #from FastSynchrotron import FastSynchrotron
@@ -21,11 +21,11 @@ from SubPhoto import SubPhoto
 from BandTable import BandTable
 
 models = {"Band":Band,\
- #         "Synchrotron":Synchrotron,\
+          "Synchrotron":Synchrotron,\
  #         "SynchrotronComplex":SynchrotronComplex,\
  #         "SynchrotronBB":SynchrotronBB ,\
           "SBPL":SBPL,\
- #         "Synchrotron_Cutoff":Synchrotron_Cutoff,\
+          "Synchrotron_Cutoff":Synchrotron_Cutoff,\
  #         "PLSynchrotron":PLSynchrotron,\
  #         "PLSynchrotron_Cutoff":PLSynchrotron_Cutoff,\
           "TsviSlow":TsviSlow,\

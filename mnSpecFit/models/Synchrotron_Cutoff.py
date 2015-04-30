@@ -15,14 +15,16 @@ class Synchrotron_Cutoff(Model):
             return synchrotron_CO_Py(ene, norm, estar,index,gammaMax)
 
 
-        def SynchPrior(params, ndim, nparams):
-         
 
-            params[0] = jefferysPrior(params[0], 1E-8, 1.)
-            params[1] = uniformPrior(params[1], 0., 3.)
-            params[2] = uniformPrior(params[2], 2., 12.) #Must be positive!
-            params[3] = uniformPrior(params[3], 90., 1000.)
-            pass
+        self.paramsRanges = [[1.E-15,1.,"J"],[0.,3.,"U"],[2.,12.,"U"],[90,8000.,"U"]]
+                            
+
+      
+        def SynchPrior(params, ndim, nparams): 
+
+            for i in range(ndim):
+                params[i] = priorLU[self.paramsRanges[i][-1]](params[i],self.paramsRanges[i][0],self.paramsRanges[i][1])
+        
 
        
 
