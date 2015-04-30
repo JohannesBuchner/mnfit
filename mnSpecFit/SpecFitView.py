@@ -231,7 +231,7 @@ class SpecFitView(FitView):
         #First get the components
         
         components = self._componentLU.keys()
-        print components
+        
             
         colorIndex = 0
         for comp in components:
