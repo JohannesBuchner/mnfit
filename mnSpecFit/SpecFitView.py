@@ -131,6 +131,7 @@ class SpecFitView(FitView):
         print
 
         print "Model:\n\t%s"%self.modName
+        print "T:%.2f - %.2f"%(self.tmin,self.tmax)
         print "\nBest Fit Parameters (1-sigma err):"
 
         marg = self.anal.get_stats()["marginals"]
@@ -237,7 +238,7 @@ class SpecFitView(FitView):
         for comp in components:
             
             thisComp= self._componentModel.SelectComponent(comp)
-            print thisComp
+            
             
             #First the best fit params
             tt = self.GetParamIndex(thisComp["params"])
