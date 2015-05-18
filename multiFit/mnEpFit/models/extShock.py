@@ -29,9 +29,9 @@ class extShock(EpModel):
 
 
             
-            E0 = 9.1E53        
+            E0 = 1E55        
             
-            n0 = 1.E1
+            n0 = 1.E0
 
             #n0 = power(10,n0)
             
@@ -79,7 +79,7 @@ class extShock(EpModel):
 
 
 
-        self.paramsRanges = [[0.,2.,"U"],[.5,2.,"U"],[10.,1000.,"U"],[0.,1.,"U"]]        
+        self.paramsRanges = [[0.,2.,"U"],[.5,2.,"U"],[10.,1500.,"U"],[0.,1.,"U"]]        
 
         #self.paramsRanges = [[0.,2.,"U"],[.5,2.,"U"],[10.,1000.,"U"],[1E-10,1.E-1,"J"],[1E-1,1E2,"J"]]        
 

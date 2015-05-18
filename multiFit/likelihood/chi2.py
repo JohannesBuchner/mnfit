@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from mnfit.Likelihood import Likelihood
+from multiFit.Likelihood import Likelihood
 
 
 
