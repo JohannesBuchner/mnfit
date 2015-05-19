@@ -1,9 +1,6 @@
 cimport cython
 cimport numpy as np
 import numpy as np
-
-
-
 from multiFit.Likelihood import Likelihood
 
 

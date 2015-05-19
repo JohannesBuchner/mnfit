@@ -31,11 +31,10 @@ import os
 
 import numpy
 
-import cython_gsl
 
 
-ext_modules = [Extension("multifit/likelihood/cstat",["multifit/likelihood/cstat.pyx"]),
-               Extension("multifit/likelihood/pgstat",["multifit/likelihood/pgstat.pyx"])]
+ext_modules = [Extension("multifit/likelihood/cstat",["multifit/likelihood/cstat.pyx"],include_dirs=[numpy.get_include()]),
+               Extension("multifit/likelihood/pgstat",["multifit/likelihood/pgstat.pyx"],include_dirs=[numpy.get_include()])]
 
 
 
