@@ -21,7 +21,7 @@ Install MULTINEST and pymultinest
 
 
 
-git clone https://github.com/JohannesBuchner/MultiNest.git
+git clone https://github.com/drJfunk/mnfit.git
 cd mnfit
 python setup.py build
 python setup.py install
