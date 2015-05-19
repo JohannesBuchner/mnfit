@@ -1,5 +1,5 @@
 import numpy as np
-
+import numexpr as ne
 
 from multiFit.Likelihood import Likelihood
 
@@ -36,7 +36,7 @@ class chi2(Likelihood):
         C=np.array(self.counts)
         M=np.array(self.modelCounts)
         Err = np.array(self.errors)
-        S=np.power(C-M,2.)/np.power(Err,2.)
+        S= ne.evaluate('  (C-M)*(C-M) /( Err*Err)' )
         sSum = np.sum(S)
 
         return sSum
