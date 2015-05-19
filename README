@@ -1,0 +1,39 @@
+multiFit
+
+Author: J. Michael Burgess
+
+
+About:
+
+General wrapper o pymultinest and MULTINEST. 
+
+Currently, three likelihoods are provided: chi2, cstat, and pgstat.
+
+Much work and more documentation are to come....
+
+email: jamesb@kth.se
+
+
+INSTALL:
+
+
+Install MULTINEST and pymultinest
+
+
+
+git clone https://github.com/JohannesBuchner/MultiNest.git
+cd mnfit
+python setup.py build
+python setup.py install
+
+
+Dependencies:
+
+MULTINEST (https://github.com/JohannesBuchner/MultiNest)
+pymultinest
+
+numpy
+cython
+scipy
+
+
