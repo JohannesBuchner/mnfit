@@ -36,7 +36,7 @@ class chi2(Likelihood):
         C=np.array(self.counts)
         M=np.array(self.modelCounts)
         Err = np.array(self.errors)
-        S= ne.evaluate('  (C-M)*(C-M) /( Err*Err)' )
+        S= ne.evaluate('(C-M)*(C-M) /( Err*Err)' )
         sSum = np.sum(S)
 
         return sSum
