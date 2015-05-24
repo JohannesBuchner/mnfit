@@ -17,6 +17,16 @@ def uniformPrior(par,bottom,top):
     par = par*spread + low
     return par
 
+
+def gaussian(par,mean,spread):
+
+    pass
+
+
+    
+    return par
+
+
 def modifiedJefferysPrior(par,top):
     pass
 

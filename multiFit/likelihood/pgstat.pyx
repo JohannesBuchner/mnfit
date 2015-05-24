@@ -13,10 +13,7 @@ cdef extern from "math.h":
     double sqrt(double)
 
 
-DTYPE = np.double
-ctypedef np.double_t DTYPE_t
-
-        
+    
 class pgstat(Likelihood):
 
 
@@ -33,7 +30,6 @@ class pgstat(Likelihood):
         PGstat uses gaussian errors and when the 
         background fit is done with a polynomial the
         full propoagated errors SHOULD be gaussian.
-
         '''
         self.bg = np.array(bg)
 
@@ -50,21 +46,14 @@ class pgstat(Likelihood):
         self.modc = mc
 
             
-    @cython.boundscheck(False)
-    @cython.wraparound(False)
-    @cython.cdivision(True)
+
     def ComputeLikelihood(self):
 
         cdef double tr = self.ts/self.tb
         cdef double FLOOR = 1.0e-5
-        cdef np.ndarray[np.double_t,ndim=1] fi
-        cdef double a
-        cdef np.ndarray[np.double_t,ndim=1] b,c,sign,q,yb
-
-        cdef double tb = self.tb
-        cdef double ts = self.ts
-
-        cdef np.ndarray[np.double_t,ndim=1] stat, modc, bg, counts, berr
+        #cdef double fi = 0.
+        #cdef double a,b,c,sign,q, yb
+        #cdef double stat = 0.
 
 
 
@@ -72,7 +61,7 @@ class pgstat(Likelihood):
         fi = np.zeros(len(self.counts))
 
 
-        a = tb*tb
+        a = self.tb*self.tb
         b = self.ts*self.berr - self.tb*self.bg + self.tb*self.tb*self.modc
         c = self.ts*self.berr*self.modc - self.counts*self.berr - self.tb*self.bg*self.modc
         sign = np.sign(b)
