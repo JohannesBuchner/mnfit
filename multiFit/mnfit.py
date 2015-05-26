@@ -6,10 +6,22 @@ import time
 
 
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+                                    
+
+
 class mnfit:
 
 
-    def __init__(self,silent=False,live_points = 1000, ins=True, resume = True, verbose = False, sampling_efficiency = 'model', write=True):
+    def __init__(self,silent=True,live_points = 1000, ins=True, resume = True, verbose = False, sampling_efficiency = 'model', write=True):
         '''
         This is a Bayesian MC utilizing the package
         multinest to explore the posterior space of the 
@@ -63,24 +75,24 @@ class mnfit:
 
         '''
 
-        print
-        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-        print
-        print "License Info:"
-        print "\t Don't read this.\n\t Do whatever the hell you want with this software"
-        print
-        print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        #print
+        #print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        #print
+        #print "License Info:"
+        #print "\t Don't read this.\n\t Do whatever the hell you want with this software"
+        #print
+        #print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 
         
         if not self._dataLoaded: #Make sure to have loaded data
             print
-            print "YOU HAVE NOT LOADED ANY DATA!!"
+            print bcolors.FAIL+ "YOU HAVE NOT LOADED ANY DATA!!"+ bcolors.ENDC
             print
             return
 
         if not self._saveFileSet: #Warn that no savefile is set
             print
-            print "Save file not set!!! Fit params not saved!"
+            print bcolors.WARNING+"Save file not set!!! Fit params not saved!"+ bcolors.ENDC
             print
 
         outfilesDir = ""
@@ -111,7 +123,7 @@ class mnfit:
             progress.stop()
 
         print 
-        print "Finished sampling in %.2f seconds"%(time.time()-startTime)
+        print bcolors.OKGREEN +"Finished sampling in %.2f seconds"%(time.time()-startTime) + bcolors.ENDC
         print
         if self._saveFileSet:
             self._WriteFit()
