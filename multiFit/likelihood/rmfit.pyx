@@ -33,7 +33,7 @@ class rmfit(Likelihood):
 
 
     def _SetName(self):
-        self.statName = "cstat_rmfit"
+        self.statName = "rmfit"
 
     def SetBackGround(self,bg, bgErr):
 
@@ -61,12 +61,11 @@ class rmfit(Likelihood):
 
         smallM = M<FLOOR
         M[smallM] = FLOOR
-        M+=B/self.tb
-        # Here we subtract the background counts!
+
+        # Here we add the background counts to the model!
         # This is fucking illegal!
-        
-        #S = C-B
-        
+        M+=B/self.tb
+                
         stat = ts * M
 
         posS = S>0.
