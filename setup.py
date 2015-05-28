@@ -34,7 +34,8 @@ import numpy
 
 
 ext_modules = [Extension("multifit/likelihood/cstat",["multifit/likelihood/cstat.pyx"],include_dirs=[numpy.get_include()]),
-               Extension("multifit/likelihood/pgstat",["multifit/likelihood/pgstat.pyx"],include_dirs=[numpy.get_include()])]
+               Extension("multifit/likelihood/pgstat",["multifit/likelihood/pgstat.pyx"],include_dirs=[numpy.get_include()]),
+               Extension("multifit/likelihood/cstat_rmfit",["multifit/likelihood/cstat_rmfit.pyx"],include_dirs=[numpy.get_include()])]
 
 
 

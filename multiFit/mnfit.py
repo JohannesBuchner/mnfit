@@ -74,6 +74,18 @@ class mnfit:
         The data must be loaded and the likihood set
 
         '''
+        print bcolors.WARNING+'___________________________________________________'+bcolors.ENDC
+        print bcolors.WARNING+'|'+bcolors.OKBLUE+' _____       _____                 _____  _  _   '+bcolors.WARNING+'|'+bcolors.ENDC
+        print bcolors.WARNING+'|'+bcolors.OKBLUE+'|     | ___ |   __| ___  ___  ___ |   __||_|| |_ '+bcolors.WARNING+'|'+bcolors.ENDC
+        print bcolors.WARNING+'|'+bcolors.OKBLUE+'| | | ||   ||__   || . || -_||  _||   __|| ||  _|'+bcolors.WARNING+'|'+bcolors.ENDC
+        print bcolors.WARNING+'|'+bcolors.OKBLUE+'|_|_|_||_|_||_____||  _||___||___||__|   |_||_|  '+bcolors.WARNING+'|'+bcolors.ENDC
+        print bcolors.WARNING+'|'+bcolors.OKBLUE+'                   |_|                           '+bcolors.WARNING+'|'+bcolors.ENDC
+        print bcolors.WARNING+'|                                                 |'+bcolors.ENDC
+        print bcolors.WARNING+'|                                                 |'+bcolors.ENDC
+        print bcolors.WARNING+'|                                                 |'+bcolors.ENDC
+        print bcolors.WARNING+'|                          '+bcolors.OKGREEN+'-J. Michael Burgess'+bcolors.WARNING+'    |'+bcolors.ENDC
+        print bcolors.WARNING+'|                                                 |'+bcolors.ENDC
+        print bcolors.WARNING+'|_________________________________________________|'+bcolors.ENDC
 
         #print
         #print "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
